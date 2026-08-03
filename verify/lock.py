@@ -59,6 +59,22 @@ _ITEMS = {
     "nb03 도메인 롤업 표": (LAYER_RESULT, "json", RESULTS / "nb03_rollup.json"),
     "nb03 불일치 셀 목록": (LAYER_RESULT, "json", RESULTS / "nb03_mismatch.json"),
     "nb03 라벨없음(비유한) 셀 목록": (LAYER_RESULT, "json", RESULTS / "nb03_nolabel.json"),
+    # v11 전수(1,382셀) 확장에서 늘어난 산출물. 계산 방법은 위와 같은 "json"
+    # 입니다 — 정규화 JSON 을 읽어 sha256 을 냅니다. 판정 규칙은 건드리지
+    # 않았고, **어느 파일을 볼지** 만 늘렸습니다.
+    #
+    # 이름은 LOCK.md 표의 항목 이름과 **글자 그대로 같아야 합니다.** 여기가
+    # 이름 → 경로 대응표이고, 표에 있는데 여기 없는 이름은 compute() 가
+    # "(모르는 항목)" 을 돌려주어 lock-init 이 채우지 못하고 (미정) 으로
+    # 남습니다.
+    "nb02 변형 비교": (LAYER_RESULT, "json", RESULTS / "nb02_variants.json"),
+    "nb03 no_soc_span 변형": (LAYER_RESULT, "json", RESULTS / "nb03_cells_nospan.json"),
+    "nb03 discharge_denom 변형": (LAYER_RESULT, "json",
+                                RESULTS / "nb03_cells_discharge_denom.json"),
+    "nb04 cycle_number 롤업": (LAYER_RESULT, "json", RESULTS / "nb04_cycle_numbers.json"),
+    "nb04 셀별 추가 측정": (LAYER_RESULT, "json", RESULTS / "nb04_extras.json"),
+    "nb05 v2 대조표 원자료": (LAYER_RESULT, "json", RESULTS / "nb05_v2_compare.json"),
+    "findings/na_ion_crate.json": (LAYER_RESULT, "json", FINDINGS / "na_ion_crate.json"),
     "findings/registry.yaml": (LAYER_CODE, "file", FINDINGS / "registry.yaml"),
     "findings/anchors.yaml": (LAYER_CODE, "file", FINDINGS / "anchors.yaml"),
 }

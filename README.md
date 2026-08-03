@@ -103,6 +103,7 @@ HuggingFace 캐시 경로가 260자를 넘습니다.
 
 ```
 python run.py notebook     jupyter lab 실행 (실제 작업은 여기서)
+python run.py labels       라벨 재현 (노트북 03 상당, 헤드리스)
 python run.py check        LOCK 대조
 python run.py lock-init    현재 상태로 LOCK.md 채우기
 python run.py anchors      코드 앵커 유효성 확인
@@ -110,6 +111,23 @@ python run.py claims       registry 검증 → findings/PAPER_CODE_MAP.md 재생
 python run.py data-list    받을 데이터 목록 (다운로드 안 함)
 python run.py papers       arXiv PDF 3편
 ```
+
+`labels` 는 노트북 01 · 02 · 03 이 하는 일을 한 번에 냅니다. 계산 규칙은
+`verify/labels.py` 를 그대로 쓰며 여기서 새 규칙을 만들지 않습니다.
+
+```
+python run.py labels                      상위 코드 규칙 그대로
+python run.py labels --variant no_soc_span   SOC span 나눗셈을 뺀 변형 (LAB-005)
+python run.py labels --recount            메타 재집계도 함께 (findings/recount.json)
+```
+
+두 변형은 **항상 함께** 계산됩니다 — 나란히 놓지 않으면 SOC span 나눗셈이 무엇을
+바꾸는지 보이지 않습니다. `--variant` 는 화면 요약에 쓸 쪽만 고릅니다.
+사람이 읽을 결과는 `experiments/results/LABEL_REPORT.md` 입니다.
+
+`--subset` · `--limit` 을 준 부분 실행은 산출물을 `experiments/results/scratch/` 에
+써서 LOCK 대상 파일을 덮어쓰지 않습니다. 훑어보기 결과가 대조표 자리에 앉지
+않게 하기 위해서입니다.
 
 `Makefile` 은 각 타깃이 `python run.py <명령>` 을 호출하기만 하는 껍데기입니다.
 
@@ -123,8 +141,13 @@ python run.py papers       arXiv PDF 3편
 3. python run.py check                     지금 상태를 봅니다
 4. python run.py papers                    논문 PDF 3편
 5. python run.py data-list                 받을 데이터 확인 → 사람이 받습니다
-6. python run.py notebook                  00 → 01 → 02 → 03 순서로
+6. python run.py labels --recount          받은 뒤 라벨 재현 (헤드리스)
+7. python run.py notebook                  00 → 01 → 02 → 03 순서로
 ```
+
+6번과 7번은 같은 계산입니다. 6번은 결과를 빨리 보기 위한 것이고, 7번은 그 계산을
+자기 손으로 따라가기 위한 것입니다. 6번만 하고 넘어가면 남의 결과를 읽는 것이
+됩니다.
 
 노트북은 **출력을 지운 상태로 커밋합니다.** 출력이 들어가면 조원이 자기
 손으로 확인하지 않고 남의 결과를 읽게 됩니다.

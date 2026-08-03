@@ -135,15 +135,29 @@ def cmd_data_list(args) -> int:
     manifest = REPO_ROOT / "manifests" / "data_md5.txt"
     _rule("받을 데이터")
 
-    print("Zenodo record 21149533 (BatteryLife_Processed v12, 인증 불필요)")
-    print("  https://zenodo.org/records/21149533")
+    print("Zenodo record 19688272 (BatteryLife_Processed v11, 인증 불필요)")
+    print("  https://zenodo.org/records/19688272")
+    print("  v12 는 record 21149533. 두 판본에서 md5 가 다른 파일은 3개뿐입니다")
+    print("  (XJTU.zip · Life labels.zip · READMEs.zip — manifests/data_md5.txt 5-1 절).")
     print("\n이 명령은 목록만 보여줍니다. **다운로드는 사람이 합니다.**\n")
 
     # 파일명에 공백이 있습니다 ("Life labels.zip"). 공백으로 자르면 깨지므로
-    # md5 토큰을 기준으로 잡습니다.
+    # md5 토큰과 ".zip" 을 기준으로 잡습니다.
+    #
+    # 열 순서가 v11 표에서 바뀌었습니다 (manifests/data_md5.txt):
+    #   예전  <세트> <파일> <md5> <크기> <비고>
+    #   지금  <md5> <파일> <크기> <세트> <보유>
+    # 둘 다 읽습니다. 조원이 옛 파일을 들고 있어도 돌아가야 합니다.
     import re
 
-    row_pattern = re.compile(
+    new_pattern = re.compile(
+        r"^(?P<md5>[0-9a-f]{32}|\(미확인\))\s+"
+        r"(?P<file>.+?\.zip)\s+"
+        r"(?P<size>\S+)\s+"
+        r"(?P<set>labels|core|full)\s+"
+        r"(?P<have>\S+)$"
+    )
+    old_pattern = re.compile(
         r"^(?P<set>labels|core|full)\s+"
         r"(?P<file>.+?)\s+"
         r"(?P<md5>[0-9a-f]{32}|\(미확인\))\s+"
@@ -156,13 +170,19 @@ def cmd_data_list(args) -> int:
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        match = row_pattern.match(line)
-        if not match:
-            continue
+        match = new_pattern.match(line)
+        note = ""
+        if match:
+            note = f"보유: {match.group('have')}"
+        else:
+            match = old_pattern.match(line)
+            if not match:
+                continue
+            note = match.group("note") or ""
         rows.append({
             "set": match.group("set"), "file": match.group("file"),
             "md5": match.group("md5"), "size": match.group("size"),
-            "note": match.group("note") or "",
+            "note": note,
         })
 
     wanted = args.set or "labels"
@@ -185,8 +205,8 @@ def cmd_data_list(args) -> int:
 
     print(f"\n{len(shown)}개 ({wanted} 세트)")
     print("\n세트: labels(라벨 검증 최소 집합) / core / full / all")
-    print("용량은 (미확인) 입니다. Zenodo Files 표에서 확인해")
-    print("manifests/data_md5.txt 헤더에 다운로드 용량과 해제 후 용량을 **따로** 적으십시오.")
+    print("크기는 Zenodo Files 표의 **다운로드 용량** 입니다. 해제 후 용량은 크게 다릅니다")
+    print("— 두 숫자를 따로 보십시오 (manifests/data_md5.txt 헤더).")
     print("\nHuggingFace(processed_SOH) 는 게이트 저장소라 이 하니스가 건드리지 않습니다.")
     return 0
 
@@ -205,6 +225,83 @@ def cmd_papers(args) -> int:
     fetch = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(fetch)
     return fetch.main(list_only=args.list_only)
+
+
+# ---------------------------------------------------------------------------
+# labels
+# ---------------------------------------------------------------------------
+
+def cmd_labels(args) -> int:
+    """노트북 03 이 하는 일을 헤드리스로 냅니다.
+
+    계산 규칙은 ``verify/labels.py`` 를 그대로 씁니다. 여기서 새 규칙을 만들지
+    않습니다. 두 변형(``code`` · ``no_soc_span``)은 **항상 함께** 계산합니다 —
+    나란히 놓지 않으면 SOC span 나눗셈이 무엇을 바꾸는지 보이지 않습니다
+    (``LAB-005``). ``--variant`` 는 화면에 어느 쪽을 요약해 보일지만 고릅니다.
+    """
+    from datetime import datetime
+
+    _rule("라벨 재현")
+    try:
+        from verify import report
+    except ImportError as error:
+        print(f"필요한 패키지가 없습니다: {error}", file=sys.stderr)
+        print("    python -m pip install -r requirements.txt", file=sys.stderr)
+        return 1
+
+    stamp = args.stamp or datetime.now().strftime("%Y-%m-%d %H:%M")
+    try:
+        out = report.run(
+            variant=args.variant,
+            do_recount=args.recount,
+            stamp=stamp,
+            subsets=args.subset or None,
+            limit=args.limit,
+        )
+    except FileNotFoundError as error:
+        print(f"{error}", file=sys.stderr)
+        return 1
+
+    result = out["result"]
+    rows = {
+        "code": result["cells"],
+        "no_soc_span": result["cells_nospan"],
+        "discharge_denom": result["cells_discharge_denom"],
+    }[args.variant]
+    print(f"서브셋 {len(result['subsets'])}개 / 셀 {len(rows)}개  (변형: {args.variant})")
+    if result["excluded_present"]:
+        print(f"집계 제외: {', '.join(result['excluded_present'])}  (배포물이 아닌 로컬 산출물 — META-005)")
+
+    print("\n도메인 롤업")
+    from verify import labels as lab
+    for row in lab.rollup(rows):
+        print(f"  {row['domain']:8} 셀 {row['cells']:4d}  라벨 {row['labeled']:4d}"
+              f"  중도절단 {row['censored']:3d}  외삽 {row['extrapolated']:3d}"
+              f"  재현불가 {row['unreproducible']:3d}  절단비 {row['censored_ratio']}")
+
+    tally = {}
+    for row in rows:
+        tally[row.get("match", "?")] = tally.get(row.get("match", "?"), 0) + 1
+    print("\n배포 라벨 대조")
+    for key, count in sorted(tally.items(), key=lambda kv: (-kv[1], kv[0])):
+        print(f"  {key:20} {count:4d}")
+
+    print(f"\ncode 대 no_soc_span 이 갈리는 셀: {out['variants']['changed']}")
+    print(f"code 대 discharge_denom 이 갈리는 셀: "
+          f"{out['variants']['discharge_denom_changed']}"
+          f"  (서브셋: {', '.join(out['variants']['discharge_denom_changed_subsets']) or '없음'})")
+
+    if out["partial"]:
+        print("\n부분 실행입니다 (--subset / --limit). 산출물을 experiments/results/scratch/ 에")
+        print("썼습니다 — LOCK 대상 파일과 findings/recount.json 을 덮어쓰지 않았습니다.")
+        print("대조표로 쓰지 마십시오.")
+
+    print("\n생성:")
+    for path in out["written"]:
+        print(f"  {Path(path).resolve().relative_to(REPO_ROOT).as_posix()}")
+    report_path = Path(out["results_dir"]).resolve().relative_to(REPO_ROOT).as_posix()
+    print(f"\n사람이 볼 파일: {report_path}/LABEL_REPORT.md")
+    return 0
 
 
 # ---------------------------------------------------------------------------
@@ -267,6 +364,20 @@ def build_parser() -> argparse.ArgumentParser:
     papers.add_argument("--list", dest="list_only", action="store_true",
                         help="받지 않고 목록만")
     papers.set_defaults(func=cmd_papers)
+
+    labels = sub.add_parser("labels", help="라벨 재현 (노트북 03 상당, 헤드리스)")
+    labels.add_argument("--variant",
+                        choices=["code", "no_soc_span", "discharge_denom"],
+                        default="code",
+                        help="화면 요약에 쓸 변형. 세 변형은 항상 함께 계산됩니다")
+    labels.add_argument("--recount", action="store_true",
+                        help="findings/recount.json 도 다시 씁니다 (노트북 01 상당)")
+    labels.add_argument("--subset", action="append",
+                        help="서브셋 한정 (여러 번 지정 가능). 기본: EXTRACT_DIR 아래 전부")
+    labels.add_argument("--limit", type=int, default=None,
+                        help="서브셋마다 앞 N셀만. 훑어볼 때만 쓰십시오 — 대조표에 쓰지 마십시오")
+    labels.add_argument("--stamp", default="", help="보고서에 적을 실행 시각")
+    labels.set_defaults(func=cmd_labels)
 
     sub.add_parser("notebook", help="jupyter lab 실행").set_defaults(func=cmd_notebook)
     return parser

@@ -21,6 +21,10 @@ __all__ = [
     "soc_span_main",
     "soc_span_xjtu",
     "cycle_qd",
+    "cycle_qc",
+    "first_cycle_index",
+    "discharge_denominator",
+    "code_denominator",
     "soh_curve",
     "last_cycle_soh",
     "NOMINAL_OVERRIDES",
@@ -105,6 +109,80 @@ def cycle_qd(cycle: dict, *, xjtu_style: bool = False) -> float:
     discharge_mask = mask & (current < 0)
     values = discharge[discharge_mask] if np.any(discharge_mask) else discharge[mask]
     return float(np.nanmax(values))
+
+
+def cycle_qc(cycle: dict) -> float:
+    """한 사이클의 충전용량 ``max(charge_capacity_in_Ah)``.
+
+    본 경로의 라벨 계산에는 쓰이지 않습니다. ISU_ILCC 전처리가 1사이클의
+    이 값으로 ``SOC_interval`` 을 만들기 때문에(:269-273) 그 항등식을 확인하려고
+    잽니다.
+    """
+    charge = np.asarray(cycle["charge_capacity_in_Ah"], dtype=float)
+    if charge.size == 0:
+        return float("nan")
+    return float(np.nanmax(charge))
+
+
+def first_cycle_index(data: dict) -> int:
+    """``cycle_number == 1`` 인 사이클의 인덱스. 없으면 0.
+
+    ISU_ILCC 전처리의 ``calculate_soc_start_and_end()`` 는 정리된 DataFrame 의
+    ``cycle_number == 1`` 행에서 1사이클 용량을 뽑습니다
+    (``preprocess_ISU_ILCC.py:269, 275``). 배열의 첫 원소가 아니라 **번호가 1인
+    사이클** 입니다. 결번·재번호가 있는 서브셋에서 둘이 갈립니다.
+    """
+    cycles = data.get("cycle_data") or []
+    for index, cycle in enumerate(cycles):
+        try:
+            if int(cycle["cycle_number"]) == 1:
+                return index
+        except (KeyError, TypeError, ValueError):
+            continue
+    return 0
+
+
+def code_denominator(file_name: str, data: dict) -> float:
+    """상위 코드가 SOH 를 나누는 값 = ``nominal × span``.
+
+    ``Extract_life_labels.py:121`` 의 분모입니다.
+    """
+    return nominal_capacity(file_name, data) * soc_span_main(data)
+
+
+def discharge_denominator(file_name: str, data: dict) -> float:
+    """``discharge_denom`` 변형의 분모 = ``min(Qd₁, nominal)``.
+
+    **이것은 상위 코드가 아닙니다.** 상위 코드의 분모가 무엇과 항등인지를 먼저
+    적습니다. ``preprocess_ISU_ILCC.py`` 는
+
+        soc_charge_interval = min(Qc₁ / 0.25, 1)          (:270-272)
+        charge_start_soc    = 1 - soc_charge_interval     (:273)
+        soc_interval        = [charge_start_soc, 1]       (:164)
+
+    로 ``SOC_interval`` 을 만들므로 span 은 ``min(Qc₁/0.25, 1)`` 이고,
+    ``Extract_life_labels.py:121`` 의 분모 ``nominal × span`` 은
+    ``0.25 × min(Qc₁/0.25, 1) = min(Qc₁, 0.25)`` 와 항등이 됩니다.
+    같은 함수가 방전 쪽 ``discharge_end_soc`` 도 계산하지만 :164 가 충전 쪽만
+    저장합니다.
+
+    이 변형은 그 자리에 방전 기준 ``min(Qd₁, nominal)`` 을 넣습니다.
+    ``Qd₁`` 은 ``cycle_number == 1`` 인 사이클의 ``max(discharge_capacity_in_Ah)``
+    입니다.
+
+    항등식이 깨지는 자리가 하나 있습니다 — ``Qc₁ == 0`` 이면 :281-283 이
+    ``soc_interval`` 을 ``[0, 1]`` 로 되돌려 span 이 1 이 됩니다. 그때 코드
+    분모는 ``min(Qc₁, 0.25)`` 가 아니라 ``0.25`` 입니다. 그래서 이 함수는
+    항등식을 쓰지 않고 pkl 의 값을 직접 잽니다.
+    """
+    cycles = data.get("cycle_data") or []
+    if not cycles:
+        return float("nan")
+    nominal = nominal_capacity(file_name, data)
+    qd1 = cycle_qd(cycles[first_cycle_index(data)])
+    if not np.isfinite(qd1):
+        return float("nan")
+    return float(min(qd1, nominal))
 
 
 def soh_curve(data, file_name: str = "", *, use_soc_span: bool = True,

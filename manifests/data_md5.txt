@@ -1,32 +1,29 @@
-# data_md5.txt — BatteryLife_Processed 배포 파일 목록과 md5
+# data_md5.txt — BatteryLife_Processed **v11** 배포 파일 목록과 md5
 #
-# 출처: Zenodo record 21149533 (BatteryLife_Processed v12, 인증 불필요)
-#       https://zenodo.org/records/21149533
+# 출처: Zenodo record 19688272 (BatteryLife_Processed v11, Published April 22, 2026)
+#       https://zenodo.org/records/19688272
+#       DOI 10.5281/zenodo.19688272
+#
+# 이 저장소가 기준으로 삼는 판본은 **v11** 입니다. 이전 판의 이 파일은
+# v12(record 21149533) 목록이었습니다. 아래 5-1 절에 v11↔v12 대조를 남깁니다.
 #
 # 이 파일은 목록일 뿐입니다. 다운로드는 사람이 합니다.
 #   python run.py data-list      받을 것 확인
+#   python run.py check          받은 zip 의 md5 대조 (기준은 LOCK.md)
 #
 # --------------------------------------------------------------------------
 # 용량 — 반드시 두 숫자를 따로 적으십시오
 # --------------------------------------------------------------------------
 # pkl 이 부동소수점 시계열이라 zip 압축률이 높습니다. 다운로드 용량과
-# 압축 해제 후 디스크 소요가 크게 갈립니다. 조원이 디스크를 잘못 잡지
-# 않도록 둘 다 기록합니다.
+# 압축 해제 후 디스크 소요가 크게 갈립니다.
 #
-#   download_total_v12   = (미확인)   ← Zenodo Files 표의 크기 합
-#   extracted_total_v12  = (미확인)   ← 해제 후 du -sh
-#   download_total_v11   = (미확인)
-#   extracted_total_v11  = (미확인)
+#   download_total_v11   = 30.9 GB   ← Zenodo Files 표의 크기 합 (20 files)
+#   extracted_total_v11  = 약 82 GB  ← 배포 안내값. **이 기계에서 잰 값이 아닙니다**
+#   download_total_v12   = (미확인)
+#   extracted_total_v12  = (미확인)
 #
-# "80 GB" 라는 보고가 있으나 출처가 확인되지 않았습니다. 해제 후 크기인지,
-# HuggingFace 전체인지, raw 합산인지 불명입니다 (findings/registry.yaml
-# VER-002). 확인 전까지 (미확인) 으로 둡니다.
-#
-# 확인 절차 (다운로드 없이 됩니다):
-#   1. zenodo.org/records/21149533 → Files 표에서 파일별 크기·md5
-#   2. 오른쪽 Versions 패널 → v11 레코드 → 같은 표
-#   3. 두 목록의 md5 대조 → registry.yaml 의 VER-001 슬롯을 채움
-#   4. 해제 후 du -sh 결과를 위 extracted_total_* 에 기록
+# 이 기계의 v11 20개 전부 실측치는 아래 "실측 용량" 절과 CC_REPORT.md,
+# findings/registry.yaml VER-002 에 있습니다.
 #
 # --------------------------------------------------------------------------
 # 세트
@@ -36,35 +33,73 @@
 #   core    라벨 논쟁에 관련되나 필수는 아닌 것
 #   full    라벨 논쟁과 무관한 것
 #
-# 형식: <set> <file> <md5> <download_size> <note>
-# md5 가 (미확인) 인 항목은 Zenodo Files 표에서 옮겨 적으십시오.
+# --------------------------------------------------------------------------
+# 형식: md5  파일명  Zenodo표기크기  세트  보유
+# --------------------------------------------------------------------------
+# 20개 전부 적습니다. "보유" 는 이 기계의 data/zenodo_v11/ 에 실제로 있는지를
+# 2026-08-03 에 확인한 값입니다 (md5 대조까지 끝난 상태).
+#
+# 2026-08-03 갱신 — **20/20 보유**. 나머지 12개를 D:/battery_test/data_19688272/
+# 에서 data/zenodo_v11/ 로 복사한 뒤 **복사본에서** md5 를 계산해 12/12 일치를
+# 확인했습니다. 원본은 읽기만 했습니다.
 
-# --- labels 세트 (8개) ---------------------------------------------------
-labels  Life labels.zip  17c7833302b85f475a81b8d3f8614566  (미확인)  대조 기준. 폴더명에 공백 있음 — pathlib 로 다룰 것
-labels  READMEs.zip      d6768d8a185cdf60c11bff4a4be0f9e3  (미확인)  서브셋 설명
-labels  CALB.zip         2b1006e96e0ca42765a732060f964687  (미확인)  λ=90% 도달 1셀 문제. 라벨 자체는 외부 Excel 의존 → 재현불가
-labels  MICH_EXP.zip     e267051a90f0fc02f8e6701b9f3ecc58  (미확인)  Li-ion 절단 6셀
-labels  SNL.zip          900a5bb283ffb0b3255da618118510b7  (미확인)  Li-ion 절단 9셀 + nominal 덮어쓰기 사례(SNL_18650_NCA_25C_20-80 → 3.2)
-labels  NA-ion.zip       bf0a03ac84c74f87a02e203cfc1f9ebf  (미확인)  Na-ion 절단 21셀
-labels  ZN-coin.zip      d7e98ad70a077ac8f44d5ff045befc73  (미확인)  Zn-ion 절단 19셀 + SOH>1 발생
-labels  Tongji.zip       432b52d30d655c4c45c6fc6a414dd443  (미확인)  Li-ion 절단 22셀
+2b1006e96e0ca42765a732060f964687  CALB.zip          12.7MB   labels  보유
+f0f5f1436bc7182d7d5cda05423de8c7  CALCE.zip         88.9MB   core    보유
+27d009bbb908f04e90ecd9a145d81b62  HNEI.zip          43.1MB   core    보유
+de6b6d1b0b20616fbb96c72f3231c082  HUST.zip          1.4GB    core    보유
+98c0561ff25eb68538572c54aeb279ea  ISU_ILCC.zip      10.1GB   full    보유
+cd0cc01a7211972be45e8e38d86cdeca  Life labels.zip   12.6kB   labels  보유
+83a1528858b9e1b7b6886757bb561669  MATR.zip          4.9GB    full    보유
+cc34ea7ed8edc6419cb30757548ca3da  MICH.zip          120.3MB  core    보유
+e267051a90f0fc02f8e6701b9f3ecc58  MICH_EXP.zip      67.6MB   labels  보유
+bf0a03ac84c74f87a02e203cfc1f9ebf  NA-ion.zip        289.3MB  labels  보유
+f1b28ff26d2cbb1e81455518be9b0e23  READMEs.zip       17.2kB   labels  보유
+f5a0f039503b882613770ef138eb66f4  RWTH.zip          1.1GB    core    보유
+6d557d6e74e7b7cf13f54a9cedd7b38b  SDU.zip           2.0GB    core    보유
+900a5bb283ffb0b3255da618118510b7  SNL.zip           115.2MB  labels  보유
+6d6892eb5bd1b836635e5786c2b90c6a  Stanford.zip      1.4GB    core    보유
+3484565dc7c1dd2baa3df02352bbe8a5  Stanford_2.zip    6.5GB    full    보유
+432b52d30d655c4c45c6fc6a414dd443  Tongji.zip        1.4GB    labels  보유
+65551018b3d67d96eda724552a0360bd  UL_PUR.zip        6.0MB    core    보유
+ec68d223209b9ddac6c7f5592b2463cd  XJTU.zip          396.9MB  core    보유
+d7e98ad70a077ac8f44d5ff045befc73  ZN-coin.zip       1.0GB    labels  보유
 
-# --- core 세트 (9개) -----------------------------------------------------
-core    XJTU.zip         (미확인)  (미확인)  중도절단 77셀 분해에는 불필요. 그러나 LAB-008(보간 대 첫 교차) 검증에는 필요. v11↔v12 사이에 내용이 바뀐 유일한 서브셋
-core    CALCE.zip        (미확인)  (미확인)
-core    HNEI.zip         (미확인)  (미확인)
-core    UL_PUR.zip       (미확인)  (미확인)  라벨 JSON 은 UL-PUR_labels.json 으로 개명됨
-core    MICH.zip         (미확인)  (미확인)
-core    RWTH.zip         (미확인)  (미확인)  nominal 덮어쓰기 사례 (→ 1.85)
-core    HUST.zip         (미확인)  (미확인)
-core    Stanford.zip     (미확인)  (미확인)
-core    SDU.zip          (미확인)  (미확인)
-
-# --- full 세트 (3개) -----------------------------------------------------
-full    MATR.zip         (미확인)  (미확인)  라벨 논쟁과 무관
-full    Stanford_2.zip   (미확인)  (미확인)  라벨 논쟁과 무관
-full    ISU_ILCC.zip     (미확인)  (미확인)  라벨 논쟁과 무관
-
+# --------------------------------------------------------------------------
+# 위 표에서 지시문과 다르게 적은 곳 — 관찰한 사실을 적었습니다
+# --------------------------------------------------------------------------
+# ZN-coin.zip 을 당시 지시문 표는 "core / 미보유" 로 적었으나, 이 기계의
+# data/zenodo_v11/ZN-coin.zip 이 실재하고 md5 가 d7e98ad7… 로 일치했습니다
+# (1,009,656,426 바이트). Zn-ion 중도절단 19셀이 여기 들어 있으므로 세트도
+# labels 로 두었습니다. 그때 지시문의 "보유" 표기는 7개였고 디스크에는 8개가
+# 있었습니다 — 갈리는 항목은 ZN-coin.zip 하나였습니다.
+# (이 절은 8개만 보유하던 시점의 기록입니다. 지금은 20/20 보유입니다.)
+#
+# --------------------------------------------------------------------------
+# 실측 용량 (117호, 2026-08-03, v11 20개 전부)
+# --------------------------------------------------------------------------
+#   zip 합계        30,871,539,631 바이트 = 28.75 GiB (= 30.9 GB, Zenodo 표기와 일치)
+#   해제 후 합계    86,447,546,564 바이트 = 80.51 GiB
+#   압축비          약 2.80배
+#   파일 수         pkl 1,382 + json 19 + md 18
+#
+# 위 헤더의 extracted_total_v11 "약 82 GB" 는 배포 안내값입니다. 실측 80.51 GiB
+# 는 86.4 GB 이므로, 안내값이 GiB 를 뜻했다면 근사하고 GB 를 뜻했다면 4 GB 정도
+# 많습니다. 어느 단위인지는 확인되지 않았습니다 (VER-002).
+#
+# --------------------------------------------------------------------------
+# 5-1. v11 ↔ v12 대조 (record 19688272 ↔ 21149533) — 확인 완료
+# --------------------------------------------------------------------------
+# v12 (record 21149533) 와 md5 가 다른 파일은 3개뿐이다. 나머지 17개는 바이트 단위 동일.
+#   XJTU.zip         v11 ec68d223… 396.9MB  →  v12 2de8b797… 1.5GB  (완전판 교체)
+#   Life labels.zip  v11 cd0cc01a… 12.6kB   →  v12 17c78333… 12.8kB (XJTU 라벨 증가분)
+#   READMEs.zip      v11 f1b28ff2… 17.2kB   →  v12 d6768d8a… 17.4kB
+# 따라서 XJTU 를 제외하면 라벨 재현 결과는 두 판본에서 같아야 한다.
+#
+# 주의 — LOCK.md 의 zip 행은 저장소를 세울 때 **v12** md5 로 채워졌습니다.
+# v11 을 보유한 상태로 python run.py check 를 돌리면 Life labels.zip 과
+# READMEs.zip 두 행이 불일치로 나옵니다. 데이터가 손상된 것이 아니라 기준값이
+# 다른 판본인 것입니다. 어느 판본으로 잠글지는 사람이 정합니다 (VER-001).
+#
 # --------------------------------------------------------------------------
 # 라벨 JSON 개명 규칙 (Extract_life_labels.py:230-241)
 # --------------------------------------------------------------------------

@@ -47,6 +47,8 @@ __all__ = [
     "ROUTE_XJTU", "ROUTE_FARASIS", "ROUTE_CALB", "ROUTE_MAIN",
     "ABANDON_THRESHOLD", "EXTRAPOLATE_LOW", "REGRESS_CYCLE_NUM",
     "LAMBDA_DEFAULT", "LAMBDA_CALB", "LABEL_FILE_RENAME",
+    "VARIANTS", "VARIANT_CODE", "VARIANT_NOSPAN", "VARIANT_DISCHARGE_DENOM",
+    "DISCHARGE_DENOM_SUBSETS",
     "route_of", "domain_of", "lambda_of",
     "label_cell", "label_subset",
     "load_distributed_labels", "compare", "rollup",
@@ -67,11 +69,37 @@ ROUTE_XJTU = "XJTU"
 ROUTE_FARASIS = "Farasis"
 ROUTE_CALB = "CALB"
 
+# 변형 세 가지. **``code`` 만이 상위 코드입니다.** 나머지 둘은 무엇이 갈리는지
+# 보려고 한 항만 바꾼 것이며, 어느 쪽이 옳다고 주장하지 않습니다.
+#
+#   code             상위 코드 그대로 — 분모 nominal × span
+#   no_soc_span      span 나눗셈만 제거 — 분모 nominal          (LAB-005)
+#   discharge_denom  ISU_ILCC 에서만 분모를 min(Qd₁, nominal) 로 (LAB-017)
+VARIANT_CODE = "code"
+VARIANT_NOSPAN = "no_soc_span"
+VARIANT_DISCHARGE_DENOM = "discharge_denom"
+VARIANTS = (VARIANT_CODE, VARIANT_NOSPAN, VARIANT_DISCHARGE_DENOM)
+
+# discharge_denom 이 실제로 무언가를 바꾸는 서브셋. 그 밖에서는 code 와
+# **완전히 같아야 합니다** — 이 목록에 없으면 분모 교체를 하지 않습니다.
+DISCHARGE_DENOM_SUBSETS = ("ISU_ILCC",)
+
 # 라벨 JSON 파일명 개명 규칙 (Extract_life_labels.py:230-241)
 LABEL_FILE_RENAME = {
     "UL_PUR": "UL-PUR",
     "ZNcoin": "ZN-coin",
     "NAion": "NA-ion",
+    # ISU_ILCC 는 상위 코드의 개명 분기에 **없습니다.** 상위 코드는
+    # f'{dataset_name}_labels.json' 을 그대로 쓰므로, 배포 파일이
+    # ``ISU-ILCC_labels.json`` 이라는 것은 상위가 dataset_name 을 ``ISU-ILCC``
+    # 로 돌렸다는 뜻입니다. 그런데 배포 zip 의 폴더 이름은 ``ISU_ILCC`` 이고
+    # 셀 파일명은 ``ISU-ILCC_G1C1.pkl`` 입니다 — 폴더만 밑줄, 파일명과 라벨
+    # 파일은 붙임표입니다.
+    #
+    # 이것은 이름 규칙이지 계산 규칙이 아니므로 여기서 맞춥니다. 맞추지 않으면
+    # ISU_ILCC 240셀이 전부 "배포라벨없음" 으로 나오고, 그 표는 발견이 아니라
+    # 버그입니다 (Tongji 의 -# / -- 치환과 같은 종류의 처리입니다).
+    "ISU_ILCC": "ISU-ILCC",
 }
 
 # 서브셋 이름 표기가 갈립니다. 상위 스크립트는 dataset_name 으로 ``NAion``,
@@ -164,15 +192,32 @@ def _fit_predict(soh_values, cycle_numbers, target: float):
 # 본 경로
 # ---------------------------------------------------------------------------
 
-def _label_main(file_name: str, data: dict, *, use_soc_span: bool = True) -> dict:
+def _label_main(file_name: str, data: dict, *, use_soc_span: bool = True,
+                denominator: float | None = None) -> dict:
     """SOH 가 λ 아래로 내려간 첫 사이클 번호.
 
     원본: Extract_life_labels.py:106-165.
+
+    ``denominator`` 는 ``discharge_denom`` 변형 전용입니다. ``None`` 이면 상위
+    코드와 **같은 순서로** 두 번 나눕니다 (``qd / nominal / span``). 한 번에
+    나누도록 묶으면 끝자리가 달라질 수 있어 묶지 않습니다.
     """
     cycle_data = data["cycle_data"]
     nominal = soh_mod.nominal_capacity(file_name, data)
     span = soh_mod.soc_span_main(data) if use_soc_span else 1.0
-    last_soh = soh_mod.cycle_qd(cycle_data[-1]) / nominal / span
+
+    if denominator is None:
+        def _soh(cycle):
+            return soh_mod.cycle_qd(cycle) / nominal / span
+    else:
+        if not math.isfinite(denominator) or denominator <= 0:
+            return {"label": None, "status": "본경로:분모없음(<=0)",
+                    "last_soh": None, "backend": ""}
+
+        def _soh(cycle):
+            return soh_mod.cycle_qd(cycle) / denominator
+
+    last_soh = _soh(cycle_data[-1])
 
     if last_soh >= ABANDON_THRESHOLD:
         # [0.825, inf) — 데이터셋에서 제외된다. 라벨이 만들어지지 않는다.
@@ -183,7 +228,7 @@ def _label_main(file_name: str, data: dict, *, use_soc_span: bool = True) -> dic
         # (0.8, 0.825) — 마지막 20 사이클로 외삽
         n = len(cycle_data)
         numbers = np.array([i + 1 for i in range(n - REGRESS_CYCLE_NUM, n)], dtype=float)
-        sohs = [soh_mod.cycle_qd(c) / nominal / span for c in cycle_data[-REGRESS_CYCLE_NUM:]]
+        sohs = [_soh(c) for c in cycle_data[-REGRESS_CYCLE_NUM:]]
         if len(sohs) != len(numbers):
             # 사이클이 20개 미만이면 상위 코드에서 길이가 어긋납니다.
             # range(n-20, n) 은 n<20 이어도 20개를 만들지만 cycle_data[-20:] 는
@@ -197,7 +242,7 @@ def _label_main(file_name: str, data: dict, *, use_soc_span: bool = True) -> dic
 
     # (-inf, 0.8] — 첫 교차. 사이클 번호가 아니라 **배열 인덱스 + 1** 입니다.
     for index, cycle in enumerate(cycle_data):
-        value = soh_mod.cycle_qd(cycle) / nominal / span
+        value = _soh(cycle)
         if value <= EXTRAPOLATE_LOW:
             return {"label": index + 1, "status": "본경로:첫교차",
                     "last_soh": float(last_soh), "backend": ""}
@@ -304,8 +349,16 @@ def _label_xjtu(file_name: str, data: dict, *, use_soc_span: bool = True) -> dic
 # ---------------------------------------------------------------------------
 
 def label_cell(subset: str, file_name: str, data: dict, *,
-               use_soc_span: bool = True) -> dict:
-    """셀 하나의 라벨을 재현합니다. 경로 판정이 먼저입니다."""
+               use_soc_span: bool = True, variant: str = VARIANT_CODE) -> dict:
+    """셀 하나의 라벨을 재현합니다. 경로 판정이 먼저입니다.
+
+    ``variant`` 는 분모를 무엇으로 쓸지만 고릅니다. 경로 판정·임계값·회귀
+    방향은 변형과 무관하게 같습니다.
+
+    ``discharge_denom`` 은 ``DISCHARGE_DENOM_SUBSETS`` 밖에서는 아무것도 바꾸지
+    않습니다. XJTU 경로에도 적용하지 않습니다 — XJTU 는 애초에 다른 함수를
+    타고 (``XJTU_tools.py``) 분모도 다르게 만듭니다.
+    """
     route = route_of(subset)
 
     if route == ROUTE_FARASIS:
@@ -321,15 +374,21 @@ def label_cell(subset: str, file_name: str, data: dict, *,
     if route == ROUTE_XJTU:
         result = _label_xjtu(file_name, data, use_soc_span=use_soc_span)
     else:
-        result = _label_main(file_name, data, use_soc_span=use_soc_span)
+        denominator = None
+        if (variant == VARIANT_DISCHARGE_DENOM
+                and canonical(subset) in DISCHARGE_DENOM_SUBSETS):
+            denominator = soh_mod.discharge_denominator(file_name, data)
+        result = _label_main(file_name, data, use_soc_span=use_soc_span,
+                             denominator=denominator)
 
     result["route"] = route
+    result["variant"] = variant
     result.setdefault("note", "")
     return result
 
 
 def label_subset(subset: str, dataset_root, *, use_soc_span: bool = True,
-                 limit: int | None = None) -> list:
+                 limit: int | None = None, variant: str = VARIANT_CODE) -> list:
     """서브셋 하나의 전 셀을 재현합니다.
 
     Parameters
@@ -358,11 +417,13 @@ def label_subset(subset: str, dataset_root, *, use_soc_span: bool = True,
     rows = []
     for file_name in files:
         if route in (ROUTE_FARASIS, ROUTE_CALB):
-            result = label_cell(subset, file_name, {}, use_soc_span=use_soc_span)
+            result = label_cell(subset, file_name, {}, use_soc_span=use_soc_span,
+                                variant=variant)
         else:
             with open(directory / file_name, "rb") as f:
                 data = pickle.load(f)
-            result = label_cell(subset, file_name, data, use_soc_span=use_soc_span)
+            result = label_cell(subset, file_name, data, use_soc_span=use_soc_span,
+                                variant=variant)
         rows.append({
             "subset": canonical(subset),
             "domain": domain_of(subset),
