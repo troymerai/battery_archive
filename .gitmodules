@@ -1,0 +1,3 @@
+[submodule "upstream/BatteryMFormer"]
+	path = upstream/BatteryMFormer
+	url = https://github.com/troymerai/BatteryMFormer.git

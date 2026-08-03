@@ -1,0 +1,13 @@
+def _integrate_capacity(current_in_A, time_in_s):
+    current = np.asarray(current_in_A, dtype=float)
+    time_s = np.asarray(time_in_s, dtype=float)
+
+    n = min(len(current), len(time_s))
+    if n == 0:
+        return np.array([]), np.array([])
+
+    current = current[:n]
+    time_s = time_s[:n]
+
+    dt = np.diff(time_s, prepend=time_s[0])
+    dt = np.maximum(dt, 0.0)

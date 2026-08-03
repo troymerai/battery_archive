@@ -1,0 +1,149 @@
+# anchors.yaml — 코드 앵커
+#
+#   python run.py anchors    유효성 확인
+#
+# 행 번호는 상위 갱신 시 썩습니다. 그래서 verify/anchors.py 는 행 번호로
+# 찾지 않고 findings/snippets/<id>.txt 의 원문으로 재탐색합니다.
+# line 은 기준이 아니라 결과입니다.
+#
+# 판정 넷:
+#   유효      원문이 그대로 있고 행 번호도 같다
+#   행이동    원문은 그대로인데 행 번호가 달라졌다 → 아래 line 을 고친다
+#   내용변경  원문이 사라졌으나 비슷한 줄이 있다 → 이 앵커를 인용한 레코드를 다시 본다
+#   소실      비슷한 줄조차 없다 → 이 앵커를 인용한 레코드를 다시 본다
+#
+# sha256 은 스니펫 파일 자체의 해시입니다 (\r 제거 후 UTF-8, sha256).
+# 이것이 어긋나면 상위가 아니라 우리 쪽 스니펫이 고쳐진 것입니다.
+#
+# 스니펫을 새로 뜰 때는 반드시 그 파일 안에서 **유일한** 범위를 고르십시오.
+# 등록 시점에 11개 모두 occurrences=1 을 확인했습니다.
+
+meta:
+  extracted: "2026-08-03"
+  commits:
+    BatteryLife: 9572e47b1d36ecb31fe58f7d2874a7355dbb6fea
+    BatteryML: 2861ae3b8c79938c7fc8e6fe9986b799ca71c7dd
+    BatteryMFormer: febe174032ad4861fa057b9af23f5bcee8a8fb77
+
+anchors:
+
+  - id: EXTRACT_LABELS_ABANDON
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels.py"
+    line: 124
+    line_end: 145
+    snippet_file: EXTRACT_LABELS_ABANDON.txt
+    sha256: c88e274103b78d7ba4ca92c7d36b021381f2d7c9e045bafc44bf7ed7f83ef77e
+    status: 등록
+    what: "폐기 임계 0.825, 외삽 구간 (0.8, 0.825), 회귀 창 20 사이클, 역회귀, λ=0.80 예측"
+    records: [LAB-001, LAB-002, LAB-003]
+
+  - id: EXTRACT_LABELS_CALB_LAMBDA
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels.py"
+    line: 215
+    line_end: 218
+    snippet_file: EXTRACT_LABELS_CALB_LAMBDA.txt
+    sha256: 5155b5a9f2b056b72fe8f5273f7666fa98ff4b1df166c88c9aa5ad25fd3f1519
+    status: 등록
+    what: "CALB 외삽의 predict(np.array([0.9])) — CALB 만 λ=0.9"
+    records: [LAB-004]
+
+  - id: EXTRACT_LABELS_SOC_SPAN
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels.py"
+    line: 117
+    line_end: 121
+    snippet_file: EXTRACT_LABELS_SOC_SPAN.txt
+    sha256: 454085185d5bb1c51e24e286871765bd3a80bf03623e0462d137c7d0d2e97bd4
+    status: 등록
+    what: "SOC span 나눗셈. SOC_interval[1] - [0], 0 이면 1. 부호를 취하지 않음"
+    records: [LAB-005]
+
+  - id: EXTRACT_LABELS_NOMINAL_RWTH
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels.py"
+    line: 111
+    line_end: 116
+    snippet_file: EXTRACT_LABELS_NOMINAL_RWTH.txt
+    sha256: b0ab9bcf208f0900708c4de4e5db695662a03cdc70e0b23d0cee495b9299dd26
+    status: 등록
+    what: "nominal 덮어쓰기 2건 — RWTH 1.85, SNL_18650_NCA_25C_20-80 3.2"
+    records: [LAB-006]
+
+  - id: EXTRACT_LABELS_CELL_EXCEPTION
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels.py"
+    line: 202
+    line_end: 213
+    snippet_file: EXTRACT_LABELS_CELL_EXCEPTION.txt
+    sha256: 3e9e017f699c02da7433be825e4382a89505b46a846de3d34b16c07ec45753e7
+    status: 등록
+    what: "CALB_25_T25-2.pkl 만 회귀 구간을 다르게 잡는 예외 분기. use_extrapolation 도 이 블록"
+    records: [LAB-007]
+
+  - id: EXTRACT_LABELS_XJTU_BRANCH
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels.py"
+    line: 74
+    line_end: 89
+    snippet_file: EXTRACT_LABELS_XJTU_BRANCH.txt
+    sha256: 7739380d4ec6eae7cab669f115cc6f1debee5cd8a5b4a5248c714716c237c650
+    status: 등록
+    what: "XJTU 조기 return. np.isfinite 로 유효 개수를 따로 셈 — NaN 이 정상적으로 섞임"
+    records: [LAB-008, LAB-011]
+
+  - id: EXTRACT_LABELS_FARASIS_BRANCH
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels.py"
+    line: 91
+    line_end: 104
+    snippet_file: EXTRACT_LABELS_FARASIS_BRANCH.txt
+    sha256: 8b81630b279dd8eb9080554560f292385ca94264a63136cd99bc9a0ffb5530a0
+    status: 등록
+    what: "Farasis 조기 return. pkl 을 쓰지 않고 Excel 에서 읽음"
+    records: [LAB-009]
+
+  - id: XJTU_INTERPOLATE
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels_tools/XJTU_tools.py"
+    line: 57
+    line_end: 85
+    snippet_file: XJTU_INTERPOLATE.txt
+    sha256: cda38ac299420cefbc6f6da97ee94886dc0ef100cef4eb93e286898b9e37f05e
+    status: 등록
+    what: "_linear_interpolate_last_descending_x_at_y — 마지막 하강 교차점 보간. 본 경로의 첫 교차와 정반대"
+    records: [LAB-008]
+
+  - id: FARASIS_EXCEL
+    repo: BatteryLife
+    path: "process_scripts/Extract_life_labels_tools/Farasis_tools.py"
+    line: 10
+    line_end: 20
+    snippet_file: FARASIS_EXCEL.txt
+    sha256: d87b5b0d1f245f4684479eb4107735118cfc4d489746a2281098b1a7f19eb692
+    status: 등록
+    what: "FARASIS_LIFE_FILE — datasets/raw/Farasis/number_relationship.xlsx. 배포되지 않음"
+    records: [LAB-009]
+
+  - id: ZNION_NOMINAL_CYCLE10
+    repo: BatteryLife
+    path: "process_scripts/preprocess_ZNion.py"
+    line: 50
+    line_end: 52
+    snippet_file: ZNION_NOMINAL_CYCLE10.txt
+    sha256: 91e5d3d3a6dff79dc87f584543bb3aa99c731ca1a147a361996e19541ffd2ff6
+    status: 등록
+    what: "循环序号 == 10 의 放电容量/mAh 를 공칭용량으로. 부록 A.2 와 일치하는 사례"
+    records: [DAT-001]
+
+  - id: FARASIS_INTEGRATE
+    repo: BatteryLife
+    path: "process_scripts/preprocess_Farasis.py"
+    line: 362
+    line_end: 374
+    snippet_file: FARASIS_INTEGRATE.txt
+    sha256: 62225efb96a90f2c25f25129ab4c649f92048df190d5d552966262466b8c2d8b
+    status: 등록
+    what: "_integrate_capacity — 전 저장소에서 유일한 실제 적분 구현. 나머지는 사이클러 기록 컬럼"
+    records: [DAT-002]

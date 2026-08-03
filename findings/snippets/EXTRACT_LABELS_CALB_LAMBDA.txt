@@ -1,0 +1,4 @@
+                    linear_regressor = LinearRegression()
+                    linear_regressor.fit(tmp_SOHs, tmp_cycle_numbers)
+                    eol = linear_regressor.predict(np.array([0.9]).reshape(-1, 1))[0]
+                    eol = int(eol)

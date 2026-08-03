@@ -1,0 +1,14 @@
+    if dataset_name == 'Farasis':
+        if not os.path.exists(f'{output_path}'):
+            os.makedirs(f'{output_path}')
+        name_lables, abadon_count = extract_farasis_life_labels_from_excel(
+            files,
+        )
+        print(
+            f'Totally {len(name_lables)} Farasis batteries have EFC life labels from Excel | '
+            f'{abadon_count} batteries are excluded.'
+        )
+        print(f'Labels are saved in {output_path}/{dataset_name}_labels.json')
+        with open(f'{output_path}/{dataset_name}_labels.json', 'w') as f:
+            json.dump(name_lables, f)
+        return

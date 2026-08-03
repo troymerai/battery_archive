@@ -1,0 +1,18 @@
+# data/ 가 아니라 data/* 입니다. 디렉터리를 통째로 제외하면 git 이 그 안으로
+# 내려가지 않아 아래 !data/.gitkeep 이 먹지 않고, clone 시 data/ 가 아예
+# 생기지 않습니다.
+data/*
+!data/.gitkeep
+papers/*.pdf
+.build/
+runs/
+.venv-*/
+__pycache__/
+config.env
+experiments/results/*.ckpt
+experiments/results/*.pt
+
+# 부수물
+*.pyc
+.ipynb_checkpoints/
+.jupyter/

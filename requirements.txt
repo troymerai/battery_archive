@@ -1,0 +1,24 @@
+# 라벨 검증 환경 (notebooks 00~03, verify/)
+#
+#   python -m pip install -r requirements.txt
+#
+# run.py 의 check · anchors · claims · data-list · papers 는 이것 없이도
+# 돌아갑니다 (표준 라이브러리만 씁니다). 노트북에서 pkl 을 읽고 라벨을
+# 계산할 때부터 필요합니다.
+#
+# 버전을 여기서 고정하지 않습니다. 실제로 쓴 버전은 LOCK 의 `env repro`
+# 항목이 pip freeze 해시로 잠급니다 (manifests/env_lock/repro.txt).
+# 여기에 == 로 박아두면 두 곳이 어긋났을 때 어느 쪽이 사실인지 모르게 됩니다.
+
+numpy
+pandas
+scikit-learn        # 상위 코드가 LinearRegression 을 씁니다. 없으면 numpy 최소제곱으로 대체되고 끝자리가 달라질 수 있습니다
+jupyterlab
+nbstripout          # 노트북 출력을 지우고 커밋하기 위해
+PyYAML              # 없으면 verify/_minyaml.py 로 대체됩니다 (선택)
+
+# 학습(train/, notebooks/05)은 별도 환경입니다. 상위 저장소의
+# upstream/BatteryLife/requirements.txt 를 쓰십시오. torch · accelerate ·
+# deepspeed · wandb 가 필요하고 GPU 환경에 따라 갈립니다.
+# 그 환경의 pip freeze 는 manifests/env_lock/blife.txt 에 남기고
+# LOCK 의 `env blife` 항목이 잠급니다.

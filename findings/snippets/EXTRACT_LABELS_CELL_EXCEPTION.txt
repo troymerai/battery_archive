@@ -1,0 +1,12 @@
+                if use_extrapolation:
+                    regress_cycle_num = 20
+                    if file_name != 'CALB_25_T25-2.pkl':
+                        tmp_SOHs = total_SOHs[-regress_cycle_num:].reshape(-1, 1)
+                        tmp_cycle_numbers = total_cycle_numbers[-regress_cycle_num:]
+                    else:
+                        # the last several cycles have sudden capacity rise
+                        for tmp_i, soh in enumerate(total_SOHs):
+                            if soh <= 0.925:
+                                tmp_SOHs = total_SOHs[tmp_i - 19:tmp_i + 1].reshape(-1, 1)
+                                tmp_cycle_numbers = total_cycle_numbers[tmp_i - 19:tmp_i + 1]
+                                break

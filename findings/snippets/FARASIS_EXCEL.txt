@@ -1,0 +1,11 @@
+FARASIS_LIFE_FILE = os.path.normpath(
+    os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        '..',
+        '..',
+        'datasets',
+        'raw',
+        'Farasis',
+        'number_relationship.xlsx',
+    )
+)

@@ -1,0 +1,22 @@
+            if last_cycle_soh >= 0.825:
+                # [0.825, inf)
+                # exclude this cell from the dataset
+                abadon_count += 1
+                continue
+            elif last_cycle_soh > 0.8:
+                # (0.8, 0.825)
+                # Linear Regression based on the last 20 cycles to obtain the cycle life label
+                regress_cycle_num = 20
+                total_SOHs = []
+                total_cycle_numbers = np.array([i + 1 for i in range(len(cycle_data) - regress_cycle_num, len(cycle_data))])
+                for correct_cycle_index, sub_cycle_data in enumerate(cycle_data[-regress_cycle_num:]):
+                    Qd = max(sub_cycle_data['discharge_capacity_in_Ah'])
+                    cycle_number = sub_cycle_data['cycle_number']
+                    soh = Qd / nominal_capacity / SOC_interval
+                    total_SOHs.append(soh)
+
+                total_SOHs = np.array(total_SOHs).reshape(-1, 1)
+                linear_regressor = LinearRegression()
+                linear_regressor.fit(total_SOHs, total_cycle_numbers)
+                eol = linear_regressor.predict(np.array([0.80]).reshape(-1, 1))[0]
+                eol = int(eol)

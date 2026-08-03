@@ -1,0 +1,85 @@
+# data_md5.txt — BatteryLife_Processed 배포 파일 목록과 md5
+#
+# 출처: Zenodo record 21149533 (BatteryLife_Processed v12, 인증 불필요)
+#       https://zenodo.org/records/21149533
+#
+# 이 파일은 목록일 뿐입니다. 다운로드는 사람이 합니다.
+#   python run.py data-list      받을 것 확인
+#
+# --------------------------------------------------------------------------
+# 용량 — 반드시 두 숫자를 따로 적으십시오
+# --------------------------------------------------------------------------
+# pkl 이 부동소수점 시계열이라 zip 압축률이 높습니다. 다운로드 용량과
+# 압축 해제 후 디스크 소요가 크게 갈립니다. 조원이 디스크를 잘못 잡지
+# 않도록 둘 다 기록합니다.
+#
+#   download_total_v12   = (미확인)   ← Zenodo Files 표의 크기 합
+#   extracted_total_v12  = (미확인)   ← 해제 후 du -sh
+#   download_total_v11   = (미확인)
+#   extracted_total_v11  = (미확인)
+#
+# "80 GB" 라는 보고가 있으나 출처가 확인되지 않았습니다. 해제 후 크기인지,
+# HuggingFace 전체인지, raw 합산인지 불명입니다 (findings/registry.yaml
+# VER-002). 확인 전까지 (미확인) 으로 둡니다.
+#
+# 확인 절차 (다운로드 없이 됩니다):
+#   1. zenodo.org/records/21149533 → Files 표에서 파일별 크기·md5
+#   2. 오른쪽 Versions 패널 → v11 레코드 → 같은 표
+#   3. 두 목록의 md5 대조 → registry.yaml 의 VER-001 슬롯을 채움
+#   4. 해제 후 du -sh 결과를 위 extracted_total_* 에 기록
+#
+# --------------------------------------------------------------------------
+# 세트
+# --------------------------------------------------------------------------
+#   labels  라벨 검증에 필요한 최소 집합. 첫 태그 범위는 이것으로 충분.
+#           중도절단 77셀 전체와 CALB λ=90% 문제를 전부 덮습니다.
+#   core    라벨 논쟁에 관련되나 필수는 아닌 것
+#   full    라벨 논쟁과 무관한 것
+#
+# 형식: <set> <file> <md5> <download_size> <note>
+# md5 가 (미확인) 인 항목은 Zenodo Files 표에서 옮겨 적으십시오.
+
+# --- labels 세트 (8개) ---------------------------------------------------
+labels  Life labels.zip  17c7833302b85f475a81b8d3f8614566  (미확인)  대조 기준. 폴더명에 공백 있음 — pathlib 로 다룰 것
+labels  READMEs.zip      d6768d8a185cdf60c11bff4a4be0f9e3  (미확인)  서브셋 설명
+labels  CALB.zip         2b1006e96e0ca42765a732060f964687  (미확인)  λ=90% 도달 1셀 문제. 라벨 자체는 외부 Excel 의존 → 재현불가
+labels  MICH_EXP.zip     e267051a90f0fc02f8e6701b9f3ecc58  (미확인)  Li-ion 절단 6셀
+labels  SNL.zip          900a5bb283ffb0b3255da618118510b7  (미확인)  Li-ion 절단 9셀 + nominal 덮어쓰기 사례(SNL_18650_NCA_25C_20-80 → 3.2)
+labels  NA-ion.zip       bf0a03ac84c74f87a02e203cfc1f9ebf  (미확인)  Na-ion 절단 21셀
+labels  ZN-coin.zip      d7e98ad70a077ac8f44d5ff045befc73  (미확인)  Zn-ion 절단 19셀 + SOH>1 발생
+labels  Tongji.zip       432b52d30d655c4c45c6fc6a414dd443  (미확인)  Li-ion 절단 22셀
+
+# --- core 세트 (9개) -----------------------------------------------------
+core    XJTU.zip         (미확인)  (미확인)  중도절단 77셀 분해에는 불필요. 그러나 LAB-008(보간 대 첫 교차) 검증에는 필요. v11↔v12 사이에 내용이 바뀐 유일한 서브셋
+core    CALCE.zip        (미확인)  (미확인)
+core    HNEI.zip         (미확인)  (미확인)
+core    UL_PUR.zip       (미확인)  (미확인)  라벨 JSON 은 UL-PUR_labels.json 으로 개명됨
+core    MICH.zip         (미확인)  (미확인)
+core    RWTH.zip         (미확인)  (미확인)  nominal 덮어쓰기 사례 (→ 1.85)
+core    HUST.zip         (미확인)  (미확인)
+core    Stanford.zip     (미확인)  (미확인)
+core    SDU.zip          (미확인)  (미확인)
+
+# --- full 세트 (3개) -----------------------------------------------------
+full    MATR.zip         (미확인)  (미확인)  라벨 논쟁과 무관
+full    Stanford_2.zip   (미확인)  (미확인)  라벨 논쟁과 무관
+full    ISU_ILCC.zip     (미확인)  (미확인)  라벨 논쟁과 무관
+
+# --------------------------------------------------------------------------
+# 라벨 JSON 개명 규칙 (Extract_life_labels.py:230-241)
+# --------------------------------------------------------------------------
+#   UL_PUR  → UL-PUR_labels.json
+#   ZNcoin  → ZN-coin_labels.json
+#   NAion   → NA-ion_labels.json
+#   그 외    → <dataset_name>_labels.json
+#
+# --------------------------------------------------------------------------
+# HuggingFace (별도)
+# --------------------------------------------------------------------------
+# BatteryMFormer 재현에는 processed_SOH/ 가 필요하고, 이것은 Zenodo zip 에
+# 없습니다. HuggingFace 로만 받습니다.
+#
+#   Battery-Life/BatteryLife_Processed  --revision v11
+#
+# 게이트 저장소입니다. 로그인 · 조건 동의 · 토큰이 필요합니다.
+# 이 하니스는 HuggingFace 에 접근하지 않습니다. 사람이 직접 받으십시오.

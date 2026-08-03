@@ -1,0 +1,13 @@
+# 줄바꿈을 LF 로 고정한다. Windows 작업 트리에서도 LF 다.
+# core.autocrlf 에 맡기면 OS 마다 작업 트리 바이트가 달라져 LOCK 해시가 어긋난다.
+* text=auto eol=lf
+
+*.bat  text eol=crlf
+*.ps1  text eol=crlf
+
+*.png  binary
+*.pdf  binary
+*.pkl  binary
+*.zip  binary
+
+*.ipynb text eol=lf

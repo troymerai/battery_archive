@@ -1,0 +1,16 @@
+    if dataset_name == 'XJTU':
+        if not os.path.exists(f'{output_path}'):
+            os.makedirs(f'{output_path}')
+        name_lables = extract_xjtu_life_labels(
+            files,
+            dataset_path,
+        )
+        valid_count = sum(1 for value in name_lables.values() if np.isfinite(value))
+        print(
+            f'XJTU labels extracted for {len(name_lables)} batteries | '
+            f'80% labels: {valid_count}'
+        )
+        print(f'Labels are saved in {output_path}/{dataset_name}_labels.json')
+        with open(f'{output_path}/{dataset_name}_labels.json', 'w') as f:
+            json.dump(name_lables, f)
+        return

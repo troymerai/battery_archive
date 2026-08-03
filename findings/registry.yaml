@@ -1,0 +1,472 @@
+# registry.yaml — findings 레코드
+#
+# 형식과 판정 유도 규칙은 findings/SCHEMA.md 를 보십시오.
+#
+#   python run.py claims    검증 → findings/PAPER_CODE_MAP.md 재생성
+#
+# verdict 를 손으로 적지 마십시오. render.py 가 슬롯에서 유도합니다.
+# 위치 필드는 항상 따옴표로 감싸십시오 ("10:30" 이 시각으로 읽히는 함정).
+#
+# 슬롯 상태 5가지: 미조사 / 확인 / 부재확인 / 조사했으나불명 / 구조적불가
+# 아래 레코드는 **씨앗이지 완성 목록이 아닙니다.** 특히 META- 계열은
+# notebooks/01_pkl_structure.ipynb 의 재집계 결과를 보고 확정합니다.
+
+meta:
+  created: "2026-08-03"
+  created_by: CC
+  upstream:
+    BatteryML: 2861ae3b8c79938c7fc8e6fe9986b799ca71c7dd
+    BatteryLife: 9572e47b1d36ecb31fe58f7d2874a7355dbb6fea
+    BatteryMFormer: febe174032ad4861fa057b9af23f5bcee8a8fb77
+  note: "code 슬롯의 locus 는 위 커밋 기준입니다. 상위가 갱신되면 python run.py anchors 로 먼저 확인하십시오."
+
+records:
+
+  # ------------------------------------------------------------------
+  # LAB — 라벨 생성 규칙
+  # ------------------------------------------------------------------
+
+  - id: LAB-001
+    question: "폐기 임계 0.825 의 근거"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py:124"
+      value: "last_cycle_soh >= 0.825 이면 셀을 데이터셋에서 제외"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_ABANDON]
+    note: "0.8 이 EOL 인데 왜 0.825 에서 자르는지가 쟁점. 0.025 라는 여유폭의 출처를 논문에서 찾아야 합니다."
+
+  - id: LAB-002
+    question: "외삽 창 20 사이클의 근거"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py:132"
+      value: "regress_cycle_num = 20"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_ABANDON]
+    note: "본 경로는 사이클이 20개 미만인 셀에서 길이가 어긋납니다 (range(n-20, n) 은 항상 20개, cycle_data[-20:] 는 n개). XJTU 경로는 min(20, len) 으로 잘라 쓰므로 어긋나지 않습니다. verify/labels.py 가 이 경우를 본경로:외삽불가 로 표시합니다."
+
+  - id: LAB-003
+    question: "외삽이 SOH→cycle 역회귀인 이유"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py:143"
+      value: "fit(total_SOHs, total_cycle_numbers) — SOH 를 설명변수로 둠"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_ABANDON]
+    note: "통상적인 방향(cycle→SOH)의 반대입니다. 잔차를 어느 축에서 최소화하는지가 달라 예측값이 갈립니다. XJTU_tools 의 꼬리 외삽도 같은 방향입니다."
+
+  - id: LAB-004
+    question: "CALB λ=0.9 의 근거"
+    paper:
+      status: 확인
+      locus: "(미확정) 논문에 λ 설정 서술이 있음 — 절·쪽 확정 필요"
+      value: ""
+      searched: "초기 조사에서 서술의 존재만 확인. 정확한 위치를 다시 잡아야 함"
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py:187,217"
+      value: "CALB 만 0.9, 나머지는 0.8"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_CALB_LAMBDA]
+    note: "초기 조사에서 '코드 전용' 으로 오판했던 항목. 논문에 서술이 있음. 위치 미확정이므로 판정 보류."
+
+  - id: LAB-005
+    question: "SOC span 나눗셈의 타당성"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py:117-121"
+      value: "soh = Qd / nominal / (SOC_interval[1] - SOC_interval[0]), 0 이면 1"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_SOC_SPAN]
+    note: "랩미팅 미해결. 부분 구간만 순환한 셀의 SOH 를 전구간 기준으로 되돌리려는 보정으로 보이나 근거 미확인. 본 경로는 부호를 취하지 않아 interval 이 역순이면 SOH 부호가 뒤집힙니다 (XJTU 경로는 abs). verify/soh.py 가 use_soc_span=False 변형을 제공하니 두 결과를 나란히 보십시오."
+
+  - id: LAB-006
+    question: "nominal 상수 덮어쓰기 2건의 근거"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py:111-114"
+      value: "RWTH → 1.85, SNL_18650_NCA_25C_20-80 → 3.2"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_NOMINAL_RWTH]
+    note: "pkl 의 nominal_capacity_in_Ah 를 무시하고 파일명 접두사로 덮어씁니다. 왜 그 두 건만인지, 그 값이 어디서 왔는지가 쟁점. SOH 전체가 이 값으로 나뉘므로 라벨에 직접 영향합니다."
+
+  - id: LAB-007
+    question: "CALB_25_T25-2.pkl 예외 분기의 근거"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py:204-213"
+      value: "이 셀만 마지막 20 사이클 대신 SOH<=0.925 도달 지점 앞 20 사이클로 회귀"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_CELL_EXCEPTION]
+    note: "코드 주석은 the last several cycles have sudden capacity rise 라고만 적혀 있습니다. 같은 블록에 CALB_35_B229 의 696번 사이클 건너뛰기(:191-193)와 use_extrapolation 변수가 있는데, 후자는 min(SOH)>=0.925 이면서 EOL 미도달인 셀에서 이전 반복의 값이 남아 쓰일 수 있는 구조입니다. CALB 는 어차피 재현불가라 실행으로는 확인되지 않습니다."
+
+  - id: LAB-008
+    question: "XJTU 가 첫 교차가 아니라 선형 보간을 쓰는 근거"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels_tools/XJTU_tools.py:57-85"
+      value: "마지막 하강 교차점을 선형 보간 (max(crossings)), 실패 시 0.8<last<0.825 이면 꼬리 20사이클 외삽"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_XJTU_BRANCH, XJTU_INTERPOLATE]
+    note: "본 경로는 첫 교차, XJTU 는 마지막 교차입니다. 정반대입니다. 용량이 되살아난 셀에서 라벨 값이 크게 갈립니다. XJTU.zip 이 있어야 검증됩니다 (data_md5.txt 의 core 세트)."
+
+  - id: LAB-009
+    question: "Farasis 라벨 단위가 EFC 인 근거와 다른 서브셋과의 비교 가능성"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels_tools/Farasis_tools.py:37-53"
+      value: "외부 Excel 의 efc life 열을 그대로 읽음. 사이클 번호가 아니라 EFC"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_FARASIS_BRANCH, FARASIS_EXCEL]
+    note: "단위가 다르면 도메인 간 비교가 성립하는지 자체가 쟁점입니다. 같은 파일의 다른 함수 extract_farasis_life_labels 는 90% SOH EFC 를 계산하지만, 실제로 호출되는 것은 Excel 을 읽는 쪽입니다 (Extract_life_labels.py:94)."
+
+  - id: LAB-010
+    question: "논문에 실린 라벨과 현재 스크립트가 같은가"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 확인
+      locus: "BatteryLife_Processed v11 릴리스 노트"
+      value: "CALB 수명 라벨 재계산, 새 계산 스크립트를 GitHub 에 업데이트"
+      checked_by: ""
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py"
+      value: "현 스크립트 (커밋 9572e47)"
+      checked_by: CC
+    anchors: []
+    note: "불일치 정황. 릴리스 노트가 라벨 재계산을 명시하므로 논문 시점 라벨과 현 스크립트 산출이 다를 수 있습니다. 다만 upstream_doc 은 판정에 들어가지 않으므로 판정은 보류입니다 — 논문에 실린 라벨 값을 직접 확인해야 확정됩니다. 이 레코드가 이 저장소 전체의 전제입니다: 논문은 정답지가 아니라 비교 대상입니다."
+
+  - id: LAB-011
+    question: "XJTU 라벨의 NaN 이 배포 라벨 파일에도 그대로 들어 있는가"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/Extract_life_labels.py:81-88"
+      value: "np.isfinite 로 유효 개수를 따로 세고 80% labels 로 출력. NaN 을 그대로 json.dump"
+      checked_by: CC
+    anchors: [EXTRACT_LABELS_XJTU_BRANCH]
+    note: "XJTU_labels.json 을 열어보면 즉시 확인됩니다. 표준 json 은 NaN 을 쓰지만 엄밀한 JSON 이 아니라, 다른 파서에서 깨질 수 있습니다. NaN 은 오류가 아니라 라벨없음(비유한) 입니다."
+
+  # ------------------------------------------------------------------
+  # DAT — 데이터 전처리 · 수식
+  # ------------------------------------------------------------------
+
+  - id: DAT-001
+    question: "Zn-ion 공칭용량 = 10번째 사이클 방전용량"
+    paper:
+      status: 확인
+      locus: "부록 A.2 (쪽 확정 필요)"
+      value: "10번째 사이클의 방전용량을 공칭용량으로 쓴다"
+      searched: "부록 A.2"
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/preprocess_ZNion.py:52"
+      value: "10번째 사이클의 방전용량을 공칭용량으로 쓴다"
+      checked_by: CC
+    anchors: [ZNION_NOMINAL_CYCLE10]
+    note: "일치 사례. 코드는 循环序号 == 10 행의 放电容量/mAh 에 0.001 을 곱해 Ah 로 씁니다. 부록에만 있고 본문에는 없습니다 — 부록을 반드시 보라는 근거."
+
+  - id: DAT-002
+    question: "논문 식(1) Qi = ∫|I|dt 를 코드가 적분하는가"
+    paper:
+      status: 확인
+      locus: "식 (1) (절·쪽 확정 필요)"
+      value: "Qi = ∫|I|dt 로 정의 — 전류를 시간 적분"
+      searched: "본문 수식 절"
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "BatteryLife/process_scripts/preprocess_Farasis.py:362"
+      value: "실제 적분은 Farasis 전처리에만 있음. 나머지 서브셋은 사이클러 기록 컬럼을 그대로 사용"
+      checked_by: CC
+    anchors: [FARASIS_INTEGRATE]
+    note: "불일치 사례. 식이 전 서브셋에 적용된 것처럼 읽히지만 적분 구현은 한 곳뿐입니다. 사이클러가 기록한 용량 컬럼은 기기 내부 적산이라 값이 반드시 같지는 않습니다. 어느 서브셋이 어느 방식인지 셀 단위로 짚어야 합니다."
+
+  - id: DAT-003
+    question: "논문 990셀 / 59화학계 / 421프로토콜 대 배포 데이터 재집계"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "META- 계열 전체의 상위 항목입니다. 01 노트북의 재집계(findings/recount.json)가 나온 뒤 논문 Table 1 과 대조합니다. 순서를 뒤집지 마십시오."
+
+  # ------------------------------------------------------------------
+  # META — 데이터셋 메타데이터 집계
+  #
+  # 씨앗 6개는 출발점이지 완성 목록이 아닙니다.
+  # 01 노트북 재집계에서 나온 불일치를 여기에 추가하십시오.
+  # ------------------------------------------------------------------
+
+  - id: META-001
+    question: "화학계 59종 — 어느 pkl 필드 조합으로 세는가"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "cathode_material + anode_material + electrolyte_material 조합으로 추정. 01 노트북이 이 조합의 고유값을 셉니다. 조합 방식이 다르면 종수가 달라지므로, 59 를 맞추려 조합을 고르지 마십시오 — 세고 나서 갈리면 갈린다고 적습니다."
+
+  - id: META-002
+    question: "포맷 8종"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "form_factor 고유값을 세면 즉시 나옵니다. META- 중 가장 빨리 닫히는 항목."
+
+  - id: META-003
+    question: "운전온도 9종"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "temperature_in_C 는 셀마다 없을 수 있습니다. 필드가 없는 셀의 온도가 어디서 오는지 불명 — 파일명이나 서브셋 README 일 수 있습니다. 01 노트북이 보유 셀 비율을 냅니다. 못 찾으면 조사했으나불명 입니다."
+
+  - id: META-004
+    question: "프로토콜 421종"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "charge_protocol 이 다단이면 값이 multi 라 데이터만으로 구별되지 않습니다. 01 노트북이 multi 비율을 냅니다. 부록에 프로토콜 목록이 없으면 이 항목은 조사했으나불명 으로 닫힙니다 — 그것이 정상 결말입니다."
+
+  - id: META-005
+    question: "990셀 / 99,000샘플"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "배포 데이터 재집계와 대조합니다. 샘플 수는 셀 수와 정의가 다릅니다 — 어떤 단위로 세는지(사이클 창? 셀당 고정 개수?)를 먼저 확정해야 합니다."
+
+  - id: META-006
+    question: "4도메인 분할 기준 (Li / Zn / Na / CALB)"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "CALB 만 화학계가 아니라 제조사 이름입니다. 나머지 셋과 분류 축이 다른데 왜 같은 층위에 놓이는지가 쟁점. verify/labels.py 의 _DOMAIN 은 파일 이름에서 읽어낸 추정일 뿐이며, 근거를 찾기 전까지 우리가 이렇게 묶었다 이상의 뜻이 없습니다."
+
+  # ------------------------------------------------------------------
+  # REP — 저장소 간 관계
+  # ------------------------------------------------------------------
+
+  - id: REP-001
+    question: "BatteryLife 와 BatteryMFormer 의 동명 파일 13개가 전부 다른가"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 확인
+      locus: "upstream/BatteryLife 대 upstream/BatteryMFormer 동명 파일 비교"
+      value: "동명 파일 13개가 전부 상이"
+      checked_by: ""
+    anchors: []
+    note: "병합 불가의 근거입니다. 두 저장소를 하나로 합치거나 한쪽 코드를 다른 쪽에 끼워 쓰면 안 됩니다. 재검증 방법은 04 노트북에 있습니다. 어느 13개인지 파일 목록을 code 슬롯에 채워 넣으십시오."
+
+  # ------------------------------------------------------------------
+  # VER — 배포 판본
+  # ------------------------------------------------------------------
+
+  - id: VER-001
+    question: "v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "다운로드 없이 확인됩니다. zenodo.org/records/21149533 의 Files 표와 Versions 패널의 v11 레코드에서 파일별 md5 를 대조하면 0바이트로 확인됩니다. manifests/data_md5.txt 의 5-1 절 절차."
+
+  - id: VER-002
+    question: "v11 과 v12 각각의 다운로드 용량과 해제 후 디스크 소요"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "80 GB 라는 보고가 있으나 출처 미상입니다 (해제 후 크기 / HuggingFace 전체 / raw 합산 중 하나로 추정). 두 숫자를 따로 재서 manifests/data_md5.txt 헤더에 적으십시오. pkl 이 부동소수점 시계열이라 압축률이 높아 두 숫자가 크게 갈립니다."

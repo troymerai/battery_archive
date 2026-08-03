@@ -1,0 +1,11 @@
+# 상위 저장소 커밋 고정
+# 형식: <name> <commit> <acquisition> <date> <url>
+# 기록 시점: 2026-08-03
+# 사람이 읽는 설명은 upstream/PROVENANCE.md 를 보십시오.
+
+BatteryML      2861ae3b8c79938c7fc8e6fe9986b799ca71c7dd  vendored   2024-12-18  https://github.com/microsoft/BatteryML
+BatteryLife    9572e47b1d36ecb31fe58f7d2874a7355dbb6fea  vendored   2026-07-06  https://github.com/Ruifeng-Tan/BatteryLife
+BatteryMFormer febe174032ad4861fa057b9af23f5bcee8a8fb77  submodule  2026-06-19  https://github.com/troymerai/BatteryMFormer
+
+# BatteryMFormer 는 fork 를 참조합니다. 저자 저장소는
+# https://github.com/Ruifeng-Tan/BatteryMFormer 이며 LICENSE 가 없습니다.

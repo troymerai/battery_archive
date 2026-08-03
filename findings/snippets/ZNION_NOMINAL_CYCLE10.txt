@@ -1,0 +1,3 @@
+                    df = pd.read_excel(path / cell, sheet_name='记录')
+                    capacity_records_df = pd.read_excel(path / cell, sheet_name='循环')
+                    capacity = capacity_records_df.loc[capacity_records_df['循环序号'] == 10, '放电容量/mAh'].values[0] * 0.001

@@ -1,0 +1,44 @@
+{
+  "_comment": [
+    "01_pkl_structure.ipynb 가 덮어씁니다. 지금은 빈 틀입니다.",
+    "META- 레코드의 code 슬롯 근거가 되는 파일입니다.",
+    "노트북이 verify.write_json(..., normalized=True) 로 씁니다 —",
+    "LOCK 의 해시 대상과 같은 바이트가 되도록.",
+    "손으로 고치지 마십시오. 고치면 recount 가 데이터의 사실이 아니라",
+    "누군가의 주장이 됩니다."
+  ],
+  "status": "미집계",
+  "generated": null,
+  "dataset_root": null,
+  "totals": {
+    "subsets": null,
+    "cells": null,
+    "cycles": null
+  },
+  "by_subset": {},
+  "form_factor": {},
+  "chemistry_triplet": {},
+  "nominal_capacity_in_Ah": {
+    "unique_count": null,
+    "histogram": {}
+  },
+  "soc_interval": {},
+  "charge_protocol": {
+    "unique_count": null,
+    "multi_ratio": null,
+    "values": {}
+  },
+  "discharge_protocol": {
+    "unique_count": null,
+    "multi_ratio": null,
+    "values": {}
+  },
+  "temperature_in_C": {
+    "cells_with_field": null,
+    "cells_total": null,
+    "ratio": null,
+    "values": {}
+  },
+  "missing_fields": {},
+  "notes": []
+}
