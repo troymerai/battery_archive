@@ -5,7 +5,7 @@
 
 # PAPER ↔ CODE MAP
 
-레코드 32개. `findings/registry.yaml` 에서 생성했습니다.
+레코드 42개. `findings/registry.yaml` 에서 생성했습니다.
 
 판정은 슬롯에서 유도한 것입니다. 판정을 바꾸려면 슬롯을 고치십시오.
 유도 규칙은 `findings/SCHEMA.md` 에 있습니다.
@@ -15,9 +15,9 @@
 | 판정 | 개수 | 뜻 |
 |---|---|---|
 | 일치 | 1 | 논문과 코드가 같다 |
-| 불일치 | 2 | 논문과 코드가 다르다 — 발견 |
+| 불일치 | 3 | 논문과 코드가 다르다 — 발견 |
 | 코드전용 | 1 | 논문에서 찾아봤고 없었다 |
-| 미정 | 28 | 아직 판정할 수 없다 (대개 논문 미조사) |
+| 미정 | 37 | 아직 판정할 수 없다 (대개 논문 미조사) |
 
 ## 레코드
 
@@ -53,6 +53,16 @@
 | `META-008` | NA-ion 셀별 C-rate 가 pkl 메타에 있는가 | 미조사 | 확인 · `READMEs/NA-ion_README.md 의 Charge/discharge protocols 표` | 부재확인 | **미정** |
 | `META-009` | NA-ion README 본문의 25도 단일 서술과 표의 온도가 맞는가 | 미조사 | 확인 · `READMEs/NA-ion_README.md 본문 3행 대 Charge/discharge protocols 표` | 부재확인 | **미정** |
 | `REP-001` | BatteryLife 와 BatteryMFormer 의 동명 파일 13개가 전부 다른가 | 미조사 | 미조사 | 확인 · `upstream/BatteryLife 대 upstream/BatteryMFormer 동명 파일 비교` | **미정** |
+| `TRN-001` | deepspeed 가 학습에 필수인가 | 미조사 | 부재확인 | 확인 · `BatteryLife/run_main.py:136-137` | **미정** |
+| `TRN-002` | wandb 가 학습에 필수인가 | 미조사 | 부재확인 | 확인 · `BatteryLife/run_main.py:13, :224-231` | **미정** |
+| `TRN-003` | Transformer 실행 스크립트가 배포되는가 | 미조사 | 부재확인 | 확인 · `BatteryLife/models/Transformer.py` | **미정** |
+| `TRN-004` | SDU 와 Stanford_2 가 학습 데이터셋 분기에 쓰이는가 | 미조사 | 미조사 | 부재확인 | **미정** |
+| `TRN-005` | --dataset 인자명과 데이터 디렉터리명이 어긋나는가 | 미조사 | 미조사 | 확인 · `BatteryLife/data_provider/data_loader.py:192-203 대 :415` | **미정** |
+| `TRN-006` | UL_PUR 단독 분기로 학습·검증이 성립하는가 | 미조사 | 미조사 | 확인 · `BatteryLife/data_provider/data_split_recorder.py:27-29` | **미정** |
+| `TRN-007` | 셸 스크립트의 하이퍼파라미터가 Selected_hyperparameters.md 와 일치하는가 | 미조사 | 확인 · `BatteryLife/assets/Selected_hyperparameters.md:13-62` | 확인 · `BatteryLife/train_eval_scripts/CPMLP.sh, CPTransformer.sh, MLP.sh` | **미정** |
+| `TRN-008` | Transformer 가 이 학습 루프에서 실행 가능한가 | 미조사 | 미조사 | 확인 · `BatteryLife/models/Transformer.py:71 및 :113 대 run_main.py:102 및 :322` | **미정** |
+| `TRN-009` | Li-ion(MIX_large) 열의 3회 반복을 어떻게 얻는가 | 확인 · `논문 4.1절` | 확인 · `BatteryLife/assets/Selected_hyperparameters.md:13-62` | 확인 · `BatteryLife/data_provider/data_split_recorder.py 속성 목록 대 data_loader.py:164-203` | **불일치** |
+| `TRN-010` | MIX_large 를 배포 데이터로 로딩할 수 있는가 | 미조사 | 미조사 | 확인 · `BatteryLife/data_provider/data_loader.py:443 대 :487` | **미정** |
 | `VER-001` | v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가 | 미조사 | 확인 · `Zenodo record 19688272 (v11) 과 21149533 (v12) 의 Files 표` | 확인 · `manifests/data_md5.txt (v11 20개 전체) + data/zenodo_v11/ 실측 md5 8개` | **미정** |
 | `VER-002` | v11 과 v12 각각의 다운로드 용량과 해제 후 디스크 소요 | 미조사 | 확인 · `Zenodo record 19688272 Files 표` | 확인 · `data/zenodo_v11/ 과 data/extracted/ 실측 (117호, 2026-08-03, v11 20개 전부)` | **미정** |
 
@@ -429,6 +439,141 @@
     - locus: upstream/BatteryLife 대 upstream/BatteryMFormer 동명 파일 비교
     - value: 동명 파일 13개가 전부 상이
 - **note** — 병합 불가의 근거입니다. 두 저장소를 하나로 합치거나 한쪽 코드를 다른 쪽에 끼워 쓰면 안 됩니다. 재검증 방법은 04 노트북에 있습니다. 어느 13개인지 파일 목록을 code 슬롯에 채워 넣으십시오.
+
+### `TRN-001` — deepspeed 가 학습에 필수인가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 부재확인
+    - searched: BatteryLife/README.md, assets/Model_training.md, requirements.txt(deepspeed==0.15.0 줄만 있고 필수/선택 언급 없음), train_eval_scripts/ 16개 스크립트 전부
+    - checked_by: CC
+- **code** — 확인
+    - locus: BatteryLife/run_main.py:136-137
+    - value: DeepSpeedPlugin(hf_ds_config=ds_config_zero2_baseline.json) 을 조건 분기 없이 만들어 Accelerator 에 넘깁니다. accelerate 0.29.3 은 plugin 이 주어지면 deepspeed 미설치 시 ImportError 로 종료합니다(accelerator.py:294-296). 선택이 아니라 필수입니다
+    - checked_by: CC
+- **note** — 상위 문서 어디에도 deepspeed 가 필수라는 서술이 없습니다. Windows 는 PyPI 휠이 없어 소스 빌드만 가능한데 CUDA Toolkit(nvcc)과 MSVC 가 필요합니다. 117호에는 둘 다 없어 설치 실패를 실측했습니다 - pip install deepspeed 는 Unable to pre-compile ops without torch installed, --no-build-isolation 은 MissingCUDAException CUDA_HOME does not exist. .build/batterylife/run_main_nodeepspeed.py 로 두 줄을 치환해 우회했으며 이는 ZeRO stage-2 없이 도는 것이라 학습 조건이 다릅니다. 논문이 이 설정을 어떻게 기술하는지는 아직 보지 않았습니다.
+
+### `TRN-002` — wandb 가 학습에 필수인가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 부재확인
+    - searched: BatteryLife/requirements.txt 20줄 전부, envs/blife-win.txt, assets/Model_training.md, BatteryLife/README.md
+    - checked_by: CC
+- **code** — 확인
+    - locus: BatteryLife/run_main.py:13, :224-231
+    - value: import wandb 가 모듈 최상단에 있고 wandb.init 이 무조건 호출됩니다. 그런데 wandb 는 어느 requirements 목록에도 없습니다
+    - checked_by: CC
+- **note** — 선언되지 않은 필수 의존성입니다. 없으면 ModuleNotFoundError 로 한 줄도 돌지 않습니다. 2026-08-04 에 pip install -c envs/constraints.txt wandb 로 추가했고(0.28.1) torch 는 변동 없습니다. 로그인하지 않은 기계에서 wandb.init 이 멈추므로 생성 스크립트에 WANDB_MODE=disabled 를 넣었습니다. 지표는 stdout 에도 찍히므로 train/collect.py 가 그것을 읽습니다.
+
+### `TRN-003` — Transformer 실행 스크립트가 배포되는가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 부재확인
+    - searched: BatteryLife/train_eval_scripts/ 16개 파일 전부(Autoformer CNN CPBiGRU CPBiLSTM CPGRU CPLSTM CPMLP CPTransformer DLinear MLP MICN PatchTST iTransformer evaluate finetune_script domain_adaptation_script), assets/Selected_hyperparameters.md
+    - checked_by: CC
+- **code** — 확인
+    - locus: BatteryLife/models/Transformer.py
+    - value: 모델 구현 파일은 존재하고 run_main.py:152-153 에 --model Transformer 분기도 있습니다. 실행 스크립트 Transformer.sh 만 없습니다
+    - checked_by: CC
+- **note** — Table 3 의 Transformer 행이 네 도메인 전부 - (OOM)이므로 스크립트가 없는 것과 방향은 맞습니다. 다만 assets/Selected_hyperparameters.md 도 CyclePatch 계열 넷(CPMLP CPTransformer CPGRU CPLSTM)만 싣고 있어 Transformer 의 하이퍼파라미터는 어느 문서에도 없습니다. TRN-008 도 함께 보십시오.
+
+### `TRN-004` — SDU 와 Stanford_2 가 학습 데이터셋 분기에 쓰이는가
+
+**판정: 미정** — code 슬롯이 미조사입니다
+
+- **paper** — 미조사
+- **upstream_doc** — 미조사
+- **code** — 부재확인
+    - value: 쓰이지 않습니다. data_loader.py:108-203 의 dataset 분기 24개와 data_split_recorder.py 의 분할 리스트 78개를 전수 확인했으며 SDU 나 Stanford_2 를 참조하는 분기가 없습니다
+    - searched: data_provider/data_loader.py 전체, data_provider/data_split_recorder.py 의 속성 78개 전부(dir 로 열거), run_main.py finetune.py evaluate_model.py domainAdaptation.py 의 dataset 문자열
+    - checked_by: CC
+- **note** — 배포물에는 있습니다 - data/extracted/SDU 86 pkl, Stanford_2 181 pkl. Life labels 에도 SDU_labels.json 과 Stanford_2_labels.json 이 있습니다. 데이터와 라벨은 배포하면서 학습 경로에서는 쓰지 않는 비대칭입니다. 학습에 쓰려면 분할 정의를 직접 만들어야 합니다.
+
+### `TRN-005` — --dataset 인자명과 데이터 디렉터리명이 어긋나는가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/data_provider/data_loader.py:192-203 대 :415
+    - value: 인자는 NAion NAion42 NAion2024 로 하이픈이 없는데 pkl 을 읽는 경로는 root_path/NA-ion/ 으로 하이픈이 있습니다. Zn 계열은 인자도 ZN-coin ZN-coin42 ZN-coin2024 이고 디렉터리도 ZN-coin 이라 일치합니다
+    - checked_by: CC
+- **note** — Na 계열만 인자와 디렉터리 표기가 다릅니다. --dataset NA-ion 으로 주면 data_loader 의 어느 분기에도 걸리지 않아 train_files 가 정의되지 않은 채 진행됩니다. 문서에 이 표기 차이에 대한 안내가 있는지는 보지 않았습니다.
+
+### `TRN-006` — UL_PUR 단독 분기로 학습·검증이 성립하는가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/data_provider/data_split_recorder.py:27-29
+    - value: UL_PUR_train_files 2개, UL_PUR_val_files 는 빈 리스트, UL_PUR_test_files 도 빈 리스트입니다
+    - checked_by: CC
+- **note** — 디스크에는 UL_PUR pkl 이 10개 있는데 분할 정의는 2개만 씁니다. MIX_large 안에서는 이 2셀이 train 에 들어가므로 문제가 드러나지 않습니다. --dataset UL_PUR 단독 실행에서만 val 과 test 가 비어 검증이 성립하지 않습니다. 단독 실행을 의도한 분기인지는 확인 전입니다.
+
+### `TRN-007` — 셸 스크립트의 하이퍼파라미터가 Selected_hyperparameters.md 와 일치하는가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 확인
+    - locus: BatteryLife/assets/Selected_hyperparameters.md:13-62
+    - value: (model, dataset, seed) 별로 batch_size d_model d_ff e_layers d_layers dropout learning_rate 7개를 지정합니다. 모델은 CPMLP CPTransformer CPGRU CPLSTM 넷, 도메인은 Li-ion Zn-ion Na-ion CALB 넷, seed 는 42 2021 2024 셋으로 48행입니다
+    - checked_by: CC
+- **code** — 확인
+    - locus: BatteryLife/train_eval_scripts/CPMLP.sh, CPTransformer.sh, MLP.sh
+    - value: 일치하지 않습니다. CPMLP.sh(dataset=CALB seed=2021)는 문서의 CPMLP/CALB/2021 행과 batch_size 16 대 8, d_model 128 대 32, d_ff 256 대 32, e_layers 4 대 12, d_layers 2 대 6, dropout 0 대 0.1 여섯 항목이 다르고 learning_rate 만 같습니다. CPTransformer.sh(dataset=MIX_large seed=2024)도 문서의 CPTransformer/Li-ion/2024 행과 batch_size 32 대 128, d_model 128 대 256, d_ff 256 대 64, e_layers 6 대 1, d_layers 4 대 12 다섯 항목이 다르고 learning_rate 와 dropout 만 같습니다
+    - checked_by: CC
+- **note** — 셸 스크립트는 논문 최종 설정이 아닙니다. 문서가 (모델 도메인 seed) 별로 값을 나누는 반면 셸 스크립트는 조합 하나의 흔적입니다. 문서에 없는 항목도 있습니다 - n_heads lstm_layers train_epochs patience early_cycle_threshold charge_discharge_length seq_len lradj loss 는 문서가 지정하지 않아 셸 값 말고 근거가 없습니다. 문서 머리말(assets/Selected_hyperparameters.md:3)은 값들이 2 GPU 기준이며 batch_size 는 프로세스당 값이고 실효 배치는 2배라고 적고 있어 단일 GPU 재현 시 환산이 필요합니다. MLP 와 Transformer 는 문서에 아예 없습니다.
+
+### `TRN-008` — Transformer 가 이 학습 루프에서 실행 가능한가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/models/Transformer.py:71 및 :113 대 run_main.py:102 및 :322
+    - value: 실행 불가입니다. 첫째 Transformer.py:71 이 configs.num_class 를 읽는데 run_main.py:102 의 인자명은 --class_num 이라 Model(args) 생성 시점에 AttributeError 로 죽습니다(2026-08-04 실측). 둘째 생성이 되더라도 forward 시그니처가 x_enc x_mark_enc x_dec x_mark_dec 로 위치인자 4개를 요구하는데 run_main.py:322 는 model(cycle_curve_data, curve_attn_mask) 로 2개만 넘깁니다. 셋째 배치 텐서가 [B,100,300,3] 4차원인데 Transformer 의 DataEmbedding 은 3차원을 가정합니다. 같은 조건에서 MLP CPMLP CPTransformer 는 셋 다 생성과 2인자 호출이 통과합니다
+    - checked_by: CC
+- **note** — 논문 Table 3 은 Transformer 를 네 도메인 전부 - 로 적고 캡션에서 그것을 out of memory 로 설명합니다. 그러나 배포된 코드에서는 메모리에 닿기 전에 AttributeError 로 멈춥니다. configs.num_class 를 쓰는 모델은 Transformer.py 하나뿐이고 나머지는 class_num 또는 output_num 을 씁니다. 배포 코드가 논문 실험에 쓰인 판본과 다를 가능성이 있으나 확인 전이며 사실로 기록하지 않습니다. 우리 환경에서 OOM 재현을 시도하려면 이 결함을 먼저 넘어야 하고 넘는 순간 상위 코드를 고친 것이 되어 논문과 같은 조건이 아닙니다.
+
+### `TRN-009` — Li-ion(MIX_large) 열의 3회 반복을 어떻게 얻는가
+
+**판정: 불일치** — 논문 'we run each experiment three times and report the mean plus-minus standard deviation on testing sets for all evaluations' 대 코드 'CALB ZN-coin NAion 세 도메인은 접미사 없는 기본 분기 외에 42 와 2024 분기가 있고 셋 다 셀 풀은 같으나 분할이 실제로 다릅니다(집합 비교로 확인. CALB 기본과 CALB42 는 test 5셀 중 2셀만 겹치고 CALB2024 와는 1셀만 겹칩니다). 그러나 MIX_large 에는 seed 변형 분기가 없어 한 벌뿐입니다. MIX_all MIX_all_42 MIX_all_2024 는 각 1001셀로 split_recorder 에 있으나 data_loader.py 의 어느 분기도 참조하지 않아 --dataset 으로 도달할 수 없습니다'
+
+- **paper** — 확인
+    - locus: 논문 4.1절
+    - value: we run each experiment three times and report the mean plus-minus standard deviation on testing sets for all evaluations
+    - checked_by: CC
+- **upstream_doc** — 확인
+    - locus: BatteryLife/assets/Selected_hyperparameters.md:13-62
+    - value: seed 축이 42 2021 2024 셋임을 (model, dataset, seed) 표로 보여 줍니다
+    - checked_by: CC
+- **code** — 확인
+    - locus: BatteryLife/data_provider/data_split_recorder.py 속성 목록 대 data_loader.py:164-203
+    - value: CALB ZN-coin NAion 세 도메인은 접미사 없는 기본 분기 외에 42 와 2024 분기가 있고 셋 다 셀 풀은 같으나 분할이 실제로 다릅니다(집합 비교로 확인. CALB 기본과 CALB42 는 test 5셀 중 2셀만 겹치고 CALB2024 와는 1셀만 겹칩니다). 그러나 MIX_large 에는 seed 변형 분기가 없어 한 벌뿐입니다. MIX_all MIX_all_42 MIX_all_2024 는 각 1001셀로 split_recorder 에 있으나 data_loader.py 의 어느 분기도 참조하지 않아 --dataset 으로 도달할 수 없습니다
+    - checked_by: CC
+- **note** — 반복의 정체가 도메인마다 다릅니다. Zn 과 Na 와 CALB 는 분할이 3벌이라 --dataset 을 바꿔 얻고, Li-ion 은 분할이 1벌이라 --seed 만 바꿔 얻습니다(모델 초기화와 셔플만 달라짐). 논문 4.1절 문장만으로는 이 비대칭을 알 수 없습니다. MIX_all 계열 1001셀은 MIX_large 843셀에 CALB 27 과 ZN-coin 100 과 NA-ion 31 을 더한 것으로 도메인 통합 실험용으로 보이나 도달 불가하며 왜 남아 있는지는 확인 전입니다.
+
+### `TRN-010` — MIX_large 를 배포 데이터로 로딩할 수 있는가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/data_provider/data_loader.py:443 대 :487
+    - value: 할 수 없습니다. MIX_large 843셀 중 6셀이 Life labels 에 없어 eol 이 None 이 되고, 그때 read_cell_df 가 값 5개를 돌려주는데(:443) 호출부는 6개로 언팩합니다(:487). ValueError: not enough values to unpack (expected 6, got 5) 로 로딩 도중 죽습니다. 2026-08-04 실측으로 재현했습니다(runs/timing_CPMLP_MIX_large.log). 빠진 6셀은 MICH_13R 14C 15H 16R 17C 18H 로 전부 SOC 창이 50-100 인 MICH_EXP 셀이며 train 5개 test 1개입니다. CALB ZN-coin NAion 세 도메인은 라벨 누락이 0이라 이 경로를 타지 않습니다
+    - checked_by: CC
+- **note** — 배포 MICH_EXP 는 pkl 18개인데 MICH_EXP_labels.json 은 키 12개이고 total_MICH_labels.json 은 52개(MICH 40 + MICH_EXP 12)입니다. 즉 50-100 창 6셀은 pkl 만 배포되고 라벨이 없습니다. 그런데 MIX_large 분할 목록에는 그 6셀이 들어 있습니다. 라벨이 왜 없는지(부분 SOC 구간이라 SOH 정의가 다른가)는 확인 전입니다. 이것이 Li-ion 열 재현의 선결 문제입니다 - 6셀을 분할에서 빼면 논문과 다른 841셀이 되고, 라벨을 우리가 만들면 배포 라벨이 아닙니다. LAB-015 의 우리만있음 33셀과 방향이 같은 현상인지도 확인 전입니다.
 
 ### `VER-001` — v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가
 

@@ -97,6 +97,68 @@ def prepare(relative_path: str, config: dict | None = None) -> dict:
     return {"run_dir": run_dir, "script": target, "results": results}
 
 
+# 학습 스크립트는 ``python -u run_main.py`` 를 **상대경로로** 부르고,
+# run_main.py 자신도 ``data_provider/life_classes.json`` 을 상대경로로 엽니다.
+# 그래서 cwd 는 run_main.py 가 있는 디렉터리여야 합니다. 치환 사본이 있는
+# ``.build/`` 가 아닙니다 — 거기에는 run_main.py 가 없습니다.
+BATTERYLIFE = REPO_ROOT / "upstream" / "BatteryLife"
+
+
+def launch_built(script_path, run_name: str = "", dry_run: bool = False) -> int:
+    """``.build/`` 에 이미 만들어 둔 스크립트를 그대로 돌립니다.
+
+    ``train/make_scripts.py`` 가 만든 8종은 데이터셋까지 갈아끼운 사본이라
+    ``prepare()`` 의 원본→사본 경로가 맞지 않습니다. 그래서 따로 둡니다.
+    """
+    # cwd 를 upstream/BatteryLife 로 바꿔 실행하므로 **절대경로여야 합니다.**
+    # 상대경로를 그대로 넘기면 bash 가 BatteryLife 아래에서 찾다가 못 찾습니다.
+    script_path = Path(script_path)
+    if not script_path.is_absolute():
+        script_path = (REPO_ROOT / script_path).resolve()
+    if not script_path.exists():
+        print(f"스크립트가 없습니다: {script_path}\n"
+              "먼저 python -m train.make_scripts 를 돌리십시오.", file=sys.stderr)
+        return 1
+
+    bash = find_bash()
+    if bash is None:
+        print(_NO_BASH, file=sys.stderr)
+        return 1
+
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    run_dir = RUNS_DIR / f"{stamp}_{run_name or script_path.stem}"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(script_path, run_dir / script_path.name)
+
+    # bash 에는 posix 형태로 넘깁니다. 백슬래시는 이스케이프로 먹힐 수 있습니다.
+    command = [bash, script_path.as_posix()]
+    print(f"run 디렉터리: {run_dir}")
+    print(f"명령: {' '.join(command)}")
+    print(f"작업 디렉터리: {BATTERYLIFE}")
+    if dry_run:
+        print("\n(--dry-run: 실행하지 않았습니다)")
+        return 0
+
+    log_path = run_dir / "log.txt"
+    with open(log_path, "w", encoding="utf-8", newline="\n") as log:
+        process = subprocess.Popen(
+            command, cwd=str(BATTERYLIFE), stdout=log, stderr=subprocess.STDOUT,
+            env={**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"},
+        )
+    write_text(run_dir / "pid.txt", f"{process.pid}\n")
+    print(f"\npid {process.pid} 로 실행했습니다. 로그: {log_path}")
+    return 0
+
+
+_NO_BASH = (
+    "bash 를 찾지 못했습니다.\n"
+    "Windows 에서는 Git for Windows 를 설치하십시오 "
+    "(https://git-scm.com/download/win).\n"
+    "상위 학습 스크립트가 bash 파일이라 이것만은 우회되지 않습니다.\n"
+    "라벨 검증에는 bash 가 필요 없습니다."
+)
+
+
 def launch(relative_path: str, config: dict | None = None,
            dry_run: bool = False) -> int:
     prepared = prepare(relative_path, config)
@@ -117,7 +179,7 @@ def launch(relative_path: str, config: dict | None = None,
     command = [bash, str(script)]
     print(f"run 디렉터리: {run_dir}")
     print(f"명령: {' '.join(command)}")
-    print(f"작업 디렉터리: {script.parent}")
+    print(f"작업 디렉터리: {BATTERYLIFE}")
 
     if dry_run:
         print("\n(--dry-run: 실행하지 않았습니다)")
@@ -128,7 +190,7 @@ def launch(relative_path: str, config: dict | None = None,
     with open(log_path, "w", encoding="utf-8", newline="\n") as log:
         process = subprocess.Popen(
             command,
-            cwd=str(script.parent),
+            cwd=str(BATTERYLIFE),
             stdout=log,
             stderr=subprocess.STDOUT,
             env={**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"},
@@ -145,10 +207,15 @@ def main(argv=None) -> int:
         prog="train/launch.py",
         description="치환 사본을 만들어 백그라운드로 학습을 돌립니다",
     )
-    parser.add_argument("script", help="upstream/ 아래 상대 경로 (.sh)")
+    parser.add_argument("script", help="upstream/ 아래 상대 경로 (.sh), "
+                                       "또는 --built 와 함께 .build/ 아래 경로")
+    parser.add_argument("--built", action="store_true",
+                        help="make_scripts.py 가 만든 .build/ 스크립트를 그대로 실행")
     parser.add_argument("--dry-run", action="store_true",
                         help="치환만 하고 실행하지 않음")
     args = parser.parse_args(argv)
+    if args.built:
+        return launch_built(args.script, dry_run=args.dry_run)
     return launch(args.script, dry_run=args.dry_run)
 
 

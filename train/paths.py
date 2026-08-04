@@ -46,10 +46,34 @@ from pathlib import Path
 
 from verify import REPO_ROOT, load_config, read_text, write_text
 
-__all__ = ["BUILD_DIR", "build", "build_all", "RULES"]
+__all__ = ["BUILD_DIR", "build", "build_all", "build_variant", "absolutize",
+           "RULES"]
 
 BUILD_DIR = REPO_ROOT / ".build"
 UPSTREAM = REPO_ROOT / "upstream"
+
+# config.env 의 경로는 ``./data/...`` 처럼 상대입니다. 스크립트는 cwd 가
+# ``upstream/BatteryLife`` 인 채로 실행되므로 상대경로를 그대로 넘기면
+# 엉뚱한 곳을 봅니다. 반드시 절대 posix 경로로 바꿔서 넣습니다.
+_PATH_KEYS = ("DATA_ROOT", "ZENODO_DIR", "EXTRACT_DIR", "HF_DIR", "CKPT_ROOT")
+
+
+def absolutize(config: dict) -> dict:
+    """경로 값들을 저장소 루트 기준 절대 posix 경로로 바꾼 사본을 돌려줍니다.
+
+    Windows 라도 백슬래시를 쓰지 않습니다. 생성물이 bash 스크립트라
+    ``D:\\...`` 의 백슬래시는 이스케이프로 먹힙니다.
+    """
+    out = dict(config)
+    for key in _PATH_KEYS:
+        value = out.get(key, "").strip()
+        if not value:
+            continue
+        path = Path(value)
+        if not path.is_absolute():
+            path = REPO_ROOT / path
+        out[key] = path.resolve().as_posix()
+    return out
 
 
 def _rules(config: dict) -> list:
@@ -180,6 +204,94 @@ def build_all(relative_dir: str, pattern: str = "*.sh",
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, destination)
     return results
+
+
+def _variant_rules(dataset, model, epochs, port, workers) -> list:
+    """모델·데이터셋만 갈아끼웁니다. **학습 하이퍼파라미터는 건드리지 않습니다.**
+
+    원본 스크립트는 모델마다 다르게 튜닝되어 있습니다. 학습률·층수·d_model 을
+    임의로 맞추면 비교가 오염됩니다. 여기서 바꾸는 것은 넷뿐입니다.
+
+    ``dataset``  비교 대상을 같은 데이터로 맞추기 위해 (§4-2)
+    ``model``    ``model_name`` · ``--model_id`` · ``comment`` 를 한꺼번에
+    ``epochs``   스모크 사본에서만 1 로
+    ``port``     동시에 돌릴 때 accelerate 포트가 겹치지 않게
+    """
+    rules = []
+    if dataset:
+        # ``dataset=MIX_large # MIX_large`` — 뒤의 주석은 남깁니다.
+        rules.append((re.compile(r"^(\s*dataset=)\S+", re.M),
+                      rf"\g<1>{dataset}", "dataset"))
+    if model:
+        rules += [
+            (re.compile(r"^(\s*model_name=)\S+", re.M), rf"\g<1>{model}", "model_name"),
+            (re.compile(r"^(\s*comment=)'[^']*'", re.M), rf"\g<1>'{model}'", "comment"),
+            (re.compile(r"--model_id\s+\S+"), f"--model_id {model}", "--model_id"),
+        ]
+    if epochs:
+        rules.append((re.compile(r"^(\s*train_epochs=)\S+", re.M),
+                      rf"\g<1>{epochs}", "train_epochs"))
+    if port:
+        rules.append((re.compile(r"^(\s*master_port=)\S+", re.M),
+                      rf"\g<1>{port}", "master_port"))
+    if workers is not None:
+        # paths.py 의 기본 규칙은 ``--num_workers\s+\d+`` 를 잡습니다. 원본이
+        # 8 · 32 로 리터럴이라 이미 걸리지만, 여기서 한 번 더 못박습니다.
+        rules.append((re.compile(r"--num_workers\s+\S+"),
+                      f"--num_workers {workers}", "--num_workers"))
+    return rules
+
+
+# 상위 코드는 wandb.init 을 무조건 부릅니다 (run_main.py:224). 로그인하지
+# 않은 기계에서는 여기서 멈춥니다. 지표는 stdout 에도 찍히고 collect.py 가
+# 그것을 읽으므로 wandb 는 꺼도 됩니다.
+_PREAMBLE = """\
+# --- 이 파일은 생성물입니다. 고치려면 train/make_scripts.py 를 고치십시오. ---
+# 원본: upstream/{source}
+# {note}
+export PYTHONUTF8=1
+export PYTHONIOENCODING=utf-8
+export PYTHONDONTWRITEBYTECODE=1   # upstream/ 에 __pycache__ 를 남기지 않습니다
+export WANDB_MODE=disabled         # run_main.py:224 이 wandb.init 을 무조건 부릅니다
+export OMP_NUM_THREADS=4
+
+"""
+
+
+def build_variant(relative_path: str, destination, *, dataset: str = "",
+                  model: str = "", epochs: str = "", port: str = "",
+                  note: str = "", config: dict | None = None) -> dict:
+    """``upstream/<relative_path>`` 을 치환 + 변형해 ``destination`` 에 씁니다.
+
+    ``build()`` 와 달리 출력 경로를 직접 받습니다. 같은 원본에서 데이터셋만
+    다른 사본을 여러 벌 만들어야 하기 때문입니다.
+    """
+    config = absolutize(config if config is not None else load_config())
+    source = UPSTREAM / relative_path
+    if not source.exists():
+        raise FileNotFoundError(f"원본이 없습니다: {source}")
+
+    destination = Path(destination)
+    assert UPSTREAM not in destination.resolve().parents, (
+        f"upstream/ 아래에 쓰려 하고 있습니다: {destination}"
+    )
+
+    text, changes = _apply(read_text(source), config)
+
+    for pattern, replacement, label in _variant_rules(
+            dataset, model, epochs, port, config.get("NUM_WORKERS")):
+        for match in pattern.finditer(text):
+            before = match.group(0)
+            after = pattern.sub(replacement, before, count=1)
+            if before != after:
+                changes.append({"line": text.count("\n", 0, match.start()) + 1,
+                                "rule": label, "before": before.strip(),
+                                "after": after.strip()})
+        text = pattern.sub(replacement, text)
+
+    text = _PREAMBLE.format(source=relative_path, note=note or "(변형 없음)") + text
+    write_text(destination, text)
+    return {"path": destination, "source": source, "changes": changes}
 
 
 def format_changes(result: dict) -> str:

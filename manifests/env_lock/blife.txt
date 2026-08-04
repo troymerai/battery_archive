@@ -1,0 +1,104 @@
+설치 순서 주의
+1. torch 를 cu128 채널에서 먼저 설치
+2. requirements 설치 시 torch·deepspeed·numpy·pandas·scipy·scikit 제외
+3. 그래도 accelerate 의 torch>=1.10.0 해석으로 torch 가 2.4.1(비 cu128)로
+   되돌아간다. 설치 후 반드시 재확인하고 --force-reinstall 로 복구할 것
+4. fsspec 이 datasets 2.19.0 상한을 넘는 경고가 남지만 학습에는 무관
+5. wandb 는 requirements.txt 에 없지만 run_main.py:13 이 import 하고
+   :224 가 wandb.init 을 무조건 부른다. 없으면 학습이 시작되지 않는다.
+   2026-08-04 에 pip install -c envs\constraints.txt wandb 로 추가했다.
+   torch 는 변동 없다 (2.11.0+cu128 유지).
+6. deepspeed 는 설치할 수 없다 — nvcc 도 MSVC 도 없다. run_main.py 는
+   이것을 무조건 쓰므로 .build/batterylife/run_main_nodeepspeed.py 로
+   우회한다. 학습 조건이 다르다. RUN.md 8-1 참조.
+
+accelerate==0.29.3
+addict==2.4.0
+aiohappyeyeballs==2.7.1
+aiohttp==3.14.3
+aiosignal==1.4.0
+annotated-types==0.8.0
+attrs==26.1.0
+axial_positional_embedding==0.3.12
+# Editable Git install with no remote (BatteryML==0.0.1)
+-e d:\battery_archive\upstream\batteryml
+certifi==2026.7.22
+charset-normalizer==3.4.9
+click==8.4.2
+colorama==0.4.6
+CoLT5-attention==0.11.1
+contourpy==1.3.3
+cycler==0.12.1
+datasets==2.19.0
+denseweight==0.1.2
+dill==0.3.8
+einops==0.8.2
+et_xmlfile==2.0.0
+evaluate==0.4.1
+filelock==3.29.0
+fire==0.7.1
+fonttools==4.63.0
+frozenlist==1.8.0
+fsspec==2026.4.0
+h5py==3.16.0
+huggingface_hub==0.36.2
+hyper-connections==0.4.2
+idna==3.18
+Jinja2==3.1.6
+joblib==1.4.0
+KDEpy==1.1.12
+kiwisolver==1.5.0
+llvmlite==0.48.0
+local-attention==1.11.2
+MarkupSafe==3.0.3
+matplotlib==3.8.4
+mpmath==1.3.0
+multidict==6.7.1
+multiprocess==0.70.16
+narwhals==2.24.0
+networkx==3.6.1
+numba==0.66.0
+numpy==1.26.4
+openpyxl==3.1.5
+packaging==26.2
+pandas==3.0.5
+peft==0.12.0
+pillow==12.3.0
+platformdirs==4.11.0
+product_key_memory==0.3.0
+propcache==0.5.2
+protobuf==7.35.1
+psutil==7.2.2
+pyarrow==25.0.0
+pyarrow-hotfix==0.7
+pydantic==2.13.4
+pydantic_core==2.46.4
+pyparsing==3.3.2
+python-dateutil==2.9.0.post0
+PyYAML==6.0.3
+reformer-pytorch==1.4.4
+regex==2026.7.19
+requests==2.32.3
+responses==0.18.0
+safetensors==0.8.0
+scikit-learn==1.9.0
+scipy==1.17.1
+seaborn==0.13.2
+sentry-sdk==2.66.1
+setuptools==78.1.0
+six==1.17.0
+sympy==1.14.0
+termcolor==3.3.0
+threadpoolctl==3.6.0
+tokenizers==0.19.1
+torch==2.11.0+cu128
+tqdm==4.66.2
+transformers==4.43.4
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+tzdata==2026.3
+urllib3==2.7.0
+wandb==0.28.1
+xgboost==3.3.0
+xxhash==3.8.1
+yarl==1.24.5

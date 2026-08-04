@@ -46,7 +46,10 @@ RUNS_DIR = REPO_ROOT / "runs"
 RESULTS_DIR = REPO_ROOT / "experiments" / "results"
 
 _BEST_LINE = re.compile(r"^Best model performance:\s*(.+)$", re.M)
-_PAIR = re.compile(r"([A-Za-z%\- ]+?):\s*([-+0-9.eE]+)")
+# 키에 **숫자가 들어갑니다** — ``Test 15%-accuracy`` · ``Test 10%-accuracy``.
+# 문자 클래스에서 0-9 를 빼면 네 개의 accuracy 지표가 전부 ``%-accuracy``
+# 하나로 뭉쳐 마지막 값만 남습니다. 실제로 그렇게 새고 있었습니다.
+_PAIR = re.compile(r"([A-Za-z0-9%\- ]+?):\s*([-+0-9.eE]+)")
 
 
 def parse_log(text: str) -> dict:
