@@ -2,7 +2,7 @@
 
 데이터 판본: v11 — Zenodo record 19688272 (2026-04-22)
 
-생성: 2026-08-03   /   생성자: (미정)
+생성: 2026-08-03   /   생성자: CC (Whitefox 지시)
 
 이 파일이 **"모두가 같은 것을 본다" 의 계약서**입니다.
 태그가 배포 단위이고, 태그마다 이 파일이 하나 있습니다.
@@ -56,7 +56,7 @@ python run.py lock-init   현재 상태로 (미정) 을 채움
 | XJTU.zip | digest | ec68d223209b9ddac6c7f5592b2463cd | md5 · v11(19688272). v12 는 2de8b797… 1.5GB 완전판 — 넣지 말 것. LAB-008 · LAB-011 검증에 필요 |
 | ZN-coin.zip | digest | d7e98ad70a077ac8f44d5ff045befc73 | md5 · v11(19688272) |
 | env repro | digest | e6ecaa73b10a9ef7499a9bb7db77bb2c46fa3135c3cee5d4e0a59861a0ed7120 | pip freeze sha256 — 라벨 검증 환경 |
-| env blife | digest | (미정) | pip freeze sha256 — 학습 환경 |
+| env blife | digest | b87483c37cc0f8027092a0010cd3611e1dc5411e06849dc233910032e15a9c33 | pip freeze sha256 — 학습 환경 |
 | nb01 재집계 recount.json | digest | e3f9fdbe118219b490468b421d07968b5af0a7a1598a886a7f62bc75b2df5730 | `findings/recount.json` — 1,382셀 재집계. 정규화 JSON sha256 |
 | nb02 변형 비교 | digest | eafaba8eec73ab3aaf514c540fc39a6a53db403db9086121f2e4556b759982e5 | `experiments/results/nb02_variants.json` |
 | nb03 셀 단위 대조표 | digest | fb3e867ab10d2548f9d98d932766d4dddf2e9971899d393e8b1917b8b8654c60 | `experiments/results/nb03_cells.json` — `code` 변형 |
@@ -71,8 +71,8 @@ python run.py lock-init   현재 상태로 (미정) 을 채움
 | findings/na_ion_crate.json | digest | 06afdc6197fb096ac7d62228abfa9d3ef201083fadac7b4473e23c8d773c2de4 | NA-ion 파일명 ↔ C-rate 매핑 |
 | findings/registry.yaml | digest | 48bc03c2ee7d8c8410eaa8fd9df312ef6a94655bfc324c03ea24e78775c7e502 | sha256 |
 | findings/anchors.yaml | digest | d73aa1a3769189fb66ab83e97b32a96fb9f52b8baead0ec7c9011aca9c5b294d | sha256 |
-| CPTransformer Li-ion MAPE | interval | (미정) | 하드웨어 의존 — `manifests/hardware.txt` 참조 |
-| CPTransformer Li-ion 15%-Acc | interval | (미정) | 하드웨어 의존 — `manifests/hardware.txt` 참조 |
+| CPTransformer Li-ion MAPE | interval | 0.197 ± 0.019 | 3 seed(2021·42·2024) 평균±표준편차. 하드웨어 의존 — `manifests/hardware.txt` 참조 |
+| CPTransformer Li-ion 15%-Acc | interval | 55.7 ± 4.5 | 백분율. 3 seed 평균±표준편차. 하드웨어 의존 — `manifests/hardware.txt` 참조 |
 
 ### zip 20개를 전부 잠급니다
 
@@ -113,9 +113,45 @@ v11 과 v12 는 세 파일에서 갈립니다 — `XJTU.zip` · `Life labels.zip
 **3번 이전에는 태그를 찍지 마십시오.** LOCK.md 가 비어 있으면
 "같은 결과를 본다" 가 성립하지 않습니다.
 
-학습(`interval` 두 행)은 첫 태그 범위 밖입니다. 라벨 검증까지만 담고,
-`train/` 과 `experiments/` 는 자리만 잡아둡니다. 그 두 행은 `(미정)` 인
-채로 두어도 `python run.py check` 가 `skipped` 로 넘어갑니다.
+> ### `lock-init` 을 어느 환경에서 부르는지 보십시오 — 함정입니다
+>
+> `verify/lock.py` 의 `init()` 은 **부른 인터프리터의 `pip freeze` 를
+> `manifests/env_lock/repro.txt` 에 무조건 덮어씁니다.** `env repro` 행이
+> 이미 차 있어도 그렇습니다.
+>
+> 즉 **`.venv-blife` 를 켠 채로 `lock-init` 을 부르면 라벨 검증 환경 기록이
+> 학습 환경 것으로 덮여 쓰이고**, 바로 다음 `check` 가 `env repro` 를
+> 불일치로 잡습니다. 환경이 바뀐 것이 아니라 기록이 지워진 것입니다.
+>
+> 2026-08-05 에 실제로 일어났고 백업에서 되돌렸습니다. 학습 환경에서
+> `lock-init` 을 불러야 하면 **먼저 `repro.txt` 를 복사해 두십시오.**
+>
+> ```powershell
+> Copy-Item manifests\env_lock\repro.txt manifests\env_lock\repro.bak
+> python run.py lock-init
+> Move-Item -Force manifests\env_lock\repro.bak manifests\env_lock\repro.txt
+> ```
+
+### `interval` 두 행 — 2026-08-04 에 채웠습니다
+
+학습(`interval` 두 행)은 **첫 태그 범위 밖이었습니다.** 그 태그는 라벨
+검증까지만 담았고 두 행은 `(미정)` 인 채로 `check` 가 넘어갔습니다.
+
+**36회 학습이 끝나 이제 값이 있습니다.** 다만 `interval` 은 `digest` 와
+성질이 다릅니다 — **재현되는 값이 아닙니다.** `lock-init` 이 이 두 행을
+채우지 않고 `남김` 으로 넘기는 이유가 그것입니다 (기계가 계산할 수 없고
+사람이 잽니다). `check` 는 이 두 행을 `구간` 으로 표시하고 **판정하지
+않습니다.** 판정은 사람이 `manifests/hardware.txt` 를 보고 합니다.
+
+| 항목 | 기준값 | 원자료 |
+|---|---|---|
+| CPTransformer Li-ion MAPE | 0.197 ± 0.019 | 0.1749 / 0.2037 / 0.2116 |
+| CPTransformer Li-ion 15%-Acc | 55.7 ± 4.5 | 60.72 / 54.66 / 51.85 |
+
+`runs/2026-08-04/run_liion.log` 의 `Best model performance:` 줄입니다.
+**이 구간을 벗어나는 것은 고장이 아닙니다** — GPU 나 torch 가 다르면
+당연히 다릅니다. 어긋났을 때 먼저 볼 것은 `manifests/hardware.txt` 이고,
+거기 적힌 `[gpu]` · `[torch]` 가 같은데도 벗어나면 그때가 보고할 일입니다.
 
 ---
 

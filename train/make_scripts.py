@@ -372,6 +372,11 @@ case "$DOMAIN" in
   *) echo "도메인을 주십시오: CALB | Na-ion | Zn-ion | Li-ion"; exit 2 ;;
 esac
 
+# 가상환경을 켜지 않은 채 돌리면 9개가 전부 accelerate: command not found 로
+# 죽습니다. 밤새 돌린 줄 알았는데 아침에 로그 9개가 전부 빈 경우가 그것입니다.
+# 한 줄도 돌리기 전에 여기서 멈춥니다.
+command -v accelerate >/dev/null || {{ echo "가상환경 미활성 — .venv-blife 를 켜십시오"; exit 1; }}
+
 mkdir -p "$RUNS"
 STAMP=$(date +%Y%m%d-%H%M%S)
 SUMMARY="$RUNS/${{STAMP}}_${{DOMAIN}}_summary.txt"

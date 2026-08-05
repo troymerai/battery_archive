@@ -134,7 +134,13 @@ def main(argv=None) -> int:
         if not RUNS_DIR.exists():
             print("runs/ 가 없습니다. 아직 아무것도 돌리지 않았습니다.")
             return 0
-        records = [collect(path) for path in sorted(RUNS_DIR.iterdir()) if path.is_dir()]
+        # log.txt 가 없는 디렉터리는 run 이 아닙니다. 2026-08-05 에 낱개 로그를
+        # runs/2026-08-04/ 로 묶으면서 날짜 폴더가 생겼는데, 그것까지 run 으로
+        # 세면 "지표 없음" 레코드가 하나 섞여 들어옵니다. 없는 것은 세지 않습니다.
+        records = [
+            collect(path) for path in sorted(RUNS_DIR.iterdir())
+            if path.is_dir() and (path / "log.txt").exists()
+        ]
     elif args.run:
         records = [collect(args.run)]
     else:

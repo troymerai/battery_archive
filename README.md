@@ -1,5 +1,25 @@
 # battery-repro
 
+## 지금 어디까지 왔나 (2026-08-05)
+
+| 단계 | 상태 |
+|---|---|
+| 라벨 재현 — v11 전수 1,382셀 | **완료.** `experiments/results/LABEL_REPORT.md` |
+| 학습 36회 (3모델 × 4도메인 × 3seed) | **완료.** 결과는 `docs/PLAN.md` §7-3 |
+| `LOCK.md` | **전 항목 채움.** `(미정)` 없음 |
+| 다음 태그 | `v2026.08-meeting5` 준비됨 — 사람이 찍습니다 |
+
+**결과부터 보려면 `docs/PLAN.md` §7-3 입니다.** 재현 판정은 도메인마다
+갈립니다 — Li-ion·Zn-ion 재현 / Na-ion 경계 / CALB 미달. 그리고 **논문과
+같은 조건이 아닌 항목이 열 가지 넘습니다.** `docs/RUN.md` §8 을 읽지 않고
+그 숫자를 논문 표와 나란히 놓지 마십시오.
+
+> **학습을 돌리려면 `.venv-blife` 를 켜야 합니다.** 안 켜면
+> `accelerate: command not found` 로 한 줄도 안 돕니다. `docs/RUN.md` §1.
+> **torch 를 재설치하지 마십시오** — 2.4.1 로 되돌아가면 5080 에서 못 씁니다.
+
+---
+
 ## 환경 요구사항
 
 이 저장소는 **Windows 기준**으로 만들어졌습니다. macOS·Linux 에서도 동작하지만
@@ -65,9 +85,13 @@ HuggingFace 캐시 경로가 260자를 넘습니다.
 | 파일 | 무엇 |
 |---|---|
 | `LOCK.md` | 잠금 항목 (digest / interval). "모두가 같은 것을 본다" 의 계약서 |
-| `docs/RUN.md` | 학습 실행법. 36회 실행 명령 · 권장 순서 · **조건 차이표** |
-| `docs/PLAN.md` | 논문 Table 3 재현 실행 목록과 소요 시간 추정 |
+| `docs/RUN.md` | 학습 실행법. 36회 실행 명령 · 권장 순서 · **조건 차이표(§8)** |
+| `docs/PLAN.md` | 실행 목록과 **Table 3 대조표(§7-3)** — 재현 결과가 여기 있습니다 |
+| `docs/OPEN_QUESTIONS.md` | 미해결 목록. **자동 생성물** — 손으로 고치지 마십시오 |
+| `findings/PAPER_CODE_MAP.md` | 논문↔코드 대조표. **자동 생성물** (`run.py claims`) |
 | `docs/reports/` | 작업 보고서. 날짜순 누적 |
+| `manifests/hardware.txt` | `interval` 기준값을 잰 기계. 이것 없이는 그 구간이 무의미합니다 |
+| `runs/2026-08-04/README.md` | 어느 로그가 표의 어느 행을 만들었는지 (`runs/` 는 커밋되지 않습니다) |
 
 **보고서는 `docs/reports/YYYY-MM-DD_<작업명>.md` 에 새로 만듭니다.** 루트에
 `CC_REPORT.md` 를 만들지 않고, 기존 보고서를 덮어쓰지도 않습니다 — 덮어쓰면
@@ -272,6 +296,17 @@ data/                .gitignore 대상. config.env 로 경로를 겁니다
 
 첫 태그는 라벨 검증까지만 담는 것을 권합니다. `train/` 과 `experiments/` 는
 자리만 잡아두고 비워둡니다.
+
+**두 번째 태그(`v2026.08-meeting5`)부터 학습이 들어갑니다.** `interval` 두
+행이 여기서 처음 찹니다. `interval` 은 `digest` 와 성질이 다릅니다 —
+재현되는 값이 아니라 **구간**이고, 어느 기계에서 잰 것인지
+(`manifests/hardware.txt`)를 함께 읽어야 뜻이 있습니다. 기계가 다르면
+벗어나는 것이 정상입니다.
+
+> **`lock-init` 을 학습 환경(`.venv-blife`)에서 부르면 `manifests/env_lock/
+> repro.txt` 가 덮어써집니다.** 라벨 검증 환경 기록이 학습 환경 것으로
+> 바뀌고 다음 `check` 가 `env repro` 를 불일치로 잡습니다. 먼저 복사해
+> 두십시오 — 자세한 것은 `LOCK.md` 의 「채우는 순서」.
 
 ---
 

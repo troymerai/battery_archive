@@ -4,38 +4,78 @@
 # 바이트 단위로 같을 수 없습니다. 어떤 기계에서 잰 구간인지 남기지 않으면
 # 그 구간이 무엇을 뜻하는지 알 수 없습니다.
 #
-# 학습을 처음 돌린 사람이 채웁니다. 라벨 검증만 하는 첫 태그 범위에서는
-# 비워 두어도 됩니다.
+# 채운 사람: CC (2026-08-05). 아래 값은 이 기계에서 직접 조회한 것입니다.
 #
 # 채우는 법 (Windows PowerShell):
 #   nvidia-smi
 #   python -c "import torch; print(torch.__version__, torch.version.cuda, torch.backends.cudnn.version())"
-#   systeminfo | Select-String "OS 이름","OS 버전"
+#   Get-CimInstance Win32_OperatingSystem / Win32_ComputerSystem / Win32_Processor
 
 [machine]
-label            = (미정)          # 예: 117호-A
-os               = (미정)
-cpu              = (미정)
-ram_gb           = (미정)
+label            = 117호-Whitefox
+os               = Microsoft Windows 11 Home 10.0.26200
+cpu              = AMD Ryzen 7 9700X 8-Core (8코어 / 16스레드)
+ram_gb           = 15.1              # 물리 RAM. 커밋 한도는 아래 [note] 참조
 
 [gpu]
-model            = (미정)          # 예: NVIDIA RTX 4090
-count            = (미정)
-vram_gb          = (미정)
-driver           = (미정)
-cuda_runtime     = (미정)
-cudnn            = (미정)
+model            = NVIDIA GeForce RTX 5080 (Blackwell, sm_120)
+count            = 1                 # 논문은 2장 가정 — docs/RUN.md 8절
+vram_gb          = 15.9              # 16,303 MiB
+driver           = 591.86
+cuda_runtime     = 12.8              # torch 가 링크한 CUDA(cu128). 드라이버 상한은 13.1
+cudnn            = 91900
 
 [torch]
-version          = (미정)
-cuda_build       = (미정)
+version          = 2.11.0+cu128
+cuda_build       = cu128
+python           = 3.12.3
 
 [determinism]
-seed             = (미정)
-cudnn_benchmark  = (미정)
-cudnn_determin   = (미정)
-tf32_allowed     = (미정)
+seed             = 2021 / 42 / 2024  # 조합마다 --seed 로 명시. run_main.py:134
+cudnn_benchmark  = False             # torch 기본값. 상위 코드가 건드리지 않습니다
+cudnn_determin   = False             # torch 기본값. 상위 코드가 건드리지 않습니다
+tf32_allowed     = matmul False / cudnn True   # torch 2.11 기본값
 
 [note]
 # 위 항목 중 하나라도 바뀌면 interval 기준값을 다시 재야 합니다.
 # 바꾼 사람이 LOCK.md 의 해당 행과 이 파일을 같이 갱신하십시오.
+#
+# --- 논문과 다른 점 (전체 표는 docs/RUN.md 8절) ---
+#
+# 1. torch  논문 고정값 2.4.1 은 sm_120 을 지원하지 않아 5080 에서 못 씁니다.
+#    2.11.0+cu128 을 씁니다. 커널이 다르므로 지표가 같을 수 없습니다.
+#    **재설치하지 마십시오** — requirements 를 그대로 깔면 accelerate 의
+#    torch>=1.10.0 해석으로 2.4.1(비 cu128)로 되돌아갑니다. docs/RUN.md 1-1.
+#
+# 2. deepspeed  제외했습니다. Windows 에 휠이 없고 nvcc 도 MSVC 도 없어
+#    소스 빌드가 불가합니다. 원본은 ZeRO stage-2 로 돌고 이 기계는
+#    accelerate 기본 경로로 돕니다 — 같은 조건이 아닙니다.
+#
+# 3. GPU 1장  논문은 2장(--multi_gpu, num_process=2)입니다. 배치는
+#    문서값 x 2 를 한 프로세스에 주어 실효 배치를 맞췄습니다.
+#
+# 4. num_workers 0  Windows 는 워커마다 프로세스를 통째 복제합니다.
+#    물리 RAM 15.1 GiB 로는 감당되지 않습니다.
+#
+# --- 가상 메모리 ---
+#
+# 커밋 한도를 **64 GB 로 확장했습니다** (조회값 63.1 GiB). 확장 전에는
+# 44.5 GiB 였고, Li-ion train 로딩이 33.7 GiB 배열 한 덩어리를 요구해
+# 같은 명령이 통과하기도 실패하기도 했습니다 (findings TRN-011).
+# 확장 뒤 Li-ion 9회가 전부 완주했습니다.
+#
+# **Li-ion 을 돌리기 전에 커밋 여유가 34 GiB 이상인지 확인하십시오.**
+#   $os = Get-CimInstance Win32_OperatingSystem
+#   "{0:N1} GiB" -f ($os.FreeVirtualMemory/1MB)
+#
+# --- interval 기준값을 어디서 얻었는가 ---
+#
+# LOCK.md 의 interval 두 행(CPTransformer / Li-ion)은 2026-08-04 의
+# 3 seed 실행에서 나온 값입니다. 원자료는 runs/2026-08-04/run_liion.log 의
+# Best model performance 줄이고 조건은 위와 같습니다.
+#   MAPE     0.1749 / 0.2037 / 0.2116  ->  0.197 +- 0.019
+#   15%-Acc  60.72  / 54.66  / 51.85   ->  55.7  +- 4.5
+#
+# 다른 기계에서 이 구간을 벗어나는 것은 고장이 아닙니다. 위 [gpu] 와
+# [torch] 가 다르면 당연히 다릅니다. 어긋났을 때 볼 것은 이 파일이지
+# LOCK.md 가 아닙니다.

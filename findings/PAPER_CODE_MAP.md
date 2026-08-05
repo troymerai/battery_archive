@@ -5,7 +5,7 @@
 
 # PAPER ↔ CODE MAP
 
-레코드 43개. `findings/registry.yaml` 에서 생성했습니다.
+레코드 49개. `findings/registry.yaml` 에서 생성했습니다.
 
 판정은 슬롯에서 유도한 것입니다. 판정을 바꾸려면 슬롯을 고치십시오.
 유도 규칙은 `findings/SCHEMA.md` 에 있습니다.
@@ -14,9 +14,10 @@
 
 | 판정 | 개수 | 뜻 |
 |---|---|---|
-| 일치 | 1 | 논문과 코드가 같다 |
-| 불일치 | 3 | 논문과 코드가 다르다 — 발견 |
+| 일치 | 4 | 논문과 코드가 같다 |
+| 불일치 | 5 | 논문과 코드가 다르다 — 발견 |
 | 코드전용 | 1 | 논문에서 찾아봤고 없었다 |
+| 근거불명 | 1 | 값은 있으나 출처를 못 댔다 |
 | 미정 | 38 | 아직 판정할 수 없다 (대개 논문 미조사) |
 
 ## 레코드
@@ -43,6 +44,7 @@
 | `LAB-015` | NA-ion 배포 라벨 34개와 pkl 64개의 차이 30개가 전부 폐기 셀인가 | 미조사 | 미조사 | 확인 · `experiments/results/nb03_cells.json (match=우리만있음) + Extract_life_labels.py:124-127` | **미정** |
 | `LAB-016` | RPT · formation 사이클 제거 뒤 cycle_number 를 다시 매겼는가 | 미조사 | 미조사 | 확인 · `BatteryLife/process_scripts/preprocess_ISU_ILCC.py:190-210 + experiments/results/nb04_cycle_numbers.json` | **미정** |
 | `LAB-017` | ISU_ILCC 의 SOH 분모가 충전 기준인가 방전 기준인가 | 미조사 | 미조사 | 확인 · `BatteryLife/process_scripts/preprocess_ISU_ILCC.py:266-284,164 + Extract_life_labels.py:121` | **미정** |
+| `LAB-018` | 수명 라벨 100 셀을 제외하는가 남기는가 - 부등호 경계 | 확인 · `논문 부록 A.1 (Data Preprocessing)` | 미조사 | 확인 · `BatteryLife/data_provider/data_split_recorder.py ZNcoin_* 3분할 대 Life labels/ZN-coin_labels.json, BatteryLife/process_scripts/Extract_life_labels.py:157-158` | **불일치** |
 | `META-001` | 화학계 59종 — 어느 pkl 필드 조합으로 세는가 | 미조사 | 미조사 | 미조사 | **미정** |
 | `META-002` | 포맷 8종 | 미조사 | 미조사 | 미조사 | **미정** |
 | `META-003` | 운전온도 9종 | 미조사 | 미조사 | 미조사 | **미정** |
@@ -52,7 +54,9 @@
 | `META-007` | cycle_data[0]['cycle_number'] 이 서브셋마다 · 서브셋 안에서도 다른가 | 미조사 | 미조사 | 확인 · `experiments/results/nb04_cycle_numbers.json + experiments/results/LABEL_REPORT.md 6절` | **미정** |
 | `META-008` | NA-ion 셀별 C-rate 가 pkl 메타에 있는가 | 미조사 | 확인 · `READMEs/NA-ion_README.md 의 Charge/discharge protocols 표` | 부재확인 | **미정** |
 | `META-009` | NA-ion README 본문의 25도 단일 서술과 표의 온도가 맞는가 | 미조사 | 확인 · `READMEs/NA-ion_README.md 본문 3행 대 Charge/discharge protocols 표` | 부재확인 | **미정** |
+| `META-010` | 논문 Table 2 의 도메인별 셀 수와 코드 분할의 셀 수가 같은가 | 확인 · `논문 Table 2 (The data statistics of each part in BatteryLife)` | 미조사 | 확인 · `BatteryLife/data_provider/data_split_recorder.py (MIX_large · ZNcoin · NAion_2021 · CALB 의 train+val+test 합)` | **불일치** |
 | `REP-001` | BatteryLife 와 BatteryMFormer 의 동명 파일 13개가 전부 다른가 | 미조사 | 미조사 | 확인 · `upstream/BatteryLife 대 upstream/BatteryMFormer 동명 파일 비교` | **미정** |
+| `REP-002` | BatteryLife 의 SOC span 나눗셈이 다른 논문에서 공식화되어 있는가 | 확인 · `BatteryMFormer 논문 2.2절 식 (2)` | 미조사 | 확인 · `BatteryLife/process_scripts/Extract_life_labels.py:117-121` | **일치** |
 | `TRN-001` | deepspeed 가 학습에 필수인가 | 미조사 | 부재확인 | 확인 · `BatteryLife/run_main.py:136-137` | **미정** |
 | `TRN-002` | wandb 가 학습에 필수인가 | 미조사 | 부재확인 | 확인 · `BatteryLife/run_main.py:13, :224-231` | **미정** |
 | `TRN-003` | Transformer 실행 스크립트가 배포되는가 | 미조사 | 부재확인 | 확인 · `BatteryLife/models/Transformer.py` | **미정** |
@@ -64,6 +68,9 @@
 | `TRN-009` | Li-ion(MIX_large) 열의 3회 반복을 어떻게 얻는가 | 확인 · `논문 4.1절` | 확인 · `BatteryLife/assets/Selected_hyperparameters.md:13-62` | 확인 · `BatteryLife/data_provider/data_split_recorder.py 속성 목록 대 data_loader.py:164-203` | **불일치** |
 | `TRN-010` | MIX_large 를 배포 데이터로 로딩할 수 있는가 | 미조사 | 미조사 | 확인 · `BatteryLife/data_provider/data_loader.py:443 대 :487` | **미정** |
 | `TRN-011` | Li-ion(MIX_large 계열) 을 이 기계에서 학습 데이터로 올릴 수 있는가 | 미조사 | 미조사 | 확인 · `BatteryLife/data_provider/data_loader.py:234` | **미정** |
+| `TRN-012` | Zn-ion 의 문서 지정 학습률로 학습이 진행되는가 | 조사했으나불명 | 확인 · `BatteryLife/assets/Selected_hyperparameters.md:18-20 및 :30-32` | 확인 · `runs/20260804-154322_CPMLP_Zn-ion_s{2021,42,2024}.log 및 CPTransformer 3개 대 runs/zn_lr9.log` | **근거불명** |
+| `TRN-013` | 최적 모델을 무엇을 기준으로 고르는가 | 확인 · `논문 4.1절` | 미조사 | 확인 · `BatteryLife/run_main.py:371, :374` | **일치** |
+| `TRN-014` | UL_PUR 셀 일부가 데이터셋에서 빠진 이유가 무엇인가 | 확인 · `논문 부록 A.1 (Data Preprocessing)` | 미조사 | 확인 · `BatteryLife/data_provider/data_split_recorder.py:27-29 대 data/extracted/UL_PUR/ 의 pkl 10개` | **일치** |
 | `VER-001` | v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가 | 미조사 | 확인 · `Zenodo record 19688272 (v11) 과 21149533 (v12) 의 Files 표` | 확인 · `manifests/data_md5.txt (v11 20개 전체) + data/zenodo_v11/ 실측 md5 8개` | **미정** |
 | `VER-002` | v11 과 v12 각각의 다운로드 용량과 해제 후 디스크 소요 | 미조사 | 확인 · `Zenodo record 19688272 Files 표` | 확인 · `data/zenodo_v11/ 과 data/extracted/ 실측 (117호, 2026-08-03, v11 20개 전부)` | **미정** |
 
@@ -169,7 +176,7 @@
 **판정: 코드전용** — 논문에서 찾아봤고 없었습니다
 
 - **paper** — 부재확인
-    - searched: 논문 전문 검색 — SOC · span · partial cycling 관련 서술 없음. 이 결과는 데이터셋 보고서 v2 작성 과정에서 사람이 수행한 검색이며 CC 가 논문을 직접 읽어 확인한 것이 아닙니다. 슬롯을 닫을지는 사람이 정합니다
+    - searched: 논문 전문 검색 — SOC · span · partial cycling 관련 서술 없음. 이 결과는 데이터셋 보고서 v2 작성 과정에서 사람이 수행한 검색이며 CC 가 논문을 직접 읽어 확인한 것이 아닙니다. 슬롯을 닫을지는 사람이 정합니다. **2026-08-05 추가** — 같은 나눗셈이 BatteryMFormer 논문 2.2절 식 (2)에는 SOH = Qd_i / (Qd_0 x DoD) 로 명시되어 있습니다(REP-002). 이 슬롯은 BatteryLife 논문을 보는 자리이므로 부재확인 을 그대로 두었습니다 — 두 논문을 한 슬롯으로 볼지는 사람이 정합니다
 - **upstream_doc** — 미조사
 - **code** — 확인
     - locus: BatteryLife/process_scripts/Extract_life_labels.py:117-121
@@ -336,6 +343,22 @@
 - **note** — 2026-08-03 v11 전수 관찰. verify/labels.py 에 --variant discharge_denom 을 더해 확인했습니다. 이 변형은 ISU_ILCC 에만 걸리며 다른 17개 서브셋에서는 code 와 한 셀도 갈리지 않는 것을 확인했습니다(갈리는 셀 155개가 전부 ISU_ILCC). 잔여 1셀은 ISU-ILCC_G14C4 이고 분모 문제가 아닙니다 — 이 셀만 외삽 분기를 타서 재현 166 대 배포 169 로 갈립니다(Qc1 0.1936 · Qd1 0.1903 · 사이클 168). ISU_ILCC 240셀 중 181셀이 자기만의 SOC_interval 값을 갖고 59셀이 [0, 1] 을 공유하는데, 후자는 Qc1 이 0.25 이상이라 span 이 1 로 잘린 셀입니다. **이 결과가 방전 기준이 옳다는 뜻은 아닙니다.** 배포 라벨을 무엇으로 만들었는지를 좁힌 것이고, 상위 코드가 무엇을 하는지는 위 value 그대로입니다. 어느 쪽이 옳은지는 논문 정의를 봐야 하며 아직 보지 않았습니다. 표는 LABEL_REPORT.md 2절.
 - **anchors** — EXTRACT_LABELS_SOC_SPAN
 
+### `LAB-018` — 수명 라벨 100 셀을 제외하는가 남기는가 - 부등호 경계
+
+**판정: 불일치** — 논문 '수명 라벨 100 이하 셀 제외' 대 코드 '수명 라벨 100 미만 셀 제외'
+
+- **paper** — 확인
+    - locus: 논문 부록 A.1 (Data Preprocessing)
+    - value: 수명 라벨 100 이하 셀 제외
+    - searched: 부록 A.1 전문. 원문은 'As for BatteryLife, we further excluded the batteries whose life labels are no larger than 100' 이며 no larger than 100 은 100 이하입니다
+    - checked_by: CC
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/data_provider/data_split_recorder.py ZNcoin_* 3분할 대 Life labels/ZN-coin_labels.json, BatteryLife/process_scripts/Extract_life_labels.py:157-158
+    - value: 수명 라벨 100 미만 셀 제외
+    - checked_by: CC
+- **note** — 2026-08-05 실측. 배포 ZN-coin_labels.json 은 키 121개이고 그중 수명이 100 이하인 것이 22셀입니다. 그런데 ZNcoin 분할(train 60 + val 20 + test 20 = 100)에서 빠진 것은 21셀뿐이고, 빠진 21셀의 수명은 12 13 13 18 21 28 30 50 51 54 62 63 63 70 73 75 90 90 90 95 98 로 전부 98 이하입니다. 남은 하나는 ZN-coin_204-1_20231205230212_07_1.pkl 이고 수명이 정확히 100 이며 train 에 들어 있습니다. 분할에 쓰인 100셀의 최소 수명도 100 입니다. 즉 실제 적용된 기준은 100 미만 제외이고 논문 문장의 100 이하 제외 와 경계에서 갈립니다. 수명이 99 인 셀은 없으므로 관측만으로는 기준이 100 미만 인지 98 초과 인지까지는 좁혀지지 않습니다. 상위 코드에는 같은 취지의 분기가 주석 처리된 채 남아 있는데(Extract_life_labels.py:157-158) 주석 문구는 only keep life label >100 cells 이고 실제 조건은 if eol < 100 이라 문구와 조건도 서로 경계가 다릅니다 - 조건대로면 100 이 남고 문구대로면 100 이 빠집니다. 배포 분할은 조건 쪽과 맞습니다. 이 1셀 차이는 META-010 의 Zn-ion 100 대 95 중 1 만 설명하고 나머지 4 는 설명하지 못합니다.
+
 ### `META-001` — 화학계 59종 — 어느 pkl 필드 조합으로 세는가
 
 **판정: 미정** — code 슬롯이 미조사입니다
@@ -433,6 +456,22 @@
     - checked_by: CC
 - **note** — 2026-08-03 v11 전수 관찰. 서술과 표가 어긋난다는 것만 적습니다. 어느 쪽이 옳은지는 이 레코드가 말하지 않습니다 — 30 이 실제 시험 온도인지 표기 오류인지 확인할 방법이 배포물 안에 없습니다. 온도 열 원값은 findings/na_ion_crate.json 의 temperature_histogram 과 mapping[*].temperature_C 에 있습니다. 이 어긋남이 라벨에 영향을 주지는 않습니다 — 온도는 라벨 계산식에 들어가지 않습니다.
 
+### `META-010` — 논문 Table 2 의 도메인별 셀 수와 코드 분할의 셀 수가 같은가
+
+**판정: 불일치** — 논문 'Li-ion 837 · Zn-ion 95 · Na-ion 31 · CALB 27 (합 990)' 대 코드 'Li-ion 843 · Zn-ion 100 · Na-ion 31 · CALB 27 (합 1001)'
+
+- **paper** — 확인
+    - locus: 논문 Table 2 (The data statistics of each part in BatteryLife)
+    - value: Li-ion 837 · Zn-ion 95 · Na-ion 31 · CALB 27 (합 990)
+    - searched: 논문 본문 Table 2 의 Battery Number 행을 직접 읽었습니다. 같은 수 990 이 초록·3.1절의 데이터셋 규모 서술과도 맞습니다
+    - checked_by: CC
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/data_provider/data_split_recorder.py (MIX_large · ZNcoin · NAion_2021 · CALB 의 train+val+test 합)
+    - value: Li-ion 843 · Zn-ion 100 · Na-ion 31 · CALB 27 (합 1001)
+    - checked_by: CC
+- **note** — 2026-08-05 실측. 분할 목록을 그대로 세었습니다 - MIX_large 843 · ZNcoin 100 · NAion_2021 31 · CALB 27. seed 변형(ZN_42 ZN_2024 CALB_42 CALB_2024 NAion_42 NAion_2024)도 셀 풀 크기는 같습니다. **Na-ion 과 CALB 는 논문과 정확히 같고, Li-ion 과 Zn-ion 두 도메인만 갈립니다.** Li-ion 은 843 대 837 로 6 만큼, Zn-ion 은 100 대 95 로 5 만큼 코드가 많습니다. Li-ion 의 6 은 TRN-010 의 라벨 미배포 6셀과 수가 같습니다 - 그 6셀을 빼면 837 이 되어 논문과 맞습니다. 다만 그것이 저자의 의도였는지는 확인하지 않았습니다. Zn-ion 의 5 는 LAB-018 의 경계 문제(100 이하 제외인가 100 미만 제외인가)로는 1 밖에 설명되지 않아 나머지 4 는 미설명입니다. MIX_all 계열(1001셀)이 이 합과 같은 것은 우연이 아니라 정의입니다 - MIX_all 은 네 도메인 분할을 그대로 이어붙인 것입니다(data_split_recorder.py:96-98).
+
 ### `REP-001` — BatteryLife 와 BatteryMFormer 의 동명 파일 13개가 전부 다른가
 
 **판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
@@ -443,6 +482,23 @@
     - locus: upstream/BatteryLife 대 upstream/BatteryMFormer 동명 파일 비교
     - value: 동명 파일 13개가 전부 상이
 - **note** — 병합 불가의 근거입니다. 두 저장소를 하나로 합치거나 한쪽 코드를 다른 쪽에 끼워 쓰면 안 됩니다. 재검증 방법은 04 노트북에 있습니다. 어느 13개인지 파일 목록을 code 슬롯에 채워 넣으십시오.
+
+### `REP-002` — BatteryLife 의 SOC span 나눗셈이 다른 논문에서 공식화되어 있는가
+
+**판정: 일치** — 양쪽 값이 같습니다
+
+- **paper** — 확인
+    - locus: BatteryMFormer 논문 2.2절 식 (2)
+    - value: SOH = 사이클 방전용량 / (기준 용량 × 방전깊이)
+    - searched: BatteryMFormer 논문 2.2절 Degradation Trajectory. 식 (2)는 SOH_i = Qd_i / (Qd_0 x DoD) 이고 본문이 DoD 를 the depth of discharge 로, Qd_0 를 CALB 를 제외한 전 데이터셋에서 nominal capacity 로 정의합니다. CALB 는 BatteryLife 의 CALB 프로토콜을 따라 첫 사이클 방전용량을 씁니다
+    - checked_by: CC
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/process_scripts/Extract_life_labels.py:117-121
+    - value: SOH = 사이클 방전용량 / (기준 용량 × 방전깊이)
+    - checked_by: CC
+- **note** — 2026-08-05. LAB-005 가 근거를 못 찾던 나눗셈 - soh = Qd / nominal / (SOC_interval[1] - SOC_interval[0]) - 이 BatteryMFormer 논문에서는 식으로 명시되어 있습니다. SOC 구간의 폭이 곧 방전깊이(DoD)이므로 코드의 나눗셈은 그 식의 DoD 항과 자리가 같습니다. **이것이 LAB-005 를 닫지는 않습니다.** 세 가지 때문입니다. 첫째 BatteryMFormer 는 BatteryLife 와 다른 논문이며 뒤에 나온 것이라, 이 식이 BatteryLife 배포 라벨을 만들 때의 근거였다고 말할 수 없습니다. 둘째 논문은 DoD 를 쓰는 이유(부분 구간만 순환한 셀을 전구간 기준으로 되돌리는 보정인지)를 설명하지 않고 정의만 둡니다. 셋째 LAB-005 가 실제로 문제 삼는 것은 같은 나눗셈이 서브셋에 따라 정반대로 작동한다는 것(RWTH 48셀·SNL 4셀은 배포 라벨을 맞추고 MICH_EXP 6셀은 라벨을 없앰)인데 식은 그것을 설명하지 않습니다. LAB-005 의 paper 슬롯을 부재확인 그대로 둔 이유가 이것입니다 - 그 슬롯이 보는 것은 BatteryLife 논문입니다. 두 논문을 한 슬롯으로 볼지는 사람이 정할 일입니다. 식 (2)의 CALB 예외는 LAB-004 의 CALB 만 0.9 와도 방향이 닿아 있습니다.
+- **anchors** — EXTRACT_LABELS_SOC_SPAN
 
 ### `TRN-001` — deepspeed 가 학습에 필수인가
 
@@ -520,7 +576,7 @@
     - locus: BatteryLife/data_provider/data_split_recorder.py:27-29
     - value: UL_PUR_train_files 2개, UL_PUR_val_files 는 빈 리스트, UL_PUR_test_files 도 빈 리스트입니다
     - checked_by: CC
-- **note** — 디스크에는 UL_PUR pkl 이 10개 있는데 분할 정의는 2개만 씁니다. MIX_large 안에서는 이 2셀이 train 에 들어가므로 문제가 드러나지 않습니다. --dataset UL_PUR 단독 실행에서만 val 과 test 가 비어 검증이 성립하지 않습니다. 단독 실행을 의도한 분기인지는 확인 전입니다.
+- **note** — 디스크에는 UL_PUR pkl 이 10개 있는데 분할 정의는 2개만 씁니다. MIX_large 안에서는 이 2셀이 train 에 들어가므로 문제가 드러나지 않습니다. --dataset UL_PUR 단독 실행에서만 val 과 test 가 비어 검증이 성립하지 않습니다. 단독 실행을 의도한 분기인지는 확인 전입니다. **2026-08-05 추가** - 10개 중 8개가 빠진 이유는 논문 부록 A.1 에 있습니다(TRN-014). 다만 그것은 이 레코드의 질문(단독 분기로 검증이 성립하는가)에 대한 답이 아니므로 이 레코드의 paper 슬롯은 미조사 그대로 두었습니다. 논문이 단독 실행 분할을 서술하는지는 아직 보지 않았습니다.
 
 ### `TRN-007` — 셸 스크립트의 하이퍼파라미터가 Selected_hyperparameters.md 와 일치하는가
 
@@ -547,7 +603,7 @@
     - locus: BatteryLife/models/Transformer.py:71 및 :113 대 run_main.py:102 및 :322
     - value: 실행 불가입니다. 첫째 Transformer.py:71 이 configs.num_class 를 읽는데 run_main.py:102 의 인자명은 --class_num 이라 Model(args) 생성 시점에 AttributeError 로 죽습니다(2026-08-04 실측). 둘째 생성이 되더라도 forward 시그니처가 x_enc x_mark_enc x_dec x_mark_dec 로 위치인자 4개를 요구하는데 run_main.py:322 는 model(cycle_curve_data, curve_attn_mask) 로 2개만 넘깁니다. 셋째 배치 텐서가 [B,100,300,3] 4차원인데 Transformer 의 DataEmbedding 은 3차원을 가정합니다. 같은 조건에서 MLP CPMLP CPTransformer 는 셋 다 생성과 2인자 호출이 통과합니다
     - checked_by: CC
-- **note** — 논문 Table 3 은 Transformer 를 네 도메인 전부 - 로 적고 캡션에서 그것을 out of memory 로 설명합니다. 그러나 배포된 코드에서는 메모리에 닿기 전에 AttributeError 로 멈춥니다. configs.num_class 를 쓰는 모델은 Transformer.py 하나뿐이고 나머지는 class_num 또는 output_num 을 씁니다. 배포 코드가 논문 실험에 쓰인 판본과 다를 가능성이 있으나 확인 전이며 사실로 기록하지 않습니다. 우리 환경에서 OOM 재현을 시도하려면 이 결함을 먼저 넘어야 하고 넘는 순간 상위 코드를 고친 것이 되어 논문과 같은 조건이 아닙니다.
+- **note** — **2026-08-05 보강 - 논문의 OOM 표기 자체는 규모로 보면 타당합니다.** 상위 코드는 사이클링 데이터를 3 x 30,000 으로 리샘플링합니다(부록 B.2). 바닐라 Transformer 는 이 길이에 그대로 어텐션을 걸므로 어텐션 행렬 하나가 30,000 x 30,000 = 9억 원소이고, float32 로 3.6 GB 짜리가 층마다 배치마다 생깁니다. CyclePatch 계열은 사이클 하나를 토큰 하나로 접어 100 x 100 = 1만 원소가 되므로 9만분의 1 입니다. 즉 Transformer 가 메모리에서 막힌다는 주장 자체는 이 규모 차이와 방향이 맞습니다. **그러나 배포 코드에서 우리가 실제로 만난 것은 OOM 이 아니라 AttributeError 이며, 그것은 메모리에 닿기 전입니다.** 규모 계산이 타당하다는 것과 배포 코드가 그 지점까지 간다는 것은 다른 말이고, 우리가 실측한 것은 후자뿐입니다. 아래는 그 실측입니다. 논문 Table 3 은 Transformer 를 네 도메인 전부 - 로 적고 캡션에서 그것을 out of memory 로 설명합니다. 그러나 배포된 코드에서는 메모리에 닿기 전에 AttributeError 로 멈춥니다. configs.num_class 를 쓰는 모델은 Transformer.py 하나뿐이고 나머지는 class_num 또는 output_num 을 씁니다. 배포 코드가 논문 실험에 쓰인 판본과 다를 가능성이 있으나 확인 전이며 사실로 기록하지 않습니다. 우리 환경에서 OOM 재현을 시도하려면 이 결함을 먼저 넘어야 하고 넘는 순간 상위 코드를 고친 것이 되어 논문과 같은 조건이 아닙니다.
 
 ### `TRN-009` — Li-ion(MIX_large) 열의 3회 반복을 어떻게 얻는가
 
@@ -589,7 +645,56 @@
     - locus: BatteryLife/data_provider/data_loader.py:234
     - value: Dataset_original.__init__ 끝의 np.any(np.isnan(self.total_charge_discharge_curves)) 가 리스트를 통째로 float64 배열로 만듭니다. Li-ion train 은 (50300, 100, 3, 300) float64 = 33.7 GiB 한 덩어리입니다. 2026-08-04 실측 두 번 - 한 번은 통과(387.5초), 한 번은 numpy.core._exceptions._ArrayMemoryError: Unable to allocate 33.7 GiB for an array with shape (50300, 100, 3, 300) and data type float64 로 실패했습니다. 이 기계는 물리 RAM 15.1 GiB, 커밋 한도 44.5 GiB(pagefile 29.4 GiB)입니다. val 은 (16200,...) 10.9 GiB, test 는 (15800,...) 10.6 GiB, Zn-ion train 은 (5900,...) 4.0 GiB, CALB train 은 (1689,...) 1.1 GiB 입니다
     - checked_by: CC
-- **note** — 같은 명령이 통과하기도 실패하기도 했습니다. 갈린 것은 실행 시점의 사용 가능 커밋 용량입니다 - 성공했을 때는 여유가 있었고 실패했을 때는 18.8 GiB 였습니다. 왜 float64 인지, 왜 전체를 한 배열로 만드는지는 확인하지 않았습니다. 이 줄은 NaN 검사만 하므로 셀 단위로 나눠 검사해도 결과가 같을 것으로 보이지만, 그것은 추정이고 upstream 을 고치지 않았으므로 확인하지 않았습니다. Li-ion 로딩이 val 118.7초 test 114.2초인 데 비해 train 이 387.5초로 유독 긴 것도 이 배열의 페이징과 방향이 맞지만 인과를 확인하지는 않았습니다. CALB ZN-coin NAion 세 도메인은 배열이 4 GiB 이하라 이 경로에서 문제가 없습니다.
+- **note** — 같은 명령이 통과하기도 실패하기도 했습니다. 갈린 것은 실행 시점의 사용 가능 커밋 용량입니다 - 성공했을 때는 여유가 있었고 실패했을 때는 18.8 GiB 였습니다. 왜 float64 인지, 왜 전체를 한 배열로 만드는지는 확인하지 않았습니다. 이 줄은 NaN 검사만 하므로 셀 단위로 나눠 검사해도 결과가 같을 것으로 보이지만, 그것은 추정이고 upstream 을 고치지 않았으므로 확인하지 않았습니다. Li-ion 로딩이 val 118.7초 test 114.2초인 데 비해 train 이 387.5초로 유독 긴 것도 이 배열의 페이징과 방향이 맞지만 인과를 확인하지는 않았습니다. CALB ZN-coin NAion 세 도메인은 배열이 4 GiB 이하라 이 경로에서 문제가 없습니다. **2026-08-05 갱신** - 가상 메모리를 64 GB 로 늘린 뒤 Li-ion 9회가 전부 완주했습니다. 배열 크기는 그대로이고 커밋 여유만 달라졌으므로, 위 관찰(갈린 것은 커밋 용량이다)과 방향이 같습니다.
+
+### `TRN-012` — Zn-ion 의 문서 지정 학습률로 학습이 진행되는가
+
+**판정: 근거불명** — 찾아봤으나 근거를 못 댔습니다. 값은 코드에 있습니다
+
+- **paper** — 조사했으나불명
+    - searched: 논문 4.1절과 부록 B.1 을 봤습니다. B.1 은 탐색 범위(batch size · learning rate · dropout · embedding dimension)와 검증 MAPE 최저 기준으로 골랐다는 절차만 적고, (모델 도메인 seed) 별로 고른 값은 논문에 실려 있지 않습니다. 즉 Zn-ion 만 학습률이 다른 이유를 논문에서 댈 수 없습니다. 이 검색은 PDF 텍스트 추출로 했고 수식·표의 일부 글리프가 유실되므로 사람이 눈으로 다시 볼 여지가 있습니다
+    - checked_by: CC
+- **upstream_doc** — 확인
+    - locus: BatteryLife/assets/Selected_hyperparameters.md:18-20 및 :30-32
+    - value: Zn-ion 만 학습률이 다릅니다 - CPMLP 는 세 seed 전부 0.0005, CPTransformer 는 세 seed 전부 0.001 입니다. 같은 문서에서 Li-ion · Na-ion · CALB 는 두 모델 모두 5e-05 입니다
+    - checked_by: CC
+- **code** — 확인
+    - locus: runs/20260804-154322_CPMLP_Zn-ion_s{2021,42,2024}.log 및 CPTransformer 3개 대 runs/zn_lr9.log
+    - value: 문서 학습률로는 훈련 손실이 내려가지 않습니다. CPMLP/Zn-ion/2021 은 1에폭 1.04550 이후 17에폭까지 1.0046~1.0081 구간에 머물다 조기 종료했습니다. 세 모델 3 seed 평균 MAPE 는 MLP 1.215 · CPMLP 1.065 · CPTransformer 0.642 였습니다. 학습률만 다른 세 도메인과 같은 5e-05 로 낮춘 뒤에는 CPMLP 0.629 · CPTransformer 0.509 로 내려갔습니다. MLP 은 애초에 문서에 없어 셸 값 5e-05 를 쓰고 있었으므로 1.215 로 변동이 없습니다
+    - checked_by: CC
+- **note** — 2026-08-05. 학습률 외의 후보 둘은 반증했습니다 - 배치를 절반(128 -> 64)으로 줄인 _x2_batch 는 MAPE 1.1999 로 오히려 나빴고, patience 를 늘린 _x3_patience 는 0.9473 으로 기준 실행과 같은 값이었습니다. 학습률만 5e-05 로 낮춘 _x1_lr 이 0.6375 로 유일하게 개선했습니다. 진단 스크립트와 로그는 .build/batterylife/_diagnostics/ 와 runs/2026-08-04/zn_x*.log 에 있습니다. **왜 이 도메인만 그런지는 확인하지 않았습니다.** 손실이 1.00 근처에 고정된 것은 정규화된 라벨 기준으로 모델이 평균만 내놓는 상태와 방향이 같아 보이지만 그것은 추정이고 확인하지 않았습니다. 표에 넣은 Zn-ion 값은 5e-05 로 낮춘 쪽이며 문서 조건과 다릅니다 - docs/PLAN.md 7-3 각주 참조.
+
+### `TRN-013` — 최적 모델을 무엇을 기준으로 고르는가
+
+**판정: 일치** — 양쪽 값이 같습니다
+
+- **paper** — 확인
+    - locus: 논문 4.1절
+    - value: 검증 세트 기준으로 고른다
+    - searched: 4.1절 원문은 'select the best-performing hyperparameters based on the validation set' 입니다
+    - checked_by: CC
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/run_main.py:371, :374
+    - value: 검증 세트 기준으로 고른다
+    - checked_by: CC
+- **note** — 2026-08-05 확인. run_main.py:371 이 vali_loss = vali_mape 로 두고 :374 의 if vali_loss < best_vali_loss 에서 최적 에폭을 갱신합니다. 같은 블록에서 시험 지표(best_test_MAPE 등)도 함께 저장되지만 **고르는 데는 쓰이지 않고 기록만 됩니다.** 즉 Best model performance 로 찍히는 시험 지표는 검증 MAPE 가 가장 낮았던 에폭의 시험 값입니다. 시험 성능으로 고르는 누수는 없습니다. 논문과 코드가 같은 방향이라 판정은 일치이며, 두 슬롯의 value 를 같은 문장으로 적은 것은 이 하니스가 문자열 일치로 판정을 유도하기 때문입니다(verify/render.py:109). 세부는 각 locus 를 보십시오.
+
+### `TRN-014` — UL_PUR 셀 일부가 데이터셋에서 빠진 이유가 무엇인가
+
+**판정: 일치** — 양쪽 값이 같습니다
+
+- **paper** — 확인
+    - locus: 논문 부록 A.1 (Data Preprocessing)
+    - value: UL_PUR 셀 일부가 제거되었다
+    - searched: 부록 A.1 전문. 원문은 'we found that some batteries in the UL_PUR dataset contain sudden significant SOH drops without recovery. We conjecture that these drops are caused by equipment faults and thus removed these batteries' 입니다. 즉 회복 없는 급격한 SOH 하락을 장비 결함으로 추정해 제거했다고 적습니다
+    - checked_by: CC
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/data_provider/data_split_recorder.py:27-29 대 data/extracted/UL_PUR/ 의 pkl 10개
+    - value: UL_PUR 셀 일부가 제거되었다
+    - checked_by: CC
+- **note** — 2026-08-05. TRN-006 에서 관찰만 해 두었던 비대칭(디스크 pkl 10개 대 분할이 쓰는 2개)의 이유가 논문 부록 A.1 에 있습니다. **다만 논문은 몇 셀을 뺐는지도, 어느 셀인지도 적지 않습니다.** 따라서 빠진 8셀이 전부 그 사유로 빠진 것인지는 이 레코드가 말하지 않습니다 - 논문이 제시하는 것은 사유이고 코드가 보여주는 것은 결과이며, 둘을 셀 단위로 맞춰본 것은 아닙니다. 어느 셀이 어떤 SOH 궤적을 갖는지 대조하려면 UL_PUR 10셀의 궤적을 직접 그려야 하고 아직 하지 않았습니다. 판정을 일치로 유도하기 위해 두 슬롯의 value 를 같은 문장으로 적었습니다 - 비교되는 주장은 'UL_PUR 셀 일부가 제거되었다' 하나입니다. TRN-006 은 다른 질문(단독 분기로 검증이 성립하는가)이라 그대로 두었습니다.
 
 ### `VER-001` — v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가
 

@@ -1,16 +1,25 @@
-설치 순서 주의
-1. torch 를 cu128 채널에서 먼저 설치
-2. requirements 설치 시 torch·deepspeed·numpy·pandas·scipy·scikit 제외
-3. 그래도 accelerate 의 torch>=1.10.0 해석으로 torch 가 2.4.1(비 cu128)로
-   되돌아간다. 설치 후 반드시 재확인하고 --force-reinstall 로 복구할 것
-4. fsspec 이 datasets 2.19.0 상한을 넘는 경고가 남지만 학습에는 무관
-5. wandb 는 requirements.txt 에 없지만 run_main.py:13 이 import 하고
-   :224 가 wandb.init 을 무조건 부른다. 없으면 학습이 시작되지 않는다.
-   2026-08-04 에 pip install -c envs\constraints.txt wandb 로 추가했다.
-   torch 는 변동 없다 (2.11.0+cu128 유지).
-6. deepspeed 는 설치할 수 없다 — nvcc 도 MSVC 도 없다. run_main.py 는
-   이것을 무조건 쓰므로 .build/batterylife/run_main_nodeepspeed.py 로
-   우회한다. 학습 조건이 다르다. RUN.md 8-1 참조.
+# 설치 순서 주의
+# 1. torch 를 cu128 채널에서 먼저 설치
+# 2. requirements 설치 시 torch·deepspeed·numpy·pandas·scipy·scikit 제외
+# 3. 그래도 accelerate 의 torch>=1.10.0 해석으로 torch 가 2.4.1(비 cu128)로
+#    되돌아간다. 설치 후 반드시 재확인하고 --force-reinstall 로 복구할 것
+# 4. fsspec 이 datasets 2.19.0 상한을 넘는 경고가 남지만 학습에는 무관
+# 5. wandb 는 requirements.txt 에 없지만 run_main.py:13 이 import 하고
+#    :224 가 wandb.init 을 무조건 부른다. 없으면 학습이 시작되지 않는다.
+#    2026-08-04 에 pip install -c envs\constraints.txt wandb 로 추가했다.
+#    torch 는 변동 없다 (2.11.0+cu128 유지).
+# 6. deepspeed 는 설치할 수 없다 — nvcc 도 MSVC 도 없다. run_main.py 는
+#    이것을 무조건 쓰므로 .build/batterylife/run_main_nodeepspeed.py 로
+#    우회한다. 학습 조건이 다르다. RUN.md 8-1 참조.
+#
+# 위 주석에 # 를 붙인 이유 (2026-08-05): verify/lock.py 의 _pip_freeze_digest
+# 는 # 로 시작하지 않는 줄을 전부 해시에 넣습니다. 주석이 맨줄이면 설명을
+# 한 글자만 고쳐도 env blife 해시가 깨지고, 그것은 환경이 바뀐 것과 다릅니다.
+#
+# BatteryML 편집설치 줄을 로컬 경로 형태로 둔 것도 같은 이유입니다. 지금
+# pip freeze 는 이 줄을 git URL + 커밋 해시로 뱉는데, 그러면 커밋할 때마다
+# 환경 해시가 바뀝니다. 패키지 구성은 이 파일과 현재 venv 가 88개 전부
+# 같습니다 (2026-08-05 대조).
 
 accelerate==0.29.3
 addict==2.4.0
