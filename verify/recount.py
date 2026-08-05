@@ -20,7 +20,7 @@
 ``generated`` 를 null 로 둡니다. 이 파일은 ``LOCK.md`` 의 해시 대상이고,
 해시가 시계에 따라 달라지면 "모두가 같은 것을 본다" 가 성립하지 않습니다.
 같은 데이터 · 같은 코드면 언제 돌려도 같은 바이트여야 합니다. 언제 돌렸는지는
-``CC_REPORT.md`` 와 ``experiments/results/LABEL_REPORT.md`` 에 적습니다.
+``docs/reports/`` 의 보고서와 ``experiments/results/LABEL_REPORT.md`` 에 적습니다.
 """
 
 from __future__ import annotations
@@ -306,7 +306,7 @@ def recount(dataset_root, metas: list, *, subsets_present: list) -> dict:
     result["excluded"] = list(EXCLUDED_SUBSETS)
     result["notes"] = [
         "보유한 서브셋만 셉니다. 미보유 서브셋은 subsets_present 에 없으며, 여기 없는 것을 0 으로 읽지 마십시오.",
-        "generated 를 null 로 둡니다. 이 파일은 LOCK 의 해시 대상이라 시계에 따라 바이트가 달라지면 안 됩니다. 실행 시각은 CC_REPORT.md 에 있습니다.",
+        "generated 를 null 로 둡니다. 이 파일은 LOCK 의 해시 대상이라 시계에 따라 바이트가 달라지면 안 됩니다. 실행 시각은 docs/reports/ 의 보고서에 있습니다.",
         "total_MICH 는 배포 zip 이 아니라 로컬 산출물이므로 제외했습니다 (META-005). 다만 Life labels/ 에는 total_MICH_labels.json 이 실제로 배포되어 있습니다.",
         "temperature_in_C 는 셀 메타가 아니라 사이클마다의 시계열입니다. 유한한 값이 하나라도 있는 셀만 보유로 셉니다.",
         "temperature_median_C 는 측정값의 중앙값이지 시험 설정 온도가 아닙니다.",

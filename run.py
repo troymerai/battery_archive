@@ -246,7 +246,7 @@ def cmd_labels(args) -> int:
         from verify import report
     except ImportError as error:
         print(f"필요한 패키지가 없습니다: {error}", file=sys.stderr)
-        print("    python -m pip install -r requirements.txt", file=sys.stderr)
+        print("    python -m pip install -r envs/requirements.txt", file=sys.stderr)
         return 1
 
     stamp = args.stamp or datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -320,7 +320,7 @@ def cmd_notebook(args) -> int:
     except FileNotFoundError:
         print(
             "\njupyter 를 찾지 못했습니다. 설치하십시오:\n"
-            "    python -m pip install -r requirements.txt",
+            "    python -m pip install -r envs/requirements.txt",
             file=sys.stderr,
         )
         return 1

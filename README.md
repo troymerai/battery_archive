@@ -60,6 +60,21 @@ HuggingFace 캐시 경로가 260자를 넘습니다.
 
 ---
 
+## 어디에 무엇이 있는가
+
+| 파일 | 무엇 |
+|---|---|
+| `LOCK.md` | 잠금 항목 (digest / interval). "모두가 같은 것을 본다" 의 계약서 |
+| `docs/RUN.md` | 학습 실행법. 36회 실행 명령 · 권장 순서 · **조건 차이표** |
+| `docs/PLAN.md` | 논문 Table 3 재현 실행 목록과 소요 시간 추정 |
+| `docs/reports/` | 작업 보고서. 날짜순 누적 |
+
+**보고서는 `docs/reports/YYYY-MM-DD_<작업명>.md` 에 새로 만듭니다.** 루트에
+`CC_REPORT.md` 를 만들지 않고, 기존 보고서를 덮어쓰지도 않습니다 — 덮어쓰면
+무엇을 언제 알았는지가 사라집니다.
+
+---
+
 ## 무엇을 하는 저장소인가
 
 **현 시점 상위 저장소 코드의 동작을 확정합니다. 논문 재현이 아닙니다.**
@@ -136,7 +151,7 @@ python run.py labels --recount            메타 재집계도 함께 (findings/r
 ## 처음 시작할 때
 
 ```
-1. python -m pip install -r requirements.txt
+1. python -m pip install -r envs/requirements.txt
 2. copy config.env.example config.env      경로를 자기 기계에 맞게 고칩니다
 3. python run.py check                     지금 상태를 봅니다
 4. python run.py papers                    논문 PDF 3편
@@ -163,6 +178,17 @@ python run.py labels --recount            메타 재집계도 함께 (findings/r
 LOCK.md              잠금 항목 (digest / interval)
 run.py               유일한 공식 진입점
 Makefile             run.py 를 호출만 하는 껍데기 (선택)
+
+docs/                사람이 읽는 문서
+  RUN.md             학습 실행법 (36회 목록 · 조건 차이표)
+  PLAN.md            논문 Table 3 재현 실행 목록과 소요 추정
+  OPEN_QUESTIONS.md  사람이 정해야 할 것
+  reports/           작업 보고서. 날짜순으로 **누적**합니다
+
+envs/                환경 고정
+  requirements.txt   설치 목록
+  blife-win.txt      이 기계의 실제 설치본
+  constraints.txt    torch 재설치를 막는 제약
 
 upstream/            남의 코드 전부. 읽기 전용 — 한 글자도 고치지 않습니다
   PROVENANCE.md      입수 경로 · 커밋 · 라이선스

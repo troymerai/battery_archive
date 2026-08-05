@@ -92,7 +92,7 @@ v11 과 v12 는 세 파일에서 갈립니다 — `XJTU.zip` · `Life labels.zip
 
 `experiments/results/prev_6subset/` 는 6서브셋 440셀 시절의 **보존 사본**
 이라 현재 상태의 기준이 아닙니다. `experiments/results/LABEL_REPORT.md` 와
-`CC_REPORT.md` 도 잠그지 않습니다 — 사람이 읽는 글이라 표현을 고치면 해시가
+`docs/reports/` 아래 보고서도 잠그지 않습니다 — 사람이 읽는 글이라 표현을 고치면 해시가
 바뀌는데, 그것은 결과가 달라진 것과 다릅니다. 잠그는 것은 **정규화 JSON**
 뿐입니다.
 

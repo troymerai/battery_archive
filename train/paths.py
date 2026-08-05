@@ -206,7 +206,7 @@ def build_all(relative_dir: str, pattern: str = "*.sh",
     return results
 
 
-def _variant_rules(dataset, model, epochs, port, workers) -> list:
+def _variant_rules(dataset, model, epochs, port, workers, hparams=None) -> list:
     """모델·데이터셋만 갈아끼웁니다. **학습 하이퍼파라미터는 건드리지 않습니다.**
 
     원본 스크립트는 모델마다 다르게 튜닝되어 있습니다. 학습률·층수·d_model 을
@@ -219,8 +219,9 @@ def _variant_rules(dataset, model, epochs, port, workers) -> list:
     """
     rules = []
     if dataset:
-        # ``dataset=MIX_large # MIX_large`` — 뒤의 주석은 남깁니다.
-        rules.append((re.compile(r"^(\s*dataset=)\S+", re.M),
+        # ``dataset=MIX_large # MIX_large`` — 뒤의 주석까지 지웁니다. 값만
+        # 갈아끼우면 ``dataset=CALB # MIX_large`` 가 되어 읽는 사람을 속입니다.
+        rules.append((re.compile(r"^(\s*dataset=)\S+[^\S\n]*(?:#[^\n]*)?", re.M),
                       rf"\g<1>{dataset}", "dataset"))
     if model:
         rules += [
@@ -239,6 +240,12 @@ def _variant_rules(dataset, model, epochs, port, workers) -> list:
         # 8 · 32 로 리터럴이라 이미 걸리지만, 여기서 한 번 더 못박습니다.
         rules.append((re.compile(r"--num_workers\s+\S+"),
                       f"--num_workers {workers}", "--num_workers"))
+    # ``hparams`` 는 **논문 문서**(assets/Selected_hyperparameters.md)가 지정한
+    # 값을 셸 변수 대입에 덮어씁니다. 문서가 지정하지 않은 항목은 여기 들어오지
+    # 않으므로 원본 셸 값이 그대로 남습니다 — 그것이 의도입니다.
+    for key, value in (hparams or {}).items():
+        rules.append((re.compile(rf"^(\s*{re.escape(key)}=)\S+", re.M),
+                      rf"\g<1>{value}", f"{key} (문서값)"))
     return rules
 
 
@@ -260,7 +267,9 @@ export OMP_NUM_THREADS=4
 
 def build_variant(relative_path: str, destination, *, dataset: str = "",
                   model: str = "", epochs: str = "", port: str = "",
-                  note: str = "", config: dict | None = None) -> dict:
+                  note: str = "", config: dict | None = None,
+                  hparams: dict | None = None,
+                  header: str = "") -> dict:
     """``upstream/<relative_path>`` 을 치환 + 변형해 ``destination`` 에 씁니다.
 
     ``build()`` 와 달리 출력 경로를 직접 받습니다. 같은 원본에서 데이터셋만
@@ -279,7 +288,7 @@ def build_variant(relative_path: str, destination, *, dataset: str = "",
     text, changes = _apply(read_text(source), config)
 
     for pattern, replacement, label in _variant_rules(
-            dataset, model, epochs, port, config.get("NUM_WORKERS")):
+            dataset, model, epochs, port, config.get("NUM_WORKERS"), hparams):
         for match in pattern.finditer(text):
             before = match.group(0)
             after = pattern.sub(replacement, before, count=1)
@@ -290,6 +299,11 @@ def build_variant(relative_path: str, destination, *, dataset: str = "",
         text = pattern.sub(replacement, text)
 
     text = _PREAMBLE.format(source=relative_path, note=note or "(변형 없음)") + text
+    if header:
+        # 근거 표시는 파일을 여는 사람이 첫 화면에서 봐야 합니다. preamble 의
+        # export 줄 앞에 끼워 넣습니다.
+        text = text.replace("export PYTHONUTF8=1",
+                            header.rstrip() + "\n\nexport PYTHONUTF8=1", 1)
     write_text(destination, text)
     return {"path": destination, "source": source, "changes": changes}
 

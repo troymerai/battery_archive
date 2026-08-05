@@ -5,7 +5,7 @@
 
 # PAPER ↔ CODE MAP
 
-레코드 42개. `findings/registry.yaml` 에서 생성했습니다.
+레코드 43개. `findings/registry.yaml` 에서 생성했습니다.
 
 판정은 슬롯에서 유도한 것입니다. 판정을 바꾸려면 슬롯을 고치십시오.
 유도 규칙은 `findings/SCHEMA.md` 에 있습니다.
@@ -17,7 +17,7 @@
 | 일치 | 1 | 논문과 코드가 같다 |
 | 불일치 | 3 | 논문과 코드가 다르다 — 발견 |
 | 코드전용 | 1 | 논문에서 찾아봤고 없었다 |
-| 미정 | 37 | 아직 판정할 수 없다 (대개 논문 미조사) |
+| 미정 | 38 | 아직 판정할 수 없다 (대개 논문 미조사) |
 
 ## 레코드
 
@@ -63,6 +63,7 @@
 | `TRN-008` | Transformer 가 이 학습 루프에서 실행 가능한가 | 미조사 | 미조사 | 확인 · `BatteryLife/models/Transformer.py:71 및 :113 대 run_main.py:102 및 :322` | **미정** |
 | `TRN-009` | Li-ion(MIX_large) 열의 3회 반복을 어떻게 얻는가 | 확인 · `논문 4.1절` | 확인 · `BatteryLife/assets/Selected_hyperparameters.md:13-62` | 확인 · `BatteryLife/data_provider/data_split_recorder.py 속성 목록 대 data_loader.py:164-203` | **불일치** |
 | `TRN-010` | MIX_large 를 배포 데이터로 로딩할 수 있는가 | 미조사 | 미조사 | 확인 · `BatteryLife/data_provider/data_loader.py:443 대 :487` | **미정** |
+| `TRN-011` | Li-ion(MIX_large 계열) 을 이 기계에서 학습 데이터로 올릴 수 있는가 | 미조사 | 미조사 | 확인 · `BatteryLife/data_provider/data_loader.py:234` | **미정** |
 | `VER-001` | v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가 | 미조사 | 확인 · `Zenodo record 19688272 (v11) 과 21149533 (v12) 의 Files 표` | 확인 · `manifests/data_md5.txt (v11 20개 전체) + data/zenodo_v11/ 실측 md5 8개` | **미정** |
 | `VER-002` | v11 과 v12 각각의 다운로드 용량과 해제 후 디스크 소요 | 미조사 | 확인 · `Zenodo record 19688272 Files 표` | 확인 · `data/zenodo_v11/ 과 data/extracted/ 실측 (117호, 2026-08-03, v11 20개 전부)` | **미정** |
 
@@ -378,7 +379,10 @@
 - **paper** — 미조사
 - **upstream_doc** — 미조사
 - **code** — 미조사
-- **note** — 배포 데이터 재집계와 대조합니다. 샘플 수는 셀 수와 정의가 다릅니다 — 어떤 단위로 세는지(사이클 창? 셀당 고정 개수?)를 먼저 확정해야 합니다. 2026-08-03 재집계는 보유 6서브셋 440셀뿐이라 990 과 직접 대조되지 않습니다. total_MICH 를 집계에서 제외했습니다 — Zenodo v11 의 20개 파일에 total_MICH.zip 이 없어 배포 pkl 서브셋이 아니고, 로컬 사본을 세면 MICH 와 MICH_EXP 셀이 이중 계산됩니다. 다만 배포 Life labels.zip 안에는 total_MICH_labels.json(키 52개)이 실제로 들어 있습니다 — 라벨 파일은 배포되고 pkl 서브셋은 배포되지 않는 비대칭입니다. 재집계 결과는 findings/recount.json.
+    - locus: BatteryLife/data_provider/data_loader.py:390-393, 698-711
+    - value: total_MICH/ 는 로더가 만듭니다. 파일 이름이 MICH 로 시작하면 total_MICH/ 에서 읽고(390-393), 그 디렉터리가 없으면 merge_MICH() 가 MICH/ 와 MICH_EXP/ 의 pkl 을 그 자리에 복사해 만듭니다(698-711). 990 이라는 수 자체는 이 부근에 없습니다 — 이 슬롯의 상태를 미조사로 둔 이유입니다.
+    - checked_by: CC
+- **note** — 배포 데이터 재집계와 대조합니다. 샘플 수는 셀 수와 정의가 다릅니다 — 어떤 단위로 세는지(사이클 창? 셀당 고정 개수?)를 먼저 확정해야 합니다. 2026-08-03 재집계는 보유 6서브셋 440셀뿐이라 990 과 직접 대조되지 않습니다. total_MICH 를 집계에서 제외했습니다 — Zenodo v11 의 20개 파일에 total_MICH.zip 이 없어 배포 pkl 서브셋이 아니고, 세면 MICH 와 MICH_EXP 셀이 이중 계산됩니다. **정정(2026-08-04):** 초기 조사에서 total_MICH/ 를 로컬에서 만든 사본으로 오판했습니다. 실제로는 로더가 생성합니다 — data_loader.py:390-393 이 MICH 접두 파일을 total_MICH/ 에서 읽고, 디렉터리가 없으면 merge_MICH()(698-711)가 MICH 40 + MICH_EXP 18 을 복사합니다. 사람이 만든 폴더가 아니라 코드가 만든 폴더입니다. 집계에서 빼는 판단 자체는 그대로 유효합니다(이중 계산). 다만 배포 Life labels.zip 안에는 total_MICH_labels.json(키 52개)이 실제로 들어 있습니다 — 라벨 파일은 배포되고 pkl 서브셋은 배포되지 않는 비대칭입니다. 재집계 결과는 findings/recount.json.
 
 ### `META-006` — 4도메인 분할 기준 (Li / Zn / Na / CALB)
 
@@ -574,6 +578,18 @@
     - value: 할 수 없습니다. MIX_large 843셀 중 6셀이 Life labels 에 없어 eol 이 None 이 되고, 그때 read_cell_df 가 값 5개를 돌려주는데(:443) 호출부는 6개로 언팩합니다(:487). ValueError: not enough values to unpack (expected 6, got 5) 로 로딩 도중 죽습니다. 2026-08-04 실측으로 재현했습니다(runs/timing_CPMLP_MIX_large.log). 빠진 6셀은 MICH_13R 14C 15H 16R 17C 18H 로 전부 SOC 창이 50-100 인 MICH_EXP 셀이며 train 5개 test 1개입니다. CALB ZN-coin NAion 세 도메인은 라벨 누락이 0이라 이 경로를 타지 않습니다
     - checked_by: CC
 - **note** — 배포 MICH_EXP 는 pkl 18개인데 MICH_EXP_labels.json 은 키 12개이고 total_MICH_labels.json 은 52개(MICH 40 + MICH_EXP 12)입니다. 즉 50-100 창 6셀은 pkl 만 배포되고 라벨이 없습니다. 그런데 MIX_large 분할 목록에는 그 6셀이 들어 있습니다. 라벨이 왜 없는지(부분 SOC 구간이라 SOH 정의가 다른가)는 확인 전입니다. 이것이 Li-ion 열 재현의 선결 문제입니다 - 6셀을 분할에서 빼면 논문과 다른 841셀이 되고, 라벨을 우리가 만들면 배포 라벨이 아닙니다. LAB-015 의 우리만있음 33셀과 방향이 같은 현상인지도 확인 전입니다.
+
+### `TRN-011` — Li-ion(MIX_large 계열) 을 이 기계에서 학습 데이터로 올릴 수 있는가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 미조사
+- **code** — 확인
+    - locus: BatteryLife/data_provider/data_loader.py:234
+    - value: Dataset_original.__init__ 끝의 np.any(np.isnan(self.total_charge_discharge_curves)) 가 리스트를 통째로 float64 배열로 만듭니다. Li-ion train 은 (50300, 100, 3, 300) float64 = 33.7 GiB 한 덩어리입니다. 2026-08-04 실측 두 번 - 한 번은 통과(387.5초), 한 번은 numpy.core._exceptions._ArrayMemoryError: Unable to allocate 33.7 GiB for an array with shape (50300, 100, 3, 300) and data type float64 로 실패했습니다. 이 기계는 물리 RAM 15.1 GiB, 커밋 한도 44.5 GiB(pagefile 29.4 GiB)입니다. val 은 (16200,...) 10.9 GiB, test 는 (15800,...) 10.6 GiB, Zn-ion train 은 (5900,...) 4.0 GiB, CALB train 은 (1689,...) 1.1 GiB 입니다
+    - checked_by: CC
+- **note** — 같은 명령이 통과하기도 실패하기도 했습니다. 갈린 것은 실행 시점의 사용 가능 커밋 용량입니다 - 성공했을 때는 여유가 있었고 실패했을 때는 18.8 GiB 였습니다. 왜 float64 인지, 왜 전체를 한 배열로 만드는지는 확인하지 않았습니다. 이 줄은 NaN 검사만 하므로 셀 단위로 나눠 검사해도 결과가 같을 것으로 보이지만, 그것은 추정이고 upstream 을 고치지 않았으므로 확인하지 않았습니다. Li-ion 로딩이 val 118.7초 test 114.2초인 데 비해 train 이 387.5초로 유독 긴 것도 이 배열의 페이징과 방향이 맞지만 인과를 확인하지는 않았습니다. CALB ZN-coin NAion 세 도메인은 배열이 4 GiB 이하라 이 경로에서 문제가 없습니다.
 
 ### `VER-001` — v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가
 
