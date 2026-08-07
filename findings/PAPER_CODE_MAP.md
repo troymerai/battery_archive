@@ -5,7 +5,7 @@
 
 # PAPER ↔ CODE MAP
 
-레코드 49개. `findings/registry.yaml` 에서 생성했습니다.
+레코드 50개. `findings/registry.yaml` 에서 생성했습니다.
 
 판정은 슬롯에서 유도한 것입니다. 판정을 바꾸려면 슬롯을 고치십시오.
 유도 규칙은 `findings/SCHEMA.md` 에 있습니다.
@@ -18,7 +18,7 @@
 | 불일치 | 5 | 논문과 코드가 다르다 — 발견 |
 | 코드전용 | 1 | 논문에서 찾아봤고 없었다 |
 | 근거불명 | 1 | 값은 있으나 출처를 못 댔다 |
-| 미정 | 38 | 아직 판정할 수 없다 (대개 논문 미조사) |
+| 미정 | 39 | 아직 판정할 수 없다 (대개 논문 미조사) |
 
 ## 레코드
 
@@ -71,6 +71,7 @@
 | `TRN-012` | Zn-ion 의 문서 지정 학습률로 학습이 진행되는가 | 조사했으나불명 | 확인 · `BatteryLife/assets/Selected_hyperparameters.md:18-20 및 :30-32` | 확인 · `runs/20260804-154322_CPMLP_Zn-ion_s{2021,42,2024}.log 및 CPTransformer 3개 대 runs/zn_lr9.log` | **근거불명** |
 | `TRN-013` | 최적 모델을 무엇을 기준으로 고르는가 | 확인 · `논문 4.1절` | 미조사 | 확인 · `BatteryLife/run_main.py:371, :374` | **일치** |
 | `TRN-014` | UL_PUR 셀 일부가 데이터셋에서 빠진 이유가 무엇인가 | 확인 · `논문 부록 A.1 (Data Preprocessing)` | 미조사 | 확인 · `BatteryLife/data_provider/data_split_recorder.py:27-29 대 data/extracted/UL_PUR/ 의 pkl 10개` | **일치** |
+| `TRN-015` | Selected_hyperparameters.md 에서 seed 축이 실제로 값을 가르는 조합은 어디인가 | 미조사 | 확인 · `BatteryLife/assets/Selected_hyperparameters.md:13-62 (48행 전수)` | 미조사 | **미정** |
 | `VER-001` | v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가 | 미조사 | 확인 · `Zenodo record 19688272 (v11) 과 21149533 (v12) 의 Files 표` | 확인 · `manifests/data_md5.txt (v11 20개 전체) + data/zenodo_v11/ 실측 md5 8개` | **미정** |
 | `VER-002` | v11 과 v12 각각의 다운로드 용량과 해제 후 디스크 소요 | 미조사 | 확인 · `Zenodo record 19688272 Files 표` | 확인 · `data/zenodo_v11/ 과 data/extracted/ 실측 (117호, 2026-08-03, v11 20개 전부)` | **미정** |
 
@@ -695,6 +696,18 @@
     - value: UL_PUR 셀 일부가 제거되었다
     - checked_by: CC
 - **note** — 2026-08-05. TRN-006 에서 관찰만 해 두었던 비대칭(디스크 pkl 10개 대 분할이 쓰는 2개)의 이유가 논문 부록 A.1 에 있습니다. **다만 논문은 몇 셀을 뺐는지도, 어느 셀인지도 적지 않습니다.** 따라서 빠진 8셀이 전부 그 사유로 빠진 것인지는 이 레코드가 말하지 않습니다 - 논문이 제시하는 것은 사유이고 코드가 보여주는 것은 결과이며, 둘을 셀 단위로 맞춰본 것은 아닙니다. 어느 셀이 어떤 SOH 궤적을 갖는지 대조하려면 UL_PUR 10셀의 궤적을 직접 그려야 하고 아직 하지 않았습니다. 판정을 일치로 유도하기 위해 두 슬롯의 value 를 같은 문장으로 적었습니다 - 비교되는 주장은 'UL_PUR 셀 일부가 제거되었다' 하나입니다. TRN-006 은 다른 질문(단독 분기로 검증이 성립하는가)이라 그대로 두었습니다.
+
+### `TRN-015` — Selected_hyperparameters.md 에서 seed 축이 실제로 값을 가르는 조합은 어디인가
+
+**판정: 미정** — code 슬롯이 미조사입니다
+
+- **paper** — 미조사
+- **upstream_doc** — 확인
+    - locus: BatteryLife/assets/Selected_hyperparameters.md:13-62 (48행 전수)
+    - value: 48행 중 seed 에 따라 값이 갈리는 것은 CALB 의 CPMLP 3행과 CPTransformer 3행 여섯뿐입니다. 나머지 42행은 (모델, 도메인) 이 같으면 seed 42 2021 2024 의 7개 값이 모두 동일합니다. CPMLP/CALB 는 batch_size d_model d_ff e_layers d_layers dropout 여섯이 갈리고, CPTransformer/CALB 는 d_ff 가 세 seed 모두 256 이라 batch_size d_model e_layers d_layers dropout 다섯이 갈립니다. learning_rate 는 CALB 12행 전부 5e-05 로 갈리지 않습니다. 같은 CALB 라도 CPGRU 3행과 CPLSTM 3행은 seed 셋이 동일합니다
+    - checked_by: CC
+- **code** — 미조사
+- **note** — 2026-08-05 관찰. TRN-007 은 문서가 (모델, 도메인, seed) 로 값을 지정한다는 것까지 적었고, 이 레코드는 그 seed 축이 **어디서 실제로 값을 가르는지**를 전수로 셉니다. 도메인 단위로 'CALB 만 다르다'고 적으면 틀립니다 - CALB 12행 중 CPGRU 3행과 CPLSTM 3행은 seed 셋이 같습니다. 가르는 것은 도메인이 아니라 (CALB, CyclePatch-MLP 계열) 여섯 행입니다. **왜 그 여섯만 갈리는지는 조사하지 않았습니다.** 문서는 탐색 범위만 적고 (머리말 5-7행) 조합별로 탐색을 몇 번 돌렸는지, seed 별 탐색이 원래 설계였는지 특정 조합에서만 재탐색한 흔적인지는 적지 않습니다. code 슬롯을 미조사로 둔 것은 배포 셸 스크립트가 조합 하나의 흔적이라(TRN-007) 이 질문에 대응하는 코드측 주장이 없기 때문입니다. 이 archive 의 생성기는 처음부터 (모델, 도메인, seed) 로 조회하므로(train/make_scripts.py:320) 36개 스크립트와 2026-08-04 실행 36회는 이 여섯 행을 각각 제 seed 값으로 반영하고 있습니다 - docs/reports/2026-08-04_calb_seed_hp.md 에 로그 대조가 있습니다.
 
 ### `VER-001` — v11 과 v12 의 차이가 XJTU 와 Farasis 뿐인가
 
