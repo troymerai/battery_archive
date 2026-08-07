@@ -43,8 +43,29 @@ off) 로 돕니다. 이쪽은 accelerate 기본 경로입니다. GPU 가 한 장
 
 패치가 하나라도 실패하면 그 자리에서 멈춥니다. 조용히 843 으로 도는 것이
 가장 나쁩니다.
+
+패치 3 — 입력 텐서 캐시 (`BLIFE_TENSOR_CACHE` 를 줬을 때만)
+----------------------------------------------------------------------
+
+Li-ion 1회 13분 중 **약 5분이 데이터 읽기**입니다. A/B 라벨 실험은 라벨만
+갈리고 입력 텐서는 같으므로, `train/build_tensor_cache.py` 가 만들어 둔
+`[C, 100, 3, 300]` 텐서를 두 조건이 나눠 씁니다.
+
+`Dataset_original.read_cell_df` 를 감싸 **pkl 적재 + DataFrame 조립 + 보간
+리샘플링만** 건너뜁니다. `batch_aug` 는 **건너뛰지 않고 캐시된 텐서에 그대로
+다시 겁니다** — `m.uniform_(0, 1)`(`utils/augmentation.py:25`) 이 torch 난수를
+뽑기 때문입니다. 건너뛰면 난수열이 밀려 학습 로더의 셔플 순서가 달라지고
+기존 36회와 대응하지 않게 됩니다. 0.008초/셀이라 아껴도 의미가 없습니다.
+
+캐시에 없는 셀은 원래 경로로 넘어갑니다. 캐시를 만들 때와 다른
+`charge_discharge_length` · `early_cycle_threshold` · `seq_len` 로 부르면
+그 셀도 원래 경로로 넘깁니다 — 조용히 다른 텐서를 먹이는 것이 가장 나쁩니다.
+
+**환경변수를 주지 않으면 이 패치는 꺼져 있고 기존 36회와 같은 경로입니다.**
 """
 import copy
+import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -189,6 +210,71 @@ if requested == MIX_841:
 
 
 # --------------------------------------------------------------------------
+# 패치 3 — 입력 텐서 캐시 (BLIFE_TENSOR_CACHE 를 줬을 때만)
+# --------------------------------------------------------------------------
+
+CACHE_DIR = SOURCE.parent.parent.parent / "data" / "tensor_cache"
+
+
+def _apply_tensor_cache(tag):
+    import numpy as np
+    from data_provider import data_loader as dl
+
+    curves_path = CACHE_DIR / f"{tag}_curves.npy"
+    index_path = CACHE_DIR / f"{tag}_index.json"
+    if not curves_path.exists() or not index_path.exists():
+        _die(f"BLIFE_TENSOR_CACHE={tag} 인데 캐시가 없습니다.\n"
+             f"  {curves_path}\n  {index_path}\n"
+             f"  먼저 `python train/build_tensor_cache.py --domain <도메인>` 을 돌리십시오.")
+
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    cfg = index["config"]
+    rows = {name: i for i, name in enumerate(index["cells"])}
+    meta = index["meta"]
+    curves = np.load(curves_path, mmap_mode="r")
+    if len(curves) != len(index["cells"]):
+        _die(f"캐시 행 수 {len(curves)} 와 셀 목록 {len(index['cells'])} 가 다릅니다.")
+
+    original_read_cell_df = dl.Dataset_original.read_cell_df
+    stats = {"hit": 0, "miss": 0}
+
+    def read_cell_df_cached(self, file_name):
+        row = rows.get(file_name)
+        # 캐시를 만든 조건과 다르면 손대지 않는다.
+        same_cfg = (self.charge_discharge_len == cfg["charge_discharge_length"]
+                    and self.early_cycle_threshold == cfg["early_cycle_threshold"]
+                    and self.seq_len == cfg["seq_len"])
+        if row is None or not same_cfg:
+            stats["miss"] += 1
+            return original_read_cell_df(self, file_name)
+
+        stats["hit"] += 1
+        # mmap 뷰가 아니라 사본을 준다. 상위는 이 객체를 batch_aug 에 넘기고
+        # 같은 객체를 돌려주므로, 그 흐름을 그대로 흉내낸다.
+        arr = np.array(curves[row], dtype=np.float64)
+        m = meta[file_name]
+        cj_aug, _fm_aug = self.aug_helper.batch_aug(arr)
+        # 상위 반환 순서: df, curves, eol, nominal_capacity, cj_aug, valid_cycle_number
+        # df 는 `is None` 검사에만, nominal_capacity 는 아무 데도 쓰이지 않는다
+        # (data_loader.py:487-489 이 유일한 호출부).
+        return True, arr, m["eol"], None, cj_aug, m["valid_cycle_number"]
+
+    dl.Dataset_original.read_cell_df = read_cell_df_cached
+    dl._tensor_cache_stats = stats
+
+    APPLIED.append(
+        f"3. 입력 텐서 캐시 — {curves_path.name} "
+        f"({len(index['cells'])}셀, {tuple(index['shape'])} {index['dtype']}). "
+        "pkl 적재+리샘플링만 건너뜁니다. batch_aug 는 난수열 보존을 위해 "
+        "캐시된 텐서에 그대로 다시 겁니다. 캐시에 없는 셀은 원래 경로.")
+
+
+_cache_tag = os.environ.get("BLIFE_TENSOR_CACHE", "").strip()
+if _cache_tag:
+    _apply_tensor_cache(_cache_tag)
+
+
+# --------------------------------------------------------------------------
 # 적용된 패치 목록 — 로그 첫머리에 반드시 찍습니다
 # --------------------------------------------------------------------------
 
@@ -199,6 +285,9 @@ for line in APPLIED:
 if requested != MIX_841:
     print(f"  (MIX_large_841 패치는 --dataset {MIX_841} 일 때만 켜집니다. "
           f"지금은 --dataset {requested})", flush=True)
+if not _cache_tag:
+    print("  (입력 텐서 캐시는 BLIFE_TENSOR_CACHE 를 줬을 때만 켜집니다. "
+          "지금은 꺼져 있고 기존 36회와 같은 읽기 경로입니다.)", flush=True)
 print("이 목록을 결과와 함께 남기십시오. 논문과 같은 조건이 아닙니다.", flush=True)
 print("=" * 72, flush=True)
 

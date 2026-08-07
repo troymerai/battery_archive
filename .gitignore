@@ -3,6 +3,12 @@
 # 생기지 않습니다.
 data/*
 !data/.gitkeep
+# 입력 텐서 캐시 — train/build_tensor_cache.py 가 만듭니다. 위 data/* 에 이미
+# 걸리지만, 나중에 data/ 안쪽에 !예외 가 생겨도 새지 않도록 못박습니다.
+# Li-ion 837셀이 0.60 GB 이고 전량 재생성됩니다 (재생성 5분, 검증은
+# train/verify_tensor_cache.py). 원본이 아니라 파생물이라 커밋하지 않습니다.
+data/tensor_cache/
+
 papers/*.pdf
 .build/
 runs/

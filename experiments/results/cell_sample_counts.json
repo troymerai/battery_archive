@@ -1,0 +1,4339 @@
+{
+  "per_domain": {
+    "CALB": {
+      "42": {
+        "all_counts_equal": false,
+        "all_equal_100": false,
+        "cells": [
+          {
+            "eol": 1411,
+            "file": "CALB_35_B247.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 161,
+            "file": "CALB_0_B185.pkl",
+            "n_cycles": 100,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 108,
+            "file": "CALB_0_B182.pkl",
+            "n_cycles": 100,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 982,
+            "file": "CALB_25_T25-2.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 792,
+            "file": "CALB_25_T25-1.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "unseen"
+          }
+        ],
+        "dataset": "CALB42",
+        "dropped": [],
+        "max": 100,
+        "median": 99,
+        "metrics_algebraically_identical": false,
+        "min": 99,
+        "seen_cells": 3,
+        "seen_samples": 299,
+        "seen_unseen_file": "cal_for_test_CALB42.json",
+        "test_cells_listed": 5,
+        "test_cells_used": 5,
+        "total_samples": 497,
+        "unseen_cells": 2,
+        "unseen_samples": 198,
+        "weight_l1_deviation": 0.004828973843058387
+      },
+      "2021": {
+        "all_counts_equal": false,
+        "all_equal_100": false,
+        "cells": [
+          {
+            "eol": 108,
+            "file": "CALB_0_B182.pkl",
+            "n_cycles": 100,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 792,
+            "file": "CALB_25_T25-1.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1272,
+            "file": "CALB_35_B174.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1253,
+            "file": "CALB_35_B230.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 993,
+            "file": "CALB_45_B255.pkl",
+            "n_cycles": 100,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          }
+        ],
+        "dataset": "CALB",
+        "dropped": [],
+        "max": 100,
+        "median": 99,
+        "metrics_algebraically_identical": false,
+        "min": 99,
+        "seen_cells": 4,
+        "seen_samples": 398,
+        "seen_unseen_file": "cal_for_test.json",
+        "test_cells_listed": 5,
+        "test_cells_used": 5,
+        "total_samples": 497,
+        "unseen_cells": 1,
+        "unseen_samples": 99,
+        "weight_l1_deviation": 0.004828973843058387
+      },
+      "2024": {
+        "all_counts_equal": false,
+        "all_equal_100": false,
+        "cells": [
+          {
+            "eol": 1283,
+            "file": "CALB_35_B224.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 123,
+            "file": "CALB_0_B188.pkl",
+            "n_cycles": 208,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1260,
+            "file": "CALB_35_B250.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 792,
+            "file": "CALB_25_T25-1.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 982,
+            "file": "CALB_25_T25-2.pkl",
+            "n_cycles": 99,
+            "n_samples": 99,
+            "seen_unseen": "unseen"
+          }
+        ],
+        "dataset": "CALB2024",
+        "dropped": [],
+        "max": 100,
+        "median": 99,
+        "metrics_algebraically_identical": false,
+        "min": 99,
+        "seen_cells": 3,
+        "seen_samples": 298,
+        "seen_unseen_file": "cal_for_test_CALB2024.json",
+        "test_cells_listed": 5,
+        "test_cells_used": 5,
+        "total_samples": 496,
+        "unseen_cells": 2,
+        "unseen_samples": 198,
+        "weight_l1_deviation": 0.003225806451612967
+      }
+    },
+    "Li-ion": {
+      "42": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 510,
+            "file": "RWTH_038.pkl",
+            "n_cycles": 1964,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 688,
+            "file": "RWTH_008.pkl",
+            "n_cycles": 2415,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 669,
+            "file": "RWTH_035.pkl",
+            "n_cycles": 2153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 627,
+            "file": "RWTH_017.pkl",
+            "n_cycles": 2279,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 759,
+            "file": "RWTH_015.pkl",
+            "n_cycles": 2287,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 722,
+            "file": "RWTH_023.pkl",
+            "n_cycles": 2322,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 695,
+            "file": "RWTH_020.pkl",
+            "n_cycles": 2237,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 740,
+            "file": "RWTH_005.pkl",
+            "n_cycles": 2396,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 658,
+            "file": "RWTH_043.pkl",
+            "n_cycles": 1895,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2023,
+            "file": "HUST_9-4.pkl",
+            "n_cycles": 1975,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1742,
+            "file": "HUST_10-2.pkl",
+            "n_cycles": 1697,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1901,
+            "file": "HUST_10-3.pkl",
+            "n_cycles": 1848,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1382,
+            "file": "HUST_8-5.pkl",
+            "n_cycles": 1348,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1318,
+            "file": "HUST_7-3.pkl",
+            "n_cycles": 1295,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1752,
+            "file": "HUST_7-1.pkl",
+            "n_cycles": 1690,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1946,
+            "file": "HUST_9-3.pkl",
+            "n_cycles": 1905,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1812,
+            "file": "HUST_4-2.pkl",
+            "n_cycles": 1782,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2116,
+            "file": "HUST_8-7.pkl",
+            "n_cycles": 2047,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2061,
+            "file": "HUST_9-7.pkl",
+            "n_cycles": 2012,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2255,
+            "file": "HUST_6-5.pkl",
+            "n_cycles": 2178,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1829,
+            "file": "HUST_3-4.pkl",
+            "n_cycles": 1766,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2100,
+            "file": "HUST_8-2.pkl",
+            "n_cycles": 2041,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1747,
+            "file": "HUST_4-8.pkl",
+            "n_cycles": 1706,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2261,
+            "file": "HUST_2-7.pkl",
+            "n_cycles": 2202,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 501,
+            "file": "MATR_b2c20.pkl",
+            "n_cycles": 530,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2154,
+            "file": "MATR_b1c1.pkl",
+            "n_cycles": 2158,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1858,
+            "file": "MATR_b1c0.pkl",
+            "n_cycles": 1849,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1015,
+            "file": "MATR_b1c24.pkl",
+            "n_cycles": 1015,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 622,
+            "file": "MATR_b1c39.pkl",
+            "n_cycles": 623,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 597,
+            "file": "MATR_b1c45.pkl",
+            "n_cycles": 597,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 933,
+            "file": "MATR_b3c30.pkl",
+            "n_cycles": 933,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 930,
+            "file": "MATR_b3c12.pkl",
+            "n_cycles": 930,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 648,
+            "file": "MATR_b1c37.pkl",
+            "n_cycles": 646,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1705,
+            "file": "MATR_b1c4.pkl",
+            "n_cycles": 1707,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 614,
+            "file": "MATR_b1c44.pkl",
+            "n_cycles": 614,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 826,
+            "file": "MATR_b3c5.pkl",
+            "n_cycles": 826,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1152,
+            "file": "MATR_b3c19.pkl",
+            "n_cycles": 1153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 915,
+            "file": "MATR_b1c29.pkl",
+            "n_cycles": 915,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 599,
+            "file": "MATR_b4c36.pkl",
+            "n_cycles": 713,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 942,
+            "file": "MATR_b4c44.pkl",
+            "n_cycles": 1077,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 742,
+            "file": "MATR_b4c2.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 964,
+            "file": "MATR_b1c40.pkl",
+            "n_cycles": 964,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 784,
+            "file": "MATR_b3c41.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 526,
+            "file": "MATR_b2c23.pkl",
+            "n_cycles": 561,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 855,
+            "file": "MATR_b3c29.pkl",
+            "n_cycles": 856,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 706,
+            "file": "MATR_b4c6.pkl",
+            "n_cycles": 777,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 811,
+            "file": "MATR_b3c20.pkl",
+            "n_cycles": 811,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1081,
+            "file": "MATR_b4c35.pkl",
+            "n_cycles": 1131,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1007,
+            "file": "MATR_b3c0.pkl",
+            "n_cycles": 1007,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 836,
+            "file": "MATR_b4c41.pkl",
+            "n_cycles": 997,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 500,
+            "file": "MATR_b4c27.pkl",
+            "n_cycles": 563,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 827,
+            "file": "MATR_b4c17.pkl",
+            "n_cycles": 930,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 467,
+            "file": "MATR_b2c27.pkl",
+            "n_cycles": 494,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 461,
+            "file": "MATR_b2c43.pkl",
+            "n_cycles": 486,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 476,
+            "file": "MATR_b2c11.pkl",
+            "n_cycles": 504,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 465,
+            "file": "MATR_b2c42.pkl",
+            "n_cycles": 491,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 856,
+            "file": "MATR_b4c0.pkl",
+            "n_cycles": 982,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 613,
+            "file": "Stanford_Nova_Regular_202.pkl",
+            "n_cycles": 1016,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 886,
+            "file": "Stanford_Nova_Regular_223.pkl",
+            "n_cycles": 1037,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 618,
+            "file": "Stanford_Nova_Regular_209.pkl",
+            "n_cycles": 899,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 587,
+            "file": "Stanford_Nova_Regular_204.pkl",
+            "n_cycles": 835,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 613,
+            "file": "Stanford_Nova_Regular_213.pkl",
+            "n_cycles": 1020,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 682,
+            "file": "Stanford_Nova_Regular_207.pkl",
+            "n_cycles": 1105,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 556,
+            "file": "Stanford_Nova_Regular_198.pkl",
+            "n_cycles": 848,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 668,
+            "file": "Stanford_Nova_Regular_Ref_100.pkl",
+            "n_cycles": 785,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 389,
+            "file": "Tongji1_CY45-05_1--2.pkl",
+            "n_cycles": 699,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 440,
+            "file": "Tongji1_CY45-05_1--25.pkl",
+            "n_cycles": 738,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 308,
+            "file": "Tongji2_CY25-05_1--9.pkl",
+            "n_cycles": 349,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 127,
+            "file": "Tongji1_CY25-05_1--19.pkl",
+            "n_cycles": 153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 425,
+            "file": "Tongji2_CY45-05_1--17.pkl",
+            "n_cycles": 596,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 201,
+            "file": "Tongji1_CY25-025_1--7.pkl",
+            "n_cycles": 251,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 408,
+            "file": "Tongji2_CY45-05_1--19.pkl",
+            "n_cycles": 795,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 385,
+            "file": "Tongji2_CY45-05_1--13.pkl",
+            "n_cycles": 867,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 197,
+            "file": "Tongji1_CY25-025_1--6.pkl",
+            "n_cycles": 245,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 569,
+            "file": "Tongji2_CY35-05_1--2.pkl",
+            "n_cycles": 1251,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 413,
+            "file": "Tongji2_CY45-05_1--2.pkl",
+            "n_cycles": 453,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 120,
+            "file": "Tongji1_CY25-05_1--1.pkl",
+            "n_cycles": 145,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 452,
+            "file": "Tongji3_CY25-05_4--3.pkl",
+            "n_cycles": 905,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 481,
+            "file": "Tongji3_CY25-05_1--1.pkl",
+            "n_cycles": 935,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 414,
+            "file": "Tongji2_CY45-05_1--28.pkl",
+            "n_cycles": 884,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 419,
+            "file": "Tongji2_CY35-05_1--1.pkl",
+            "n_cycles": 1101,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 222,
+            "file": "Tongji2_CY25-05_1--2.pkl",
+            "n_cycles": 189,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 155,
+            "file": "Tongji1_CY25-05_1--6.pkl",
+            "n_cycles": 182,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 444,
+            "file": "ISU-ILCC_G24C4.pkl",
+            "n_cycles": 634,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3107,
+            "file": "ISU-ILCC_G54C3.pkl",
+            "n_cycles": 10357,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 169,
+            "file": "ISU-ILCC_G14C4.pkl",
+            "n_cycles": 168,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 445,
+            "file": "ISU-ILCC_G35C4.pkl",
+            "n_cycles": 656,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 420,
+            "file": "ISU-ILCC_G24C3.pkl",
+            "n_cycles": 552,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 735,
+            "file": "ISU-ILCC_G41C2.pkl",
+            "n_cycles": 6628,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 930,
+            "file": "ISU-ILCC_G56C4.pkl",
+            "n_cycles": 4672,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 705,
+            "file": "ISU-ILCC_G5C3.pkl",
+            "n_cycles": 777,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 694,
+            "file": "ISU-ILCC_G41C1.pkl",
+            "n_cycles": 11199,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3791,
+            "file": "ISU-ILCC_G6C3.pkl",
+            "n_cycles": 16313,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1031,
+            "file": "ISU-ILCC_G2C4.pkl",
+            "n_cycles": 2787,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 250,
+            "file": "ISU-ILCC_G53C3.pkl",
+            "n_cycles": 586,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2512,
+            "file": "ISU-ILCC_G59C4.pkl",
+            "n_cycles": 20684,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 817,
+            "file": "ISU-ILCC_G48C3.pkl",
+            "n_cycles": 4979,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2953,
+            "file": "ISU-ILCC_G40C1.pkl",
+            "n_cycles": 8897,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 791,
+            "file": "ISU-ILCC_G8C3.pkl",
+            "n_cycles": 2902,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 993,
+            "file": "ISU-ILCC_G43C3.pkl",
+            "n_cycles": 16463,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 507,
+            "file": "ISU-ILCC_G39C2.pkl",
+            "n_cycles": 716,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 743,
+            "file": "ISU-ILCC_G2C2.pkl",
+            "n_cycles": 2610,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 957,
+            "file": "ISU-ILCC_G2C3.pkl",
+            "n_cycles": 2546,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 779,
+            "file": "ISU-ILCC_G51C3.pkl",
+            "n_cycles": 5383,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 590,
+            "file": "ISU-ILCC_G63C4.pkl",
+            "n_cycles": 3667,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2646,
+            "file": "ISU-ILCC_G33C3.pkl",
+            "n_cycles": 5985,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 836,
+            "file": "ISU-ILCC_G12C2.pkl",
+            "n_cycles": 1518,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 308,
+            "file": "ISU-ILCC_G22C2.pkl",
+            "n_cycles": 514,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 661,
+            "file": "ISU-ILCC_G52C3.pkl",
+            "n_cycles": 2128,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 334,
+            "file": "ISU-ILCC_G5C4.pkl",
+            "n_cycles": 556,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 886,
+            "file": "ISU-ILCC_G3C1.pkl",
+            "n_cycles": 1993,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 514,
+            "file": "ISU-ILCC_G22C3.pkl",
+            "n_cycles": 650,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 738,
+            "file": "ISU-ILCC_G55C3.pkl",
+            "n_cycles": 7910,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3005,
+            "file": "ISU-ILCC_G54C4.pkl",
+            "n_cycles": 9419,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 553,
+            "file": "ISU-ILCC_G5C2.pkl",
+            "n_cycles": 1673,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1164,
+            "file": "ISU-ILCC_G61C4.pkl",
+            "n_cycles": 6411,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 504,
+            "file": "ISU-ILCC_G16C1.pkl",
+            "n_cycles": 745,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 698,
+            "file": "ISU-ILCC_G37C1.pkl",
+            "n_cycles": 947,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1220,
+            "file": "ISU-ILCC_G58C4.pkl",
+            "n_cycles": 4209,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 499,
+            "file": "ISU-ILCC_G23C1.pkl",
+            "n_cycles": 679,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 487,
+            "file": "ISU-ILCC_G37C4.pkl",
+            "n_cycles": 587,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 729,
+            "file": "ISU-ILCC_G58C2.pkl",
+            "n_cycles": 4047,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 560,
+            "file": "ISU-ILCC_G8C1.pkl",
+            "n_cycles": 1204,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 190,
+            "file": "ISU-ILCC_G14C2.pkl",
+            "n_cycles": 250,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 653,
+            "file": "ISU-ILCC_G37C2.pkl",
+            "n_cycles": 782,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1219,
+            "file": "ISU-ILCC_G56C1.pkl",
+            "n_cycles": 4840,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1500,
+            "file": "ISU-ILCC_G33C2.pkl",
+            "n_cycles": 5746,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 533,
+            "file": "ISU-ILCC_G3C4.pkl",
+            "n_cycles": 1164,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 408,
+            "file": "ISU-ILCC_G60C3.pkl",
+            "n_cycles": 3035,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 676,
+            "file": "ISU-ILCC_G13C1.pkl",
+            "n_cycles": 1943,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3204,
+            "file": "ISU-ILCC_G1C2.pkl",
+            "n_cycles": 11400,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 828,
+            "file": "CALCE_CX2_16.pkl",
+            "n_cycles": 1279,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 590,
+            "file": "CALCE_CX2_38.pkl",
+            "n_cycles": 1579,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 239,
+            "file": "HNEI_18650_NMC_LCO_25C_0-100_0.5-1.5C_f.pkl",
+            "n_cycles": 1075,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 257,
+            "file": "HNEI_18650_NMC_LCO_25C_0-100_0.5-1.5C_d.pkl",
+            "n_cycles": 1081,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 147,
+            "file": "SNL_18650_NMC_15C_0-100_0.5-1C_a.pkl",
+            "n_cycles": 513,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 637,
+            "file": "SNL_18650_NMC_35C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 785,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 335,
+            "file": "SNL_18650_NCA_25C_0-100_0.5-2C_a.pkl",
+            "n_cycles": 786,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 602,
+            "file": "SNL_18650_NMC_25C_0-100_0.5-3C_c.pkl",
+            "n_cycles": 698,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2902,
+            "file": "SNL_18650_LFP_25C_0-100_0.5-3C_b.pkl",
+            "n_cycles": 4062,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 250,
+            "file": "SNL_18650_NCA_15C_0-100_0.5-2C_b.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 523,
+            "file": "SNL_18650_NMC_35C_0-100_0.5-1C_b.pkl",
+            "n_cycles": 786,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3308,
+            "file": "SNL_18650_LFP_35C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 3342,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3842,
+            "file": "SNL_18650_LFP_35C_0-100_0.5-2C_a.pkl",
+            "n_cycles": 3856,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 333,
+            "file": "SNL_18650_NCA_25C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 522,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 272,
+            "file": "MICH_BLForm20_pouch_NMC_25C_0-100_1-1C_j.pkl",
+            "n_cycles": 442,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 362,
+            "file": "MICH_MCForm21_pouch_NMC_25C_0-100_1-1C_a.pkl",
+            "n_cycles": 477,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 457,
+            "file": "MICH_MCForm34_pouch_NMC_45C_0-100_1-1C_d.pkl",
+            "n_cycles": 581,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 345,
+            "file": "MICH_BLForm6_pouch_NMC_45C_0-100_1-1C_f.pkl",
+            "n_cycles": 454,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 392,
+            "file": "MICH_MCForm40_pouch_NMC_45C_0-100_1-1C_j.pkl",
+            "n_cycles": 540,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 321,
+            "file": "MICH_BLForm7_pouch_NMC_45C_0-100_1-1C_g.pkl",
+            "n_cycles": 457,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 380,
+            "file": "MICH_MCForm28_pouch_NMC_25C_0-100_1-1C_h.pkl",
+            "n_cycles": 589,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 387,
+            "file": "MICH_MCForm33_pouch_NMC_45C_0-100_1-1C_c.pkl",
+            "n_cycles": 502,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 269,
+            "file": "MICH_01R_pouch_NMC_25C_0-100_0.2-0.2C.pkl",
+            "n_cycles": 379,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 211,
+            "file": "XJTU_3C_battery-12.pkl",
+            "n_cycles": 211,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 298,
+            "file": "XJTU_3C_battery-1.pkl",
+            "n_cycles": 298,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 401,
+            "file": "XJTU_2C_battery-5.pkl",
+            "n_cycles": 402,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 286,
+            "file": "XJTU_3C_battery-9.pkl",
+            "n_cycles": 286,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          }
+        ],
+        "dataset": "MIX_large_841",
+        "dropped": [
+          [
+            "Tongji1_CY25-1_1--1.pkl",
+            "eol=27 <= 100"
+          ],
+          [
+            "Tongji1_CY25-1_1--2.pkl",
+            "eol=24 <= 100"
+          ],
+          [
+            "Tongji1_CY25-1_1--7.pkl",
+            "eol=20 <= 100"
+          ],
+          [
+            "MICH_09H_pouch_NMC_45C_0-100_2-2C.pkl",
+            "eol=99 <= 100"
+          ]
+        ],
+        "max": 100,
+        "median": 100.0,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 97,
+        "seen_samples": 9700,
+        "seen_unseen_file": "cal_for_test.json",
+        "test_cells_listed": 162,
+        "test_cells_used": 158,
+        "total_samples": 15800,
+        "unseen_cells": 61,
+        "unseen_samples": 6100,
+        "weight_l1_deviation": 0.0
+      },
+      "2021": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 510,
+            "file": "RWTH_038.pkl",
+            "n_cycles": 1964,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 688,
+            "file": "RWTH_008.pkl",
+            "n_cycles": 2415,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 669,
+            "file": "RWTH_035.pkl",
+            "n_cycles": 2153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 627,
+            "file": "RWTH_017.pkl",
+            "n_cycles": 2279,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 759,
+            "file": "RWTH_015.pkl",
+            "n_cycles": 2287,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 722,
+            "file": "RWTH_023.pkl",
+            "n_cycles": 2322,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 695,
+            "file": "RWTH_020.pkl",
+            "n_cycles": 2237,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 740,
+            "file": "RWTH_005.pkl",
+            "n_cycles": 2396,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 658,
+            "file": "RWTH_043.pkl",
+            "n_cycles": 1895,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2023,
+            "file": "HUST_9-4.pkl",
+            "n_cycles": 1975,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1742,
+            "file": "HUST_10-2.pkl",
+            "n_cycles": 1697,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1901,
+            "file": "HUST_10-3.pkl",
+            "n_cycles": 1848,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1382,
+            "file": "HUST_8-5.pkl",
+            "n_cycles": 1348,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1318,
+            "file": "HUST_7-3.pkl",
+            "n_cycles": 1295,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1752,
+            "file": "HUST_7-1.pkl",
+            "n_cycles": 1690,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1946,
+            "file": "HUST_9-3.pkl",
+            "n_cycles": 1905,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1812,
+            "file": "HUST_4-2.pkl",
+            "n_cycles": 1782,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2116,
+            "file": "HUST_8-7.pkl",
+            "n_cycles": 2047,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2061,
+            "file": "HUST_9-7.pkl",
+            "n_cycles": 2012,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2255,
+            "file": "HUST_6-5.pkl",
+            "n_cycles": 2178,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1829,
+            "file": "HUST_3-4.pkl",
+            "n_cycles": 1766,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2100,
+            "file": "HUST_8-2.pkl",
+            "n_cycles": 2041,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1747,
+            "file": "HUST_4-8.pkl",
+            "n_cycles": 1706,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2261,
+            "file": "HUST_2-7.pkl",
+            "n_cycles": 2202,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 501,
+            "file": "MATR_b2c20.pkl",
+            "n_cycles": 530,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2154,
+            "file": "MATR_b1c1.pkl",
+            "n_cycles": 2158,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1858,
+            "file": "MATR_b1c0.pkl",
+            "n_cycles": 1849,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1015,
+            "file": "MATR_b1c24.pkl",
+            "n_cycles": 1015,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 622,
+            "file": "MATR_b1c39.pkl",
+            "n_cycles": 623,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 597,
+            "file": "MATR_b1c45.pkl",
+            "n_cycles": 597,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 933,
+            "file": "MATR_b3c30.pkl",
+            "n_cycles": 933,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 930,
+            "file": "MATR_b3c12.pkl",
+            "n_cycles": 930,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 648,
+            "file": "MATR_b1c37.pkl",
+            "n_cycles": 646,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1705,
+            "file": "MATR_b1c4.pkl",
+            "n_cycles": 1707,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 614,
+            "file": "MATR_b1c44.pkl",
+            "n_cycles": 614,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 826,
+            "file": "MATR_b3c5.pkl",
+            "n_cycles": 826,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1152,
+            "file": "MATR_b3c19.pkl",
+            "n_cycles": 1153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 915,
+            "file": "MATR_b1c29.pkl",
+            "n_cycles": 915,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 599,
+            "file": "MATR_b4c36.pkl",
+            "n_cycles": 713,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 942,
+            "file": "MATR_b4c44.pkl",
+            "n_cycles": 1077,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 742,
+            "file": "MATR_b4c2.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 964,
+            "file": "MATR_b1c40.pkl",
+            "n_cycles": 964,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 784,
+            "file": "MATR_b3c41.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 526,
+            "file": "MATR_b2c23.pkl",
+            "n_cycles": 561,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 855,
+            "file": "MATR_b3c29.pkl",
+            "n_cycles": 856,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 706,
+            "file": "MATR_b4c6.pkl",
+            "n_cycles": 777,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 811,
+            "file": "MATR_b3c20.pkl",
+            "n_cycles": 811,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1081,
+            "file": "MATR_b4c35.pkl",
+            "n_cycles": 1131,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1007,
+            "file": "MATR_b3c0.pkl",
+            "n_cycles": 1007,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 836,
+            "file": "MATR_b4c41.pkl",
+            "n_cycles": 997,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 500,
+            "file": "MATR_b4c27.pkl",
+            "n_cycles": 563,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 827,
+            "file": "MATR_b4c17.pkl",
+            "n_cycles": 930,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 467,
+            "file": "MATR_b2c27.pkl",
+            "n_cycles": 494,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 461,
+            "file": "MATR_b2c43.pkl",
+            "n_cycles": 486,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 476,
+            "file": "MATR_b2c11.pkl",
+            "n_cycles": 504,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 465,
+            "file": "MATR_b2c42.pkl",
+            "n_cycles": 491,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 856,
+            "file": "MATR_b4c0.pkl",
+            "n_cycles": 982,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 613,
+            "file": "Stanford_Nova_Regular_202.pkl",
+            "n_cycles": 1016,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 886,
+            "file": "Stanford_Nova_Regular_223.pkl",
+            "n_cycles": 1037,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 618,
+            "file": "Stanford_Nova_Regular_209.pkl",
+            "n_cycles": 899,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 587,
+            "file": "Stanford_Nova_Regular_204.pkl",
+            "n_cycles": 835,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 613,
+            "file": "Stanford_Nova_Regular_213.pkl",
+            "n_cycles": 1020,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 682,
+            "file": "Stanford_Nova_Regular_207.pkl",
+            "n_cycles": 1105,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 556,
+            "file": "Stanford_Nova_Regular_198.pkl",
+            "n_cycles": 848,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 668,
+            "file": "Stanford_Nova_Regular_Ref_100.pkl",
+            "n_cycles": 785,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 389,
+            "file": "Tongji1_CY45-05_1--2.pkl",
+            "n_cycles": 699,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 440,
+            "file": "Tongji1_CY45-05_1--25.pkl",
+            "n_cycles": 738,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 308,
+            "file": "Tongji2_CY25-05_1--9.pkl",
+            "n_cycles": 349,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 127,
+            "file": "Tongji1_CY25-05_1--19.pkl",
+            "n_cycles": 153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 425,
+            "file": "Tongji2_CY45-05_1--17.pkl",
+            "n_cycles": 596,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 201,
+            "file": "Tongji1_CY25-025_1--7.pkl",
+            "n_cycles": 251,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 408,
+            "file": "Tongji2_CY45-05_1--19.pkl",
+            "n_cycles": 795,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 385,
+            "file": "Tongji2_CY45-05_1--13.pkl",
+            "n_cycles": 867,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 197,
+            "file": "Tongji1_CY25-025_1--6.pkl",
+            "n_cycles": 245,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 569,
+            "file": "Tongji2_CY35-05_1--2.pkl",
+            "n_cycles": 1251,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 413,
+            "file": "Tongji2_CY45-05_1--2.pkl",
+            "n_cycles": 453,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 120,
+            "file": "Tongji1_CY25-05_1--1.pkl",
+            "n_cycles": 145,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 452,
+            "file": "Tongji3_CY25-05_4--3.pkl",
+            "n_cycles": 905,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 481,
+            "file": "Tongji3_CY25-05_1--1.pkl",
+            "n_cycles": 935,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 414,
+            "file": "Tongji2_CY45-05_1--28.pkl",
+            "n_cycles": 884,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 419,
+            "file": "Tongji2_CY35-05_1--1.pkl",
+            "n_cycles": 1101,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 222,
+            "file": "Tongji2_CY25-05_1--2.pkl",
+            "n_cycles": 189,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 155,
+            "file": "Tongji1_CY25-05_1--6.pkl",
+            "n_cycles": 182,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 444,
+            "file": "ISU-ILCC_G24C4.pkl",
+            "n_cycles": 634,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3107,
+            "file": "ISU-ILCC_G54C3.pkl",
+            "n_cycles": 10357,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 169,
+            "file": "ISU-ILCC_G14C4.pkl",
+            "n_cycles": 168,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 445,
+            "file": "ISU-ILCC_G35C4.pkl",
+            "n_cycles": 656,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 420,
+            "file": "ISU-ILCC_G24C3.pkl",
+            "n_cycles": 552,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 735,
+            "file": "ISU-ILCC_G41C2.pkl",
+            "n_cycles": 6628,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 930,
+            "file": "ISU-ILCC_G56C4.pkl",
+            "n_cycles": 4672,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 705,
+            "file": "ISU-ILCC_G5C3.pkl",
+            "n_cycles": 777,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 694,
+            "file": "ISU-ILCC_G41C1.pkl",
+            "n_cycles": 11199,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3791,
+            "file": "ISU-ILCC_G6C3.pkl",
+            "n_cycles": 16313,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1031,
+            "file": "ISU-ILCC_G2C4.pkl",
+            "n_cycles": 2787,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 250,
+            "file": "ISU-ILCC_G53C3.pkl",
+            "n_cycles": 586,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2512,
+            "file": "ISU-ILCC_G59C4.pkl",
+            "n_cycles": 20684,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 817,
+            "file": "ISU-ILCC_G48C3.pkl",
+            "n_cycles": 4979,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2953,
+            "file": "ISU-ILCC_G40C1.pkl",
+            "n_cycles": 8897,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 791,
+            "file": "ISU-ILCC_G8C3.pkl",
+            "n_cycles": 2902,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 993,
+            "file": "ISU-ILCC_G43C3.pkl",
+            "n_cycles": 16463,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 507,
+            "file": "ISU-ILCC_G39C2.pkl",
+            "n_cycles": 716,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 743,
+            "file": "ISU-ILCC_G2C2.pkl",
+            "n_cycles": 2610,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 957,
+            "file": "ISU-ILCC_G2C3.pkl",
+            "n_cycles": 2546,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 779,
+            "file": "ISU-ILCC_G51C3.pkl",
+            "n_cycles": 5383,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 590,
+            "file": "ISU-ILCC_G63C4.pkl",
+            "n_cycles": 3667,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2646,
+            "file": "ISU-ILCC_G33C3.pkl",
+            "n_cycles": 5985,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 836,
+            "file": "ISU-ILCC_G12C2.pkl",
+            "n_cycles": 1518,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 308,
+            "file": "ISU-ILCC_G22C2.pkl",
+            "n_cycles": 514,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 661,
+            "file": "ISU-ILCC_G52C3.pkl",
+            "n_cycles": 2128,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 334,
+            "file": "ISU-ILCC_G5C4.pkl",
+            "n_cycles": 556,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 886,
+            "file": "ISU-ILCC_G3C1.pkl",
+            "n_cycles": 1993,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 514,
+            "file": "ISU-ILCC_G22C3.pkl",
+            "n_cycles": 650,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 738,
+            "file": "ISU-ILCC_G55C3.pkl",
+            "n_cycles": 7910,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3005,
+            "file": "ISU-ILCC_G54C4.pkl",
+            "n_cycles": 9419,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 553,
+            "file": "ISU-ILCC_G5C2.pkl",
+            "n_cycles": 1673,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1164,
+            "file": "ISU-ILCC_G61C4.pkl",
+            "n_cycles": 6411,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 504,
+            "file": "ISU-ILCC_G16C1.pkl",
+            "n_cycles": 745,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 698,
+            "file": "ISU-ILCC_G37C1.pkl",
+            "n_cycles": 947,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1220,
+            "file": "ISU-ILCC_G58C4.pkl",
+            "n_cycles": 4209,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 499,
+            "file": "ISU-ILCC_G23C1.pkl",
+            "n_cycles": 679,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 487,
+            "file": "ISU-ILCC_G37C4.pkl",
+            "n_cycles": 587,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 729,
+            "file": "ISU-ILCC_G58C2.pkl",
+            "n_cycles": 4047,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 560,
+            "file": "ISU-ILCC_G8C1.pkl",
+            "n_cycles": 1204,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 190,
+            "file": "ISU-ILCC_G14C2.pkl",
+            "n_cycles": 250,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 653,
+            "file": "ISU-ILCC_G37C2.pkl",
+            "n_cycles": 782,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1219,
+            "file": "ISU-ILCC_G56C1.pkl",
+            "n_cycles": 4840,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1500,
+            "file": "ISU-ILCC_G33C2.pkl",
+            "n_cycles": 5746,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 533,
+            "file": "ISU-ILCC_G3C4.pkl",
+            "n_cycles": 1164,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 408,
+            "file": "ISU-ILCC_G60C3.pkl",
+            "n_cycles": 3035,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 676,
+            "file": "ISU-ILCC_G13C1.pkl",
+            "n_cycles": 1943,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3204,
+            "file": "ISU-ILCC_G1C2.pkl",
+            "n_cycles": 11400,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 828,
+            "file": "CALCE_CX2_16.pkl",
+            "n_cycles": 1279,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 590,
+            "file": "CALCE_CX2_38.pkl",
+            "n_cycles": 1579,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 239,
+            "file": "HNEI_18650_NMC_LCO_25C_0-100_0.5-1.5C_f.pkl",
+            "n_cycles": 1075,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 257,
+            "file": "HNEI_18650_NMC_LCO_25C_0-100_0.5-1.5C_d.pkl",
+            "n_cycles": 1081,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 147,
+            "file": "SNL_18650_NMC_15C_0-100_0.5-1C_a.pkl",
+            "n_cycles": 513,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 637,
+            "file": "SNL_18650_NMC_35C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 785,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 335,
+            "file": "SNL_18650_NCA_25C_0-100_0.5-2C_a.pkl",
+            "n_cycles": 786,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 602,
+            "file": "SNL_18650_NMC_25C_0-100_0.5-3C_c.pkl",
+            "n_cycles": 698,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2902,
+            "file": "SNL_18650_LFP_25C_0-100_0.5-3C_b.pkl",
+            "n_cycles": 4062,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 250,
+            "file": "SNL_18650_NCA_15C_0-100_0.5-2C_b.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 523,
+            "file": "SNL_18650_NMC_35C_0-100_0.5-1C_b.pkl",
+            "n_cycles": 786,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3308,
+            "file": "SNL_18650_LFP_35C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 3342,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3842,
+            "file": "SNL_18650_LFP_35C_0-100_0.5-2C_a.pkl",
+            "n_cycles": 3856,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 333,
+            "file": "SNL_18650_NCA_25C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 522,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 272,
+            "file": "MICH_BLForm20_pouch_NMC_25C_0-100_1-1C_j.pkl",
+            "n_cycles": 442,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 362,
+            "file": "MICH_MCForm21_pouch_NMC_25C_0-100_1-1C_a.pkl",
+            "n_cycles": 477,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 457,
+            "file": "MICH_MCForm34_pouch_NMC_45C_0-100_1-1C_d.pkl",
+            "n_cycles": 581,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 345,
+            "file": "MICH_BLForm6_pouch_NMC_45C_0-100_1-1C_f.pkl",
+            "n_cycles": 454,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 392,
+            "file": "MICH_MCForm40_pouch_NMC_45C_0-100_1-1C_j.pkl",
+            "n_cycles": 540,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 321,
+            "file": "MICH_BLForm7_pouch_NMC_45C_0-100_1-1C_g.pkl",
+            "n_cycles": 457,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 380,
+            "file": "MICH_MCForm28_pouch_NMC_25C_0-100_1-1C_h.pkl",
+            "n_cycles": 589,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 387,
+            "file": "MICH_MCForm33_pouch_NMC_45C_0-100_1-1C_c.pkl",
+            "n_cycles": 502,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 269,
+            "file": "MICH_01R_pouch_NMC_25C_0-100_0.2-0.2C.pkl",
+            "n_cycles": 379,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 211,
+            "file": "XJTU_3C_battery-12.pkl",
+            "n_cycles": 211,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 298,
+            "file": "XJTU_3C_battery-1.pkl",
+            "n_cycles": 298,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 401,
+            "file": "XJTU_2C_battery-5.pkl",
+            "n_cycles": 402,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 286,
+            "file": "XJTU_3C_battery-9.pkl",
+            "n_cycles": 286,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          }
+        ],
+        "dataset": "MIX_large_841",
+        "dropped": [
+          [
+            "Tongji1_CY25-1_1--1.pkl",
+            "eol=27 <= 100"
+          ],
+          [
+            "Tongji1_CY25-1_1--2.pkl",
+            "eol=24 <= 100"
+          ],
+          [
+            "Tongji1_CY25-1_1--7.pkl",
+            "eol=20 <= 100"
+          ],
+          [
+            "MICH_09H_pouch_NMC_45C_0-100_2-2C.pkl",
+            "eol=99 <= 100"
+          ]
+        ],
+        "max": 100,
+        "median": 100.0,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 97,
+        "seen_samples": 9700,
+        "seen_unseen_file": "cal_for_test.json",
+        "test_cells_listed": 162,
+        "test_cells_used": 158,
+        "total_samples": 15800,
+        "unseen_cells": 61,
+        "unseen_samples": 6100,
+        "weight_l1_deviation": 0.0
+      },
+      "2024": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 510,
+            "file": "RWTH_038.pkl",
+            "n_cycles": 1964,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 688,
+            "file": "RWTH_008.pkl",
+            "n_cycles": 2415,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 669,
+            "file": "RWTH_035.pkl",
+            "n_cycles": 2153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 627,
+            "file": "RWTH_017.pkl",
+            "n_cycles": 2279,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 759,
+            "file": "RWTH_015.pkl",
+            "n_cycles": 2287,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 722,
+            "file": "RWTH_023.pkl",
+            "n_cycles": 2322,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 695,
+            "file": "RWTH_020.pkl",
+            "n_cycles": 2237,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 740,
+            "file": "RWTH_005.pkl",
+            "n_cycles": 2396,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 658,
+            "file": "RWTH_043.pkl",
+            "n_cycles": 1895,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2023,
+            "file": "HUST_9-4.pkl",
+            "n_cycles": 1975,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1742,
+            "file": "HUST_10-2.pkl",
+            "n_cycles": 1697,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1901,
+            "file": "HUST_10-3.pkl",
+            "n_cycles": 1848,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1382,
+            "file": "HUST_8-5.pkl",
+            "n_cycles": 1348,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1318,
+            "file": "HUST_7-3.pkl",
+            "n_cycles": 1295,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1752,
+            "file": "HUST_7-1.pkl",
+            "n_cycles": 1690,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1946,
+            "file": "HUST_9-3.pkl",
+            "n_cycles": 1905,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1812,
+            "file": "HUST_4-2.pkl",
+            "n_cycles": 1782,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2116,
+            "file": "HUST_8-7.pkl",
+            "n_cycles": 2047,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2061,
+            "file": "HUST_9-7.pkl",
+            "n_cycles": 2012,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2255,
+            "file": "HUST_6-5.pkl",
+            "n_cycles": 2178,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1829,
+            "file": "HUST_3-4.pkl",
+            "n_cycles": 1766,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2100,
+            "file": "HUST_8-2.pkl",
+            "n_cycles": 2041,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1747,
+            "file": "HUST_4-8.pkl",
+            "n_cycles": 1706,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2261,
+            "file": "HUST_2-7.pkl",
+            "n_cycles": 2202,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 501,
+            "file": "MATR_b2c20.pkl",
+            "n_cycles": 530,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2154,
+            "file": "MATR_b1c1.pkl",
+            "n_cycles": 2158,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1858,
+            "file": "MATR_b1c0.pkl",
+            "n_cycles": 1849,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1015,
+            "file": "MATR_b1c24.pkl",
+            "n_cycles": 1015,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 622,
+            "file": "MATR_b1c39.pkl",
+            "n_cycles": 623,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 597,
+            "file": "MATR_b1c45.pkl",
+            "n_cycles": 597,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 933,
+            "file": "MATR_b3c30.pkl",
+            "n_cycles": 933,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 930,
+            "file": "MATR_b3c12.pkl",
+            "n_cycles": 930,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 648,
+            "file": "MATR_b1c37.pkl",
+            "n_cycles": 646,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1705,
+            "file": "MATR_b1c4.pkl",
+            "n_cycles": 1707,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 614,
+            "file": "MATR_b1c44.pkl",
+            "n_cycles": 614,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 826,
+            "file": "MATR_b3c5.pkl",
+            "n_cycles": 826,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1152,
+            "file": "MATR_b3c19.pkl",
+            "n_cycles": 1153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 915,
+            "file": "MATR_b1c29.pkl",
+            "n_cycles": 915,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 599,
+            "file": "MATR_b4c36.pkl",
+            "n_cycles": 713,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 942,
+            "file": "MATR_b4c44.pkl",
+            "n_cycles": 1077,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 742,
+            "file": "MATR_b4c2.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 964,
+            "file": "MATR_b1c40.pkl",
+            "n_cycles": 964,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 784,
+            "file": "MATR_b3c41.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 526,
+            "file": "MATR_b2c23.pkl",
+            "n_cycles": 561,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 855,
+            "file": "MATR_b3c29.pkl",
+            "n_cycles": 856,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 706,
+            "file": "MATR_b4c6.pkl",
+            "n_cycles": 777,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 811,
+            "file": "MATR_b3c20.pkl",
+            "n_cycles": 811,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1081,
+            "file": "MATR_b4c35.pkl",
+            "n_cycles": 1131,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1007,
+            "file": "MATR_b3c0.pkl",
+            "n_cycles": 1007,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 836,
+            "file": "MATR_b4c41.pkl",
+            "n_cycles": 997,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 500,
+            "file": "MATR_b4c27.pkl",
+            "n_cycles": 563,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 827,
+            "file": "MATR_b4c17.pkl",
+            "n_cycles": 930,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 467,
+            "file": "MATR_b2c27.pkl",
+            "n_cycles": 494,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 461,
+            "file": "MATR_b2c43.pkl",
+            "n_cycles": 486,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 476,
+            "file": "MATR_b2c11.pkl",
+            "n_cycles": 504,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 465,
+            "file": "MATR_b2c42.pkl",
+            "n_cycles": 491,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 856,
+            "file": "MATR_b4c0.pkl",
+            "n_cycles": 982,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 613,
+            "file": "Stanford_Nova_Regular_202.pkl",
+            "n_cycles": 1016,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 886,
+            "file": "Stanford_Nova_Regular_223.pkl",
+            "n_cycles": 1037,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 618,
+            "file": "Stanford_Nova_Regular_209.pkl",
+            "n_cycles": 899,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 587,
+            "file": "Stanford_Nova_Regular_204.pkl",
+            "n_cycles": 835,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 613,
+            "file": "Stanford_Nova_Regular_213.pkl",
+            "n_cycles": 1020,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 682,
+            "file": "Stanford_Nova_Regular_207.pkl",
+            "n_cycles": 1105,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 556,
+            "file": "Stanford_Nova_Regular_198.pkl",
+            "n_cycles": 848,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 668,
+            "file": "Stanford_Nova_Regular_Ref_100.pkl",
+            "n_cycles": 785,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 389,
+            "file": "Tongji1_CY45-05_1--2.pkl",
+            "n_cycles": 699,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 440,
+            "file": "Tongji1_CY45-05_1--25.pkl",
+            "n_cycles": 738,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 308,
+            "file": "Tongji2_CY25-05_1--9.pkl",
+            "n_cycles": 349,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 127,
+            "file": "Tongji1_CY25-05_1--19.pkl",
+            "n_cycles": 153,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 425,
+            "file": "Tongji2_CY45-05_1--17.pkl",
+            "n_cycles": 596,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 201,
+            "file": "Tongji1_CY25-025_1--7.pkl",
+            "n_cycles": 251,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 408,
+            "file": "Tongji2_CY45-05_1--19.pkl",
+            "n_cycles": 795,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 385,
+            "file": "Tongji2_CY45-05_1--13.pkl",
+            "n_cycles": 867,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 197,
+            "file": "Tongji1_CY25-025_1--6.pkl",
+            "n_cycles": 245,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 569,
+            "file": "Tongji2_CY35-05_1--2.pkl",
+            "n_cycles": 1251,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 413,
+            "file": "Tongji2_CY45-05_1--2.pkl",
+            "n_cycles": 453,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 120,
+            "file": "Tongji1_CY25-05_1--1.pkl",
+            "n_cycles": 145,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 452,
+            "file": "Tongji3_CY25-05_4--3.pkl",
+            "n_cycles": 905,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 481,
+            "file": "Tongji3_CY25-05_1--1.pkl",
+            "n_cycles": 935,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 414,
+            "file": "Tongji2_CY45-05_1--28.pkl",
+            "n_cycles": 884,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 419,
+            "file": "Tongji2_CY35-05_1--1.pkl",
+            "n_cycles": 1101,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 222,
+            "file": "Tongji2_CY25-05_1--2.pkl",
+            "n_cycles": 189,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 155,
+            "file": "Tongji1_CY25-05_1--6.pkl",
+            "n_cycles": 182,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 444,
+            "file": "ISU-ILCC_G24C4.pkl",
+            "n_cycles": 634,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3107,
+            "file": "ISU-ILCC_G54C3.pkl",
+            "n_cycles": 10357,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 169,
+            "file": "ISU-ILCC_G14C4.pkl",
+            "n_cycles": 168,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 445,
+            "file": "ISU-ILCC_G35C4.pkl",
+            "n_cycles": 656,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 420,
+            "file": "ISU-ILCC_G24C3.pkl",
+            "n_cycles": 552,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 735,
+            "file": "ISU-ILCC_G41C2.pkl",
+            "n_cycles": 6628,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 930,
+            "file": "ISU-ILCC_G56C4.pkl",
+            "n_cycles": 4672,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 705,
+            "file": "ISU-ILCC_G5C3.pkl",
+            "n_cycles": 777,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 694,
+            "file": "ISU-ILCC_G41C1.pkl",
+            "n_cycles": 11199,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3791,
+            "file": "ISU-ILCC_G6C3.pkl",
+            "n_cycles": 16313,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1031,
+            "file": "ISU-ILCC_G2C4.pkl",
+            "n_cycles": 2787,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 250,
+            "file": "ISU-ILCC_G53C3.pkl",
+            "n_cycles": 586,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2512,
+            "file": "ISU-ILCC_G59C4.pkl",
+            "n_cycles": 20684,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 817,
+            "file": "ISU-ILCC_G48C3.pkl",
+            "n_cycles": 4979,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2953,
+            "file": "ISU-ILCC_G40C1.pkl",
+            "n_cycles": 8897,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 791,
+            "file": "ISU-ILCC_G8C3.pkl",
+            "n_cycles": 2902,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 993,
+            "file": "ISU-ILCC_G43C3.pkl",
+            "n_cycles": 16463,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 507,
+            "file": "ISU-ILCC_G39C2.pkl",
+            "n_cycles": 716,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 743,
+            "file": "ISU-ILCC_G2C2.pkl",
+            "n_cycles": 2610,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 957,
+            "file": "ISU-ILCC_G2C3.pkl",
+            "n_cycles": 2546,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 779,
+            "file": "ISU-ILCC_G51C3.pkl",
+            "n_cycles": 5383,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 590,
+            "file": "ISU-ILCC_G63C4.pkl",
+            "n_cycles": 3667,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 2646,
+            "file": "ISU-ILCC_G33C3.pkl",
+            "n_cycles": 5985,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 836,
+            "file": "ISU-ILCC_G12C2.pkl",
+            "n_cycles": 1518,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 308,
+            "file": "ISU-ILCC_G22C2.pkl",
+            "n_cycles": 514,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 661,
+            "file": "ISU-ILCC_G52C3.pkl",
+            "n_cycles": 2128,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 334,
+            "file": "ISU-ILCC_G5C4.pkl",
+            "n_cycles": 556,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 886,
+            "file": "ISU-ILCC_G3C1.pkl",
+            "n_cycles": 1993,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 514,
+            "file": "ISU-ILCC_G22C3.pkl",
+            "n_cycles": 650,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 738,
+            "file": "ISU-ILCC_G55C3.pkl",
+            "n_cycles": 7910,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3005,
+            "file": "ISU-ILCC_G54C4.pkl",
+            "n_cycles": 9419,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 553,
+            "file": "ISU-ILCC_G5C2.pkl",
+            "n_cycles": 1673,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1164,
+            "file": "ISU-ILCC_G61C4.pkl",
+            "n_cycles": 6411,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 504,
+            "file": "ISU-ILCC_G16C1.pkl",
+            "n_cycles": 745,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 698,
+            "file": "ISU-ILCC_G37C1.pkl",
+            "n_cycles": 947,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1220,
+            "file": "ISU-ILCC_G58C4.pkl",
+            "n_cycles": 4209,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 499,
+            "file": "ISU-ILCC_G23C1.pkl",
+            "n_cycles": 679,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 487,
+            "file": "ISU-ILCC_G37C4.pkl",
+            "n_cycles": 587,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 729,
+            "file": "ISU-ILCC_G58C2.pkl",
+            "n_cycles": 4047,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 560,
+            "file": "ISU-ILCC_G8C1.pkl",
+            "n_cycles": 1204,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 190,
+            "file": "ISU-ILCC_G14C2.pkl",
+            "n_cycles": 250,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 653,
+            "file": "ISU-ILCC_G37C2.pkl",
+            "n_cycles": 782,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1219,
+            "file": "ISU-ILCC_G56C1.pkl",
+            "n_cycles": 4840,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1500,
+            "file": "ISU-ILCC_G33C2.pkl",
+            "n_cycles": 5746,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 533,
+            "file": "ISU-ILCC_G3C4.pkl",
+            "n_cycles": 1164,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 408,
+            "file": "ISU-ILCC_G60C3.pkl",
+            "n_cycles": 3035,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 676,
+            "file": "ISU-ILCC_G13C1.pkl",
+            "n_cycles": 1943,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 3204,
+            "file": "ISU-ILCC_G1C2.pkl",
+            "n_cycles": 11400,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 828,
+            "file": "CALCE_CX2_16.pkl",
+            "n_cycles": 1279,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 590,
+            "file": "CALCE_CX2_38.pkl",
+            "n_cycles": 1579,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 239,
+            "file": "HNEI_18650_NMC_LCO_25C_0-100_0.5-1.5C_f.pkl",
+            "n_cycles": 1075,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 257,
+            "file": "HNEI_18650_NMC_LCO_25C_0-100_0.5-1.5C_d.pkl",
+            "n_cycles": 1081,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 147,
+            "file": "SNL_18650_NMC_15C_0-100_0.5-1C_a.pkl",
+            "n_cycles": 513,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 637,
+            "file": "SNL_18650_NMC_35C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 785,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 335,
+            "file": "SNL_18650_NCA_25C_0-100_0.5-2C_a.pkl",
+            "n_cycles": 786,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 602,
+            "file": "SNL_18650_NMC_25C_0-100_0.5-3C_c.pkl",
+            "n_cycles": 698,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 2902,
+            "file": "SNL_18650_LFP_25C_0-100_0.5-3C_b.pkl",
+            "n_cycles": 4062,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 250,
+            "file": "SNL_18650_NCA_15C_0-100_0.5-2C_b.pkl",
+            "n_cycles": 784,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 523,
+            "file": "SNL_18650_NMC_35C_0-100_0.5-1C_b.pkl",
+            "n_cycles": 786,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3308,
+            "file": "SNL_18650_LFP_35C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 3342,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 3842,
+            "file": "SNL_18650_LFP_35C_0-100_0.5-2C_a.pkl",
+            "n_cycles": 3856,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 333,
+            "file": "SNL_18650_NCA_25C_0-100_0.5-1C_c.pkl",
+            "n_cycles": 522,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 272,
+            "file": "MICH_BLForm20_pouch_NMC_25C_0-100_1-1C_j.pkl",
+            "n_cycles": 442,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 362,
+            "file": "MICH_MCForm21_pouch_NMC_25C_0-100_1-1C_a.pkl",
+            "n_cycles": 477,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 457,
+            "file": "MICH_MCForm34_pouch_NMC_45C_0-100_1-1C_d.pkl",
+            "n_cycles": 581,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 345,
+            "file": "MICH_BLForm6_pouch_NMC_45C_0-100_1-1C_f.pkl",
+            "n_cycles": 454,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 392,
+            "file": "MICH_MCForm40_pouch_NMC_45C_0-100_1-1C_j.pkl",
+            "n_cycles": 540,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 321,
+            "file": "MICH_BLForm7_pouch_NMC_45C_0-100_1-1C_g.pkl",
+            "n_cycles": 457,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 380,
+            "file": "MICH_MCForm28_pouch_NMC_25C_0-100_1-1C_h.pkl",
+            "n_cycles": 589,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 387,
+            "file": "MICH_MCForm33_pouch_NMC_45C_0-100_1-1C_c.pkl",
+            "n_cycles": 502,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 269,
+            "file": "MICH_01R_pouch_NMC_25C_0-100_0.2-0.2C.pkl",
+            "n_cycles": 379,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 211,
+            "file": "XJTU_3C_battery-12.pkl",
+            "n_cycles": 211,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 298,
+            "file": "XJTU_3C_battery-1.pkl",
+            "n_cycles": 298,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 401,
+            "file": "XJTU_2C_battery-5.pkl",
+            "n_cycles": 402,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 286,
+            "file": "XJTU_3C_battery-9.pkl",
+            "n_cycles": 286,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          }
+        ],
+        "dataset": "MIX_large_841",
+        "dropped": [
+          [
+            "Tongji1_CY25-1_1--1.pkl",
+            "eol=27 <= 100"
+          ],
+          [
+            "Tongji1_CY25-1_1--2.pkl",
+            "eol=24 <= 100"
+          ],
+          [
+            "Tongji1_CY25-1_1--7.pkl",
+            "eol=20 <= 100"
+          ],
+          [
+            "MICH_09H_pouch_NMC_45C_0-100_2-2C.pkl",
+            "eol=99 <= 100"
+          ]
+        ],
+        "max": 100,
+        "median": 100.0,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 97,
+        "seen_samples": 9700,
+        "seen_unseen_file": "cal_for_test.json",
+        "test_cells_listed": 162,
+        "test_cells_used": 158,
+        "total_samples": 15800,
+        "unseen_cells": 61,
+        "unseen_samples": 6100,
+        "weight_l1_deviation": 0.0
+      }
+    },
+    "Na-ion": {
+      "42": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 117,
+            "file": "NA-ion_270040-2-5-12.pkl",
+            "n_cycles": 129,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 268,
+            "file": "NA-ion_270040-1-3-62.pkl",
+            "n_cycles": 175,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 108,
+            "file": "NA-ion_270040-3-7-50.pkl",
+            "n_cycles": 184,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 148,
+            "file": "NA-ion_270040-8-5-16.pkl",
+            "n_cycles": 128,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 214,
+            "file": "NA-ion_270040-1-7-58.pkl",
+            "n_cycles": 223,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          }
+        ],
+        "dataset": "NAion42",
+        "dropped": [],
+        "max": 100,
+        "median": 100,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 3,
+        "seen_samples": 300,
+        "seen_unseen_file": "cal_for_test_NA42.json",
+        "test_cells_listed": 5,
+        "test_cells_used": 5,
+        "total_samples": 500,
+        "unseen_cells": 2,
+        "unseen_samples": 200,
+        "weight_l1_deviation": 0.0
+      },
+      "2021": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 102,
+            "file": "NA-ion_270040-5-8-32.pkl",
+            "n_cycles": 200,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 227,
+            "file": "NA-ion_270040-4-3-46.pkl",
+            "n_cycles": 243,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 235,
+            "file": "NA-ion_270040-4-1-48.pkl",
+            "n_cycles": 249,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 268,
+            "file": "NA-ion_270040-1-3-62.pkl",
+            "n_cycles": 175,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 108,
+            "file": "NA-ion_270040-3-7-50.pkl",
+            "n_cycles": 184,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          }
+        ],
+        "dataset": "NAion",
+        "dropped": [],
+        "max": 100,
+        "median": 100,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 3,
+        "seen_samples": 300,
+        "seen_unseen_file": "cal_for_test_NA2021.json",
+        "test_cells_listed": 5,
+        "test_cells_used": 5,
+        "total_samples": 500,
+        "unseen_cells": 2,
+        "unseen_samples": 200,
+        "weight_l1_deviation": 0.0
+      },
+      "2024": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 148,
+            "file": "NA-ion_270040-8-5-16.pkl",
+            "n_cycles": 128,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 184,
+            "file": "NA-ion_270040-3-4-53.pkl",
+            "n_cycles": 225,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 128,
+            "file": "NA-ion_270040-5-1-39.pkl",
+            "n_cycles": 225,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 108,
+            "file": "NA-ion_270040-3-7-50.pkl",
+            "n_cycles": 184,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 268,
+            "file": "NA-ion_270040-1-3-62.pkl",
+            "n_cycles": 175,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          }
+        ],
+        "dataset": "NAion2024",
+        "dropped": [],
+        "max": 100,
+        "median": 100,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 3,
+        "seen_samples": 300,
+        "seen_unseen_file": "cal_for_test_NA2024.json",
+        "test_cells_listed": 5,
+        "test_cells_used": 5,
+        "total_samples": 500,
+        "unseen_cells": 2,
+        "unseen_samples": 200,
+        "weight_l1_deviation": 0.0
+      }
+    },
+    "Zn-ion": {
+      "42": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 447,
+            "file": "ZN-coin_439-1_20231227204804_04_6.pkl",
+            "n_cycles": 508,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 109,
+            "file": "ZN-coin_403-1_20231209225922_01_4.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 183,
+            "file": "ZN-coin_445-3_20240104212530_07_1.pkl",
+            "n_cycles": 319,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 172,
+            "file": "ZN-coin_412-2_20231209233028_09_8.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 140,
+            "file": "ZN-coin_410-2_20231209232626_09_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 210,
+            "file": "ZN-coin_409-2_20231209232422_05_3.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 114,
+            "file": "ZN-coin_405-2_20231209231413_08_3.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 159,
+            "file": "ZN-coin_402-3_20231209225844_01_3.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 197,
+            "file": "ZN-coin_440-3_20231227204837_08_3.pkl",
+            "n_cycles": 1405,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 888,
+            "file": "ZN-coin_435-1_20231227204625_03_2.pkl",
+            "n_cycles": 993,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 104,
+            "file": "ZN-coin_402-1_20231209225636_01_1.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1165,
+            "file": "ZN-coin_437-1_20231227204706_03_8.pkl",
+            "n_cycles": 1478,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 108,
+            "file": "ZN-coin_425-2_20231205230124_03_1.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 107,
+            "file": "ZN-coin_204-2_20231205230217_07_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 167,
+            "file": "ZN-coin_409-1_20231209232338_05_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 135,
+            "file": "ZN-coin_409-3_20231209232500_05_4.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 815,
+            "file": "ZN-coin_433-2_20231227204539_01_5.pkl",
+            "n_cycles": 977,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1481,
+            "file": "ZN-coin_437-3_20231227204717_04_2.pkl",
+            "n_cycles": 1537,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 603,
+            "file": "ZN-coin_435-3_20231227204635_03_4.pkl",
+            "n_cycles": 1099,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          }
+        ],
+        "dataset": "ZN-coin42",
+        "dropped": [
+          [
+            "ZN-coin_204-1_20231205230212_07_1.pkl",
+            "eol=100 <= 100"
+          ]
+        ],
+        "max": 100,
+        "median": 100,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 14,
+        "seen_samples": 1400,
+        "seen_unseen_file": "cal_for_test_ZN42.json",
+        "test_cells_listed": 20,
+        "test_cells_used": 19,
+        "total_samples": 1900,
+        "unseen_cells": 5,
+        "unseen_samples": 500,
+        "weight_l1_deviation": 0.0
+      },
+      "2021": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 136,
+            "file": "ZN-coin_422-1_20231205230039_01_7.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1082,
+            "file": "ZN-coin_438-3_20231227204754_04_5.pkl",
+            "n_cycles": 1676,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 888,
+            "file": "ZN-coin_435-1_20231227204625_03_2.pkl",
+            "n_cycles": 993,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 172,
+            "file": "ZN-coin_412-2_20231209233028_09_8.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 140,
+            "file": "ZN-coin_410-2_20231209232626_09_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 447,
+            "file": "ZN-coin_439-1_20231227204804_04_6.pkl",
+            "n_cycles": 508,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 107,
+            "file": "ZN-coin_204-2_20231205230217_07_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 101,
+            "file": "ZN-coin_428-2_20231212185058_01_4.pkl",
+            "n_cycles": 128,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 200,
+            "file": "ZN-coin_430-2_20231212185305_02_7.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 1621,
+            "file": "ZN-coin_436-2_20231227204653_03_6.pkl",
+            "n_cycles": 1583,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 322,
+            "file": "ZN-coin_205-3_20231205230239_07_6.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 183,
+            "file": "ZN-coin_415-1_20231209233508_06_8.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 245,
+            "file": "ZN-coin_412-1_20231209232958_09_7.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 190,
+            "file": "ZN-coin_413-1_20231209233202_06_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 219,
+            "file": "ZN-coin_209-1_20231205230248_07_7.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 146,
+            "file": "ZN-coin_406-2_20231209231604_08_6.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 174,
+            "file": "ZN-coin_406-3_20231209231637_08_7.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 168,
+            "file": "ZN-coin_205-1_20231205230230_07_4.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 139,
+            "file": "ZN-coin_446-1_20240104212538_07_2.pkl",
+            "n_cycles": 154,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 159,
+            "file": "ZN-coin_402-3_20231209225844_01_3.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          }
+        ],
+        "dataset": "ZN-coin",
+        "dropped": [],
+        "max": 100,
+        "median": 100.0,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 17,
+        "seen_samples": 1700,
+        "seen_unseen_file": "cal_for_test.json",
+        "test_cells_listed": 20,
+        "test_cells_used": 20,
+        "total_samples": 2000,
+        "unseen_cells": 3,
+        "unseen_samples": 300,
+        "weight_l1_deviation": 0.0
+      },
+      "2024": {
+        "all_counts_equal": true,
+        "all_equal_100": true,
+        "cells": [
+          {
+            "eol": 200,
+            "file": "ZN-coin_430-2_20231212185305_02_7.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 126,
+            "file": "ZN-coin_407-3_20231209231841_02_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 415,
+            "file": "ZN-coin_445-2_20240104212521_09_8.pkl",
+            "n_cycles": 421,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1232,
+            "file": "ZN-coin_436-3_20231227204657_03_7.pkl",
+            "n_cycles": 1645,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 118,
+            "file": "ZN-coin_414-2_20231209233354_06_6.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 125,
+            "file": "ZN-coin_408-2_20231209231947_02_4.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 365,
+            "file": "ZN-coin_445-1_20240104212517_09_7.pkl",
+            "n_cycles": 460,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 118,
+            "file": "ZN-coin_422-3_20231205230049_02_1.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 567,
+            "file": "ZN-coin_450-1_20240116203402_01_2_Batch-3.pkl",
+            "n_cycles": 794,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 175,
+            "file": "ZN-coin_443-2_20240104212500_09_5.pkl",
+            "n_cycles": 559,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 402,
+            "file": "ZN-coin_450-2_20240116203410_01_4_Batch-3.pkl",
+            "n_cycles": 794,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 147,
+            "file": "ZN-coin_411-1_20231209232756_09_4.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 891,
+            "file": "ZN-coin_434-3_20231227204618_03_1.pkl",
+            "n_cycles": 990,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 140,
+            "file": "ZN-coin_410-2_20231209232626_09_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 447,
+            "file": "ZN-coin_439-1_20231227204804_04_6.pkl",
+            "n_cycles": 508,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 183,
+            "file": "ZN-coin_445-3_20240104212530_07_1.pkl",
+            "n_cycles": 319,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 974,
+            "file": "ZN-coin_433-1_20231227204534_01_4.pkl",
+            "n_cycles": 1013,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          },
+          {
+            "eol": 151,
+            "file": "ZN-coin_417-3_20231209234058_10_8.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 104,
+            "file": "ZN-coin_423-1_20231205230055_02_2.pkl",
+            "n_cycles": 391,
+            "n_samples": 100,
+            "seen_unseen": "unseen"
+          },
+          {
+            "eol": 1010,
+            "file": "ZN-coin_434-2_20231227204612_01_8.pkl",
+            "n_cycles": 1038,
+            "n_samples": 100,
+            "seen_unseen": "seen"
+          }
+        ],
+        "dataset": "ZN-coin2024",
+        "dropped": [],
+        "max": 100,
+        "median": 100.0,
+        "metrics_algebraically_identical": true,
+        "min": 100,
+        "seen_cells": 13,
+        "seen_samples": 1300,
+        "seen_unseen_file": "cal_for_test_ZN2024.json",
+        "test_cells_listed": 20,
+        "test_cells_used": 20,
+        "total_samples": 2000,
+        "unseen_cells": 7,
+        "unseen_samples": 700,
+        "weight_l1_deviation": 0.0
+      }
+    }
+  },
+  "split_identity": {
+    "CALB": {
+      "dataset_names": {
+        "42": "CALB42",
+        "2021": "CALB",
+        "2024": "CALB2024"
+      },
+      "test_identical_across_seeds": false,
+      "test_sizes": {
+        "42": 5,
+        "2021": 5,
+        "2024": 5
+      },
+      "train_identical_across_seeds": false,
+      "train_sizes": {
+        "42": 17,
+        "2021": 17,
+        "2024": 17
+      }
+    },
+    "Li-ion": {
+      "dataset_names": {
+        "42": "MIX_large_841",
+        "2021": "MIX_large_841",
+        "2024": "MIX_large_841"
+      },
+      "test_identical_across_seeds": true,
+      "test_sizes": {
+        "42": 162,
+        "2021": 162,
+        "2024": 162
+      },
+      "train_identical_across_seeds": true,
+      "train_sizes": {
+        "42": 510,
+        "2021": 510,
+        "2024": 510
+      }
+    },
+    "Na-ion": {
+      "dataset_names": {
+        "42": "NAion42",
+        "2021": "NAion",
+        "2024": "NAion2024"
+      },
+      "test_identical_across_seeds": false,
+      "test_sizes": {
+        "42": 5,
+        "2021": 5,
+        "2024": 5
+      },
+      "train_identical_across_seeds": false,
+      "train_sizes": {
+        "42": 20,
+        "2021": 20,
+        "2024": 20
+      }
+    },
+    "Zn-ion": {
+      "dataset_names": {
+        "42": "ZN-coin42",
+        "2021": "ZN-coin",
+        "2024": "ZN-coin2024"
+      },
+      "test_identical_across_seeds": false,
+      "test_sizes": {
+        "42": 20,
+        "2021": 20,
+        "2024": 20
+      },
+      "train_identical_across_seeds": false,
+      "train_sizes": {
+        "42": 60,
+        "2021": 60,
+        "2024": 60
+      }
+    }
+  }
+}
