@@ -213,60 +213,33 @@ if requested == MIX_841:
 # 패치 3 — 입력 텐서 캐시 (BLIFE_TENSOR_CACHE 를 줬을 때만)
 # --------------------------------------------------------------------------
 
-CACHE_DIR = SOURCE.parent.parent.parent / "data" / "tensor_cache"
+REPO_ROOT = SOURCE.parent.parent.parent
+CACHE_DIR = REPO_ROOT / "data" / "tensor_cache"
 
 
 def _apply_tensor_cache(tag):
-    import numpy as np
+    """캐시 패치 본문은 `train/blife_patches.py` 에 있습니다 — **추론 하네스와
+    같은 코드**입니다. 예전에는 이 파일과 `train/infer_cell_preds.py` 에
+    복제돼 있었고, A/B 80회를 앞두고 둘이 어긋나면 조용히 다른 조건으로 도는
+    사고가 납니다 (`docs/reports/2026-08-07_cell_predictions.md` §10-1).
+    """
     from data_provider import data_loader as dl
 
-    curves_path = CACHE_DIR / f"{tag}_curves.npy"
-    index_path = CACHE_DIR / f"{tag}_index.json"
-    if not curves_path.exists() or not index_path.exists():
-        _die(f"BLIFE_TENSOR_CACHE={tag} 인데 캐시가 없습니다.\n"
-             f"  {curves_path}\n  {index_path}\n"
-             f"  먼저 `python train/build_tensor_cache.py --domain <도메인>` 을 돌리십시오.")
+    sys.path.insert(0, str(REPO_ROOT))
+    try:
+        from train.blife_patches import install_tensor_cache
+    except ImportError as exc:
+        _die(f"train/blife_patches.py 를 불러오지 못했습니다: {exc}\n"
+             f"  찾은 곳: {REPO_ROOT}")
 
-    index = json.loads(index_path.read_text(encoding="utf-8"))
-    cfg = index["config"]
-    rows = {name: i for i, name in enumerate(index["cells"])}
-    meta = index["meta"]
-    curves = np.load(curves_path, mmap_mode="r")
-    if len(curves) != len(index["cells"]):
-        _die(f"캐시 행 수 {len(curves)} 와 셀 목록 {len(index['cells'])} 가 다릅니다.")
-
-    original_read_cell_df = dl.Dataset_original.read_cell_df
-    stats = {"hit": 0, "miss": 0}
-
-    def read_cell_df_cached(self, file_name):
-        row = rows.get(file_name)
-        # 캐시를 만든 조건과 다르면 손대지 않는다.
-        same_cfg = (self.charge_discharge_len == cfg["charge_discharge_length"]
-                    and self.early_cycle_threshold == cfg["early_cycle_threshold"]
-                    and self.seq_len == cfg["seq_len"])
-        if row is None or not same_cfg:
-            stats["miss"] += 1
-            return original_read_cell_df(self, file_name)
-
-        stats["hit"] += 1
-        # mmap 뷰가 아니라 사본을 준다. 상위는 이 객체를 batch_aug 에 넘기고
-        # 같은 객체를 돌려주므로, 그 흐름을 그대로 흉내낸다.
-        arr = np.array(curves[row], dtype=np.float64)
-        m = meta[file_name]
-        cj_aug, _fm_aug = self.aug_helper.batch_aug(arr)
-        # 상위 반환 순서: df, curves, eol, nominal_capacity, cj_aug, valid_cycle_number
-        # df 는 `is None` 검사에만, nominal_capacity 는 아무 데도 쓰이지 않는다
-        # (data_loader.py:487-489 이 유일한 호출부).
-        return True, arr, m["eol"], None, cj_aug, m["valid_cycle_number"]
-
-    dl.Dataset_original.read_cell_df = read_cell_df_cached
+    _restore, stats, desc = install_tensor_cache(dl, CACHE_DIR, tag, die=_die)
     dl._tensor_cache_stats = stats
 
     APPLIED.append(
-        f"3. 입력 텐서 캐시 — {curves_path.name} "
-        f"({len(index['cells'])}셀, {tuple(index['shape'])} {index['dtype']}). "
+        f"3. 입력 텐서 캐시 — {desc}. "
         "pkl 적재+리샘플링만 건너뜁니다. batch_aug 는 난수열 보존을 위해 "
-        "캐시된 텐서에 그대로 다시 겁니다. 캐시에 없는 셀은 원래 경로.")
+        "캐시된 텐서에 그대로 다시 겁니다. 캐시에 없는 셀은 원래 경로. "
+        "(본문: train/blife_patches.py — 추론 하네스와 공용)")
 
 
 _cache_tag = os.environ.get("BLIFE_TENSOR_CACHE", "").strip()

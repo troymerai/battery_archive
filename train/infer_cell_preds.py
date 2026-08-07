@@ -49,18 +49,21 @@ COUNTS = REPO / "experiments/results/cell_sample_counts.json"
 OUT_DIR = REPO / "experiments/results/cell_preds"
 CACHE_DIR = REPO / "data/tensor_cache"
 
-# 도메인 -> 텐서 캐시 태그 (2026-08-07_prep_ab.md §4-2)
-CACHE_TAG = {"Li-ion": "liion", "Zn-ion": "znion", "Na-ion": "naion", "CALB": "calb"}
+sys.path.insert(0, str(REPO))
+# 캐시·분할·라벨 패치는 **학습 진입점과 같은 코드**를 쓴다.
+# 예전에는 여기와 train/templates/entrypoint.py 에 복제돼 있었다
+# (`docs/reports/2026-08-07_cell_predictions.md` §10-1).
+from train.blife_patches import (CACHE_TAG, MIX_841_EXCLUDED,  # noqa: E402
+                                 LabelMissing,
+                                 apply_mix841, install_cell_recorder,
+                                 install_label_source, install_tensor_cache,
+                                 make_eol_lookup)
 
-# `.build` 진입점 패치 2 와 같은 목록
-MIX_841_EXCLUDED = [
-    "MICH_13R_pouch_NMC_25C_50-100_0.2-0.2C.pkl",
-    "MICH_14C_pouch_NMC_-5C_50-100_0.2-0.2C.pkl",
-    "MICH_15H_pouch_NMC_45C_50-100_0.2-0.2C.pkl",
-    "MICH_17C_pouch_NMC_-5C_50-100_0.2-1.5C.pkl",
-    "MICH_18H_pouch_NMC_45C_50-100_0.2-1.5C.pkl",
-    "MICH_16R_pouch_NMC_25C_50-100_0.2-1.5C.pkl",
-]
+# 라벨 원본 — A 는 배포판, B 는 공개 코드 재생성분
+LABEL_SOURCES = {
+    "A": REPO / "data/extracted/Life labels",
+    "B": REPO / "data/labels_B",
+}
 
 
 def _install_stubs() -> None:
@@ -103,50 +106,6 @@ def load_combos() -> list[dict]:
     return out
 
 
-def apply_841(split_recorder) -> None:
-    for f in ("train", "val", "test"):
-        name = f"MIX_large_{f}_files"
-        kept = [x for x in getattr(split_recorder, name) if x not in MIX_841_EXCLUDED]
-        setattr(split_recorder, name, kept)
-
-
-def install_tensor_cache(tag: str):
-    """`.build` 진입점 패치 3 과 같은 코드. (원래 함수, 통계) 를 돌려준다."""
-    import numpy as np
-    from data_provider import data_loader as dl
-
-    idx_path = CACHE_DIR / f"{tag}_index.json"
-    npy_path = CACHE_DIR / f"{tag}_curves.npy"
-    if not idx_path.exists() or not npy_path.exists():
-        return None, {"hit": 0, "miss": 0, "off": True}
-
-    index = json.loads(idx_path.read_text(encoding="utf-8"))
-    cfg = index["config"]
-    rows = {n: i for i, n in enumerate(index["cells"])}
-    meta = index["meta"]
-    curves = np.load(npy_path, mmap_mode="r")
-
-    original = dl.Dataset_original.read_cell_df
-    stats = {"hit": 0, "miss": 0, "off": False}
-
-    def read_cell_df_cached(self, file_name):
-        row = rows.get(file_name)
-        same_cfg = (self.charge_discharge_len == cfg["charge_discharge_length"]
-                    and self.early_cycle_threshold == cfg["early_cycle_threshold"]
-                    and self.seq_len == cfg["seq_len"])
-        if row is None or not same_cfg:
-            stats["miss"] += 1
-            return original(self, file_name)
-        stats["hit"] += 1
-        arr = np.array(curves[row], dtype=np.float64)
-        m = meta[file_name]
-        cj_aug, _fm = self.aug_helper.batch_aug(arr)
-        return True, arr, m["eol"], None, cj_aug, m["valid_cycle_number"]
-
-    dl.Dataset_original.read_cell_df = read_cell_df_cached
-    return original, stats
-
-
 def build_model(args_ns):
     """run_main.py:154-196 의 분기 중 이 저장소가 쓰는 3종만."""
     from models import CPMLP, CPTransformer, MLP
@@ -174,7 +133,7 @@ def metrics_from(preds, refs, alpha1=0.15, alpha2=0.10):
     }
 
 
-def run_one(combo: dict, use_cache: bool, device: str) -> dict:
+def run_one(combo: dict, use_cache: bool, device: str, label_set: str = "A") -> dict:
     import numpy as np
     import torch
     import joblib
@@ -191,13 +150,35 @@ def run_one(combo: dict, use_cache: bool, device: str) -> dict:
     # 상위 elif 사슬에 MIX_large_841 가지가 없다. `.build` 진입점과 같은 방식으로
     # 데이터셋 객체에만 MIX_large 로 보이게 한다.
     ds_name = args_ns.dataset
+    restore_841 = None
     if ds_name == "MIX_large_841":
-        apply_841(split_recorder)
+        restore_841 = apply_mix841(split_recorder)
         ds_name = "MIX_large"
 
-    restore, cache_stats = (None, {"hit": 0, "miss": 0, "off": True})
+    undo = []
+    cache_stats = {"hit": 0, "miss": 0, "off": True}
+    label_stats = {"found": 0, "missing": 0, "no_file": 0}
+
+    # 라벨을 갈아 끼울 때는 **캐시에도 알려야 한다.** 캐시 색인이 만들 때의
+    # eol 을 담고 있어서, 그냥 두면 read_cell_df 가 통째로 대체되며 라벨 교체가
+    # 조용히 무시된다 (blife_patches.install_tensor_cache 주석).
+    eol_lookup = None
+    if label_set != "A":
+        eol_lookup, label_stats = make_eol_lookup(LABEL_SOURCES[label_set])
+
     if use_cache:
-        restore, cache_stats = install_tensor_cache(CACHE_TAG[combo["domain"]])
+        r, cache_stats, _desc = install_tensor_cache(
+            dl, CACHE_DIR, CACHE_TAG[combo["domain"]], eol_lookup=eol_lookup)
+        if r is not None:
+            undo.append(r)
+    if label_set != "A" and not use_cache:
+        # 캐시를 끈 경우에는 조회부 자체를 갈아 끼운다.
+        r, label_stats = install_label_source(dl, LABEL_SOURCES[label_set])
+        undo.append(r)
+    # 셀 경계는 미리 계산한 표에서 읽지 않고 **그 자리에서 관측한다.**
+    # 라벨이 바뀌면 경계도 바뀌므로 A 기준 표를 믿으면 틀린다.
+    r_rec, cell_records = install_cell_recorder(dl)
+    undo.append(r_rec)
     try:
         ds_args = argparse.Namespace(**{**saved, "dataset": ds_name})
         label_scaler = joblib.load(ck_dir / "label_scaler")
@@ -206,8 +187,10 @@ def run_one(combo: dict, use_cache: bool, device: str) -> dict:
                                    label_scaler=label_scaler,
                                    life_class_scaler=life_class_scaler)
     finally:
-        if restore is not None:
-            dl.Dataset_original.read_cell_df = restore
+        for r in reversed(undo):
+            r()
+        if restore_841 is not None:
+            restore_841()
 
     test_loader = DataLoader(test_ds, batch_size=args_ns.batch_size, shuffle=False,
                              num_workers=0, drop_last=False,
@@ -236,23 +219,44 @@ def run_one(combo: dict, use_cache: bool, device: str) -> dict:
     su_ids = np.array(su_ids, dtype=int)
     ds_ids = np.array(test_ds.total_dataset_ids, dtype=int)
 
+    observed = [{"file": f, "n_samples": n, "eol": eol}
+                for f, n, eol in cell_records if n > 0]
+    dropped = [{"file": f, "eol": eol} for f, n, eol in cell_records if n == 0]
     return {"preds": preds, "refs": refs, "su_ids": su_ids, "ds_ids": ds_ids,
-            "cache_stats": cache_stats, "n_test_cells_listed": len(test_ds.files)}
+            "cache_stats": cache_stats, "label_stats": label_stats,
+            "labels": label_set, "n_test_cells_listed": len(test_ds.files),
+            "observed_cells": observed, "dropped_cells": dropped}
 
 
 def reconstruct_cells(combo, res, counts):
-    """셀 경계를 복원하고 **그 자리에서 검증한다.**"""
+    """셀 경계를 복원하고 **그 자리에서 검증한다.**
+
+    경계는 `install_cell_recorder` 가 관측한 것을 쓴다. `counts`
+    (`cell_sample_counts.json`, A 라벨 기준) 는 **대조용으로만** 쓴다 —
+    라벨 B 에서는 당연히 다를 수 있고, 다르다는 사실 자체가 기록거리다.
+    """
     import numpy as np
 
-    entry = counts["per_domain"][combo["domain"]][str(combo["seed"])]
-    cells = entry["cells"]
-    expect_total = entry["total_samples"]
+    cells = res["observed_cells"]
+    expect_total = sum(c["n_samples"] for c in cells)
 
     problems = []
     n_got = len(res["preds"])
     if n_got != expect_total:
-        problems.append(f"샘플 수 불일치: 로더 {n_got} · 기대 {expect_total}")
+        problems.append(f"샘플 수 불일치: 로더 {n_got} · 관측 경계 합 {expect_total}")
         return None, problems
+
+    # A 라벨일 때만 미리 계산한 표와 대조한다 (교차 검증).
+    if res["labels"] == "A":
+        entry = counts["per_domain"][combo["domain"]][str(combo["seed"])]
+        want = {c["file"]: c["n_samples"] for c in entry["cells"]}
+        got = {c["file"]: c["n_samples"] for c in cells}
+        if want != got:
+            only_w = sorted(set(want) - set(got))
+            only_g = sorted(set(got) - set(want))
+            diff = [f for f in set(want) & set(got) if want[f] != got[f]]
+            problems.append(f"cell_sample_counts.json 과 불일치 — "
+                            f"표에만 {len(only_w)} · 관측에만 {len(only_g)} · 개수다름 {len(diff)}")
 
     out, start = [], 0
     for c in cells:
@@ -265,17 +269,12 @@ def reconstruct_cells(combo, res, counts):
             problems.append(f"{c['file']}: seen_unseen 이 셀 안에서 갈림 {np.unique(su).tolist()}")
         if len(np.unique(di)) != 1:
             problems.append(f"{c['file']}: dataset_id 가 셀 안에서 갈림 {np.unique(di).tolist()}")
-        # cell_sample_counts.json 이 적어 둔 seen/unseen 과도 대조
-        want = {"seen": 1, "unseen": 0}.get(c["seen_unseen"])
-        if want is not None and len(np.unique(su)) == 1 and int(su[0]) != want:
-            problems.append(f"{c['file']}: seen_unseen 값 불일치 로더 {int(su[0])} · 기대 {want}")
-
         p, r = res["preds"][sl], res["refs"][sl]
         rel = np.abs(p - r) / r
         out.append({
             "file": c["file"], "n_samples": n,
-            "eol": c["eol"], "n_cycles": c["n_cycles"],
-            "seen_unseen": c["seen_unseen"],
+            "eol": c["eol"],
+            "seen_unseen": ("seen" if int(su[0]) == 1 else "unseen") if len(su) else None,
             "seen_unseen_id": int(su[0]) if len(su) else None,
             "dataset_id": int(di[0]) if len(di) else None,
             "start": start, "stop": start + n,
@@ -327,6 +326,8 @@ def main() -> int:
     ap.add_argument("--seed", type=int)
     ap.add_argument("--no-cache", action="store_true", help="입력 텐서 캐시를 끈다")
     ap.add_argument("--cpu", action="store_true", help="CUDA 가 있어도 CPU 로 돈다")
+    ap.add_argument("--labels", default="A", choices=sorted(LABEL_SOURCES),
+                    help="A=배포 라벨 · B=공개 코드 재생성 라벨")
     ap.add_argument("--tol", type=float, default=1e-6,
                     help="기존 지표와의 허용 오차 (절대)")
     ap.add_argument("--out-tag", default="", help="산출물 파일 이름에 붙일 꼬리표")
@@ -349,13 +350,26 @@ def main() -> int:
         return 1
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    # 라벨 조건이 A 가 아니면 산출물 이름에 반드시 남긴다 — 두 조건이 같은
+    # 파일을 덮어쓰면 A/B 실험이 조용히 무너진다.
+    tag = a.out_tag if a.labels == "A" else f"_{a.labels}{a.out_tag}"
     print(f"조합 {len(combos)}개 · device={device} · "
-          f"텐서캐시={'끔' if a.no_cache else '켬'}\n")
+          f"텐서캐시={'끔' if a.no_cache else '켬'} · 라벨={a.labels} "
+          f"({LABEL_SOURCES[a.labels].relative_to(REPO)})\n")
 
-    summary, all_problems, mismatches = {}, [], []
+    summary, all_problems, mismatches, blocked = {}, [], [], []
     for i, combo in enumerate(combos, 1):
         key = f"{combo['model']}_{combo['domain']}_s{combo['seed']}"
-        res = run_one(combo, use_cache=not a.no_cache, device=device)
+        try:
+            res = run_one(combo, use_cache=not a.no_cache, device=device,
+                          label_set=a.labels)
+        except LabelMissing as exc:
+            # 라벨 원본에 그 셀이 없다. 건너뛰면 표본이 바뀌므로 조합 전체를 버린다.
+            print(f"[{i}/{len(combos)}] {key:<34} **라벨없음으로 중단**")
+            for line in str(exc).splitlines():
+                print(f"          {line}")
+            blocked.append((key, exc.file_name))
+            continue
         cell_rows, problems = reconstruct_cells(combo, res, counts)
         if problems:
             all_problems.append((key, problems))
@@ -368,20 +382,24 @@ def main() -> int:
         want = combo["final"]
         d_mape = sw["mape"] - want["test_mape"]
         d_acc = sw["acc15"] - want["test_acc15"]
-        # curves JSON 은 소수 4자리(mape)·4자리(acc)로 반올림돼 있다
-        ok = abs(d_mape) <= 5e-5 + a.tol and abs(d_acc) <= 5e-3 + a.tol
-        if not ok:
+        # curves JSON 은 소수 4자리(mape)·4자리(acc)로 반올림돼 있다.
+        # **라벨 B 는 기존 36회와 다른 정답을 쓰므로 대조 자체가 성립하지 않는다.**
+        ok = (abs(d_mape) <= 5e-5 + a.tol and abs(d_acc) <= 5e-3 + a.tol
+              if a.labels == "A" else None)
+        if ok is False:
             mismatches.append((key, want["test_mape"], sw["mape"], want["test_acc15"], sw["acc15"]))
 
+        verdict = {True: "OK", False: "**불일치**", None: "대조없음(B)"}[ok]
         print(f"[{i}/{len(combos)}] {key:<34} "
               f"MAPE {sw['mape']:.4f} (기존 {want['test_mape']:.4f}, Δ{d_mape:+.2e}) "
               f"Acc15 {sw['acc15']:.2f} (기존 {want['test_acc15']:.2f}, Δ{d_acc:+.2e}) "
-              f"{'OK' if ok else '**불일치**'} "
+              f"{verdict} "
               f"| 셀균등 MAPE {cu['cell_uniform_mape']:.4f} "
+              f"| 셀 {len(cell_rows)} 버림 {len(res['dropped_cells'])} "
               f"| 캐시 적중 {res['cache_stats']['hit']}"
+              + (f" | 라벨 {res['label_stats']}" if a.labels != "A" else "")
               + (f" · 문제 {len(problems)}" if problems else ""))
 
-        tag = a.out_tag
         np.savez_compressed(
             OUT_DIR / f"{key}{tag}.npz",
             preds=res["preds"], refs=res["refs"],
@@ -394,6 +412,11 @@ def main() -> int:
             "model": combo["model"], "domain": combo["domain"], "seed": combo["seed"],
             "checkpoint": combo["ckpt"], "curve_json": combo["curve_json"],
             "device": device, "tensor_cache": not a.no_cache,
+            "labels": a.labels,
+            "label_source": str(LABEL_SOURCES[a.labels].relative_to(REPO)),
+            "label_lookup_stats": res["label_stats"],
+            "n_cells": len(cell_rows),
+            "dropped_cells": res["dropped_cells"],
             "n_samples": int(len(res["preds"])),
             "sample_weighted": sw,
             "reported": {"test_mape": want["test_mape"], "test_acc15": want["test_acc15"],
@@ -401,13 +424,13 @@ def main() -> int:
                          "test_seen_mape": want.get("test_seen_mape"),
                          "test_unseen_mape": want.get("test_unseen_mape")},
             "delta": {"mape": d_mape, "acc15": d_acc},
-            "reconciles": bool(ok),
+            "reconciles": (None if ok is None else bool(ok)),
             "cell_uniform": cu,
             "boundary_problems": problems,
             "cells": cell_rows,
         }
 
-    out_json = REPO / f"experiments/results/cell_metrics{a.out_tag}.json"
+    out_json = REPO / f"experiments/results/cell_metrics{tag}.json"
     out_json.write_text(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True),
                         encoding="utf-8")
     print(f"\n기록: {out_json.relative_to(REPO)}")
@@ -417,11 +440,15 @@ def main() -> int:
     for key, ps in all_problems:
         for p in ps:
             print(f"  {key}: {p}")
+    if blocked:
+        print(f"\n라벨없음으로 돌지 못한 조합 {len(blocked)}:")
+        for key, cell in blocked:
+            print(f"  {key}  (처음 걸린 셀: {cell})")
     print(f"정합성 검증: 재현 실패 {len(mismatches)} / {len(summary)}")
     for key, wm, gm, wa, ga in mismatches:
         print(f"  {key}: MAPE 기존 {wm:.4f} 재계산 {gm:.6f} · Acc15 기존 {wa:.2f} 재계산 {ga:.4f}")
 
-    return 0 if not all_problems and not mismatches else 2
+    return 0 if not all_problems and not mismatches and not blocked else 2
 
 
 if __name__ == "__main__":
