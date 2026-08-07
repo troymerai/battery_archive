@@ -445,30 +445,47 @@ GPU 를 나눠 쓰므로 그대로 반이 되지는 않습니다.
 `dataset` 과 `seed` 가 이미 들어갑니다. 우리가 정할 것은 **run 디렉터리와
 지표 JSON** 입니다.
 
+> **2026-08-07 정정.** 이 절은 원래 산출물을 `experiments/results/table3/`
+> 아래 두기로 적었으나 **그 디렉터리는 만들어지지 않았습니다.** 실행이 실제로
+> 쓴 자리는 아래와 같고, 본문을 실제 자리로 고쳤습니다.
+> `docs/reports/2026-08-04_calb_seed_hp.md:202` 가 먼저 지적한 것을 이제
+> 반영합니다. 옛 경로를 기억하고 찾아온 사람을 위해 이 문단은 남깁니다.
+
 ```
 runs/<YYYYMMDD-HHMMSS>_<모델>_<도메인>_<dataset인자>_s<seed>/
     log.txt
     pid.txt
 
-experiments/results/table3/<모델>_<도메인>_s<seed>.json
+experiments/results/train_metrics.json                        지표 (collect.py)
+experiments/results/curves/<모델>_<도메인>_s<seed>[__<태그>].json   에폭별 곡선 (curves.py)
 ```
 
 예:
 
 ```
 runs/20260804-140312_CPMLP_CALB_CALB42_s42/log.txt
-experiments/results/table3/CPMLP_CALB_s42.json
+experiments/results/curves/CPMLP_CALB_s42.json
 ```
 
 **`experiments/results/` 의 기존 라벨 검증 산출물(`nb0*.json` ·
-`LABEL_REPORT.md` 등)을 덮어쓰지 않도록 `table3/` 하위에 둡니다.**
+`LABEL_REPORT.md` 등)을 덮어쓰지 않도록 곡선은 `curves/` 하위에 두고,
+지표는 그 이름을 쓰지 않는 `train_metrics.json` 한 파일에 모읍니다.**
+
+> **`curves/` 에서 정본을 고를 때는 파일명이 아니라 JSON 의 `group` 필드를
+> 봅니다.** Zn-ion 9건은 접미사 없는 쪽이 `diagnostic`(문서 지정 lr) 이고
+> `__lr5e-05` 가 `main` 입니다 — 다른 세 도메인과 반대입니다.
+> `figures/CONDITIONS.md` §0 참조.
 
 ### 7-2. 지표 뽑기
 
 ```powershell
-python -m train.collect <run 디렉터리 이름> --out experiments\results\table3\<모델>_<도메인>_s<seed>.json
-python -m train.collect --all --out experiments\results\table3\_all.json
+python -m train.collect <run 디렉터리 이름>          # 기본 출력: experiments\results\train_metrics.json
+python -m train.collect --all                        # runs/ 전부를 한 파일로
+python -m train.curves                               # 에폭별 곡선 -> experiments\results\curves\
 ```
+
+`--out` 으로 경로를 직접 줄 수 있으나, 주지 않으면
+`experiments/results/train_metrics.json` 입니다 (`train/collect.py:159`).
 
 `collect.py` 는 로그의 `Best model performance:` 줄에서 16개 지표를
 뽑습니다. 주의 둘 — `MAPE` 는 **비율**입니다(백분율 아님).

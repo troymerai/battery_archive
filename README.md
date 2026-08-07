@@ -227,8 +227,19 @@ train/               몇 시간 걸리는 것 (Windows 는 Git Bash 필요)
 findings/            레코드 · 앵커 · 재집계 결과
 manifests/           커밋 · 데이터 md5 · 하드웨어 · 환경 잠금
 experiments/         설정과 결과
+figures/             그림 6종 + CONDITIONS.md (어느 실행에서 나왔는가)
+analysis/            학습 없이 라벨·메타만으로 재는 분석. out/ 은 .gitignore 대상
 data/                .gitignore 대상. config.env 로 경로를 겁니다
 ```
+
+> **`figures/` — 정본 판별은 파일명이 아니라 JSON 의 `group` 필드로 합니다.**
+> Zn-ion 은 접미사 없는 쪽이 `diagnostic`(문서 지정 lr) 이고 `__lr5e-05` 가
+> 정본입니다. 다른 세 도메인과 반대라 파일명으로 고르면 정확히 뒤집힙니다.
+> `figures/CONDITIONS.md` §0 에 근거가 있습니다.
+
+> **`analysis/` — `out/` 은 커밋되지 않습니다.** `analysis/*.py` 8개가
+> 만드는 산출물이고 전량 재생성이 검증되어 있습니다. 어느 파일이 어느
+> 명령으로 다시 나오는지는 `analysis/README.md` 표에 있습니다.
 
 ### 노트북
 
