@@ -200,6 +200,39 @@ def compute(item: str, config: dict | None = None) -> tuple:
     return layer, "(대상없음)"
 
 
+def stale(items, lock_path=LOCK_PATH, config: dict | None = None) -> list:
+    """지정한 항목만 재어 **LOCK 기준값이 낡았는지** 봅니다.
+
+    ``check()`` 는 전 항목을 재는데 데이터 층에서 zip 20개(29 GB)를 md5 하므로
+    분 단위가 걸립니다. 자주 바뀌는 파일 한둘을 확인하려고 그것을 부를 수는
+    없어서, 필요한 항목만 재는 얇은 함수를 따로 둡니다.
+
+    **고치지 않습니다. 알리기만 합니다.** 기준값을 자동으로 덮어쓰면
+    ``init()`` 이 값 있는 행을 건드리지 않는 설계가 무의미해집니다 — 그 설계의
+    이유는 ``init()`` 의 docstring 에 있습니다.
+
+    돌려주는 것은 어긋난 항목의 ``{item, expected, actual}`` 목록입니다.
+    LOCK 표에 없는 이름과 계산되지 않는 항목(``(...)``)은 건너뜁니다.
+    """
+    config = config if config is not None else load_config()
+    wanted = set(items)
+    result = []
+    for row in parse(lock_path):
+        if row["item"] not in wanted or row["kind"] != "digest":
+            continue
+        _, actual = compute(row["item"], config)
+        if actual.startswith("(") or row["expected"] == UNSET:
+            continue
+        if actual != row["expected"]:
+            result.append({
+                "item": row["item"],
+                "expected": row["expected"],
+                "actual": actual,
+                "line": row["line"],
+            })
+    return result
+
+
 # ---------------------------------------------------------------------------
 # 판정
 # ---------------------------------------------------------------------------

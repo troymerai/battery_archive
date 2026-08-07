@@ -122,7 +122,43 @@ def cmd_claims(args) -> int:
     else:
         print(f"\n생성: {result['map_path'].relative_to(REPO_ROOT).as_posix()}")
         print(f"생성: {result['open_path'].relative_to(REPO_ROOT).as_posix()}")
+
+    _warn_stale_lock()
     return 1 if result["problems"] else 0
+
+
+def _warn_stale_lock() -> None:
+    """registry.yaml 을 고쳤는데 LOCK.md 를 안 고쳤으면 알립니다.
+
+    이 명령이 registry.yaml 을 바꾸는 것은 아니지만, 사람이 레코드를 넣고
+    claims 로 문서를 다시 만드는 것이 한 묶음의 작업입니다. 그 끝이 여기라
+    여기서 알리는 것이 가장 빠릅니다.
+
+    **고치지 않습니다.** 기준값 변경은 계약 변경이라 사람이 합니다.
+    2026-08-04 부터 나흘간 이 잠금이 깨진 채 레코드 18개가 들어왔고, 그동안
+    아무도 몰랐습니다. 그 재발을 막으려는 것입니다.
+    """
+    from verify import lock
+
+    try:
+        rows = lock.stale(["findings/registry.yaml"])
+    except Exception as error:            # 경고는 본 작업을 막지 않습니다
+        print(f"\n(LOCK 대조를 건너뜁니다: {error})")
+        return
+
+    if not rows:
+        return
+
+    print("\n" + "!" * 66)
+    for row in rows:
+        print(f"경고 — LOCK.md 의 기준값이 낡았습니다: {row['item']}")
+        print(f"  LOCK.md:{row['line']}  기준 {row['expected']}")
+        print(f"  {' ' * len(str(row['line']))}         실제 {row['actual']}")
+    print("\n  낡은 쪽은 LOCK.md 입니다. 파일이 바뀌었는데 기준값이 안 따라왔습니다.")
+    print("  `run.py lock-init` 은 (미정) 행만 채우므로 이것을 고치지 못합니다.")
+    print("  LOCK.md 의 해당 행을 위 '실제' 값으로 직접 고치십시오.")
+    print("  기준값 변경은 계약 변경입니다 — 새 태그를 찍는 것을 권합니다.")
+    print("!" * 66)
 
 
 # ---------------------------------------------------------------------------

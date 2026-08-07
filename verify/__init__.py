@@ -17,6 +17,7 @@
 
 from __future__ import annotations
 
+import fnmatch
 import hashlib
 import json
 import os
@@ -63,7 +64,24 @@ _TREE_EXCLUDE_DIRS = {
     ".pytest_cache",
     ".mypy_cache",
 }
+
+# 이름이 고정되지 않아 위 집합으로는 못 잡는 것. `pip install -e` 가 만드는
+# ``<패키지>.egg-info`` 가 여기 해당합니다 — 이름이 패키지마다 달라집니다.
+#
+# 이것이 빠져 있어 2026-08-07 까지 `upstream/BatteryML tree` 가 FAIL 이었습니다.
+# 상위 코드는 한 글자도 안 바뀌었는데 빌드 부산물 24 KB 가 해시에 들어가
+# **상위 저장소가 변조된 것처럼 보였습니다.** 잠금이 잡아야 하는 것은 코드이지
+# 설치 흔적이 아닙니다. 자세한 것은 docs/reports/2026-08-07_lock_repair.md.
+_TREE_EXCLUDE_DIR_GLOBS = ("*.egg-info",)
+
 _TREE_EXCLUDE_SUFFIX = {".pyc", ".pyo"}
+
+
+def _excluded_dir(part: str) -> bool:
+    """트리 해시에서 뺄 디렉터리 이름인가."""
+    if part in _TREE_EXCLUDE_DIRS:
+        return True
+    return any(fnmatch.fnmatch(part, pattern) for pattern in _TREE_EXCLUDE_DIR_GLOBS)
 
 
 # ---------------------------------------------------------------------------
@@ -190,7 +208,7 @@ def tree_digest(root) -> str:
         if not path.is_file():
             continue
         rel_parts = path.relative_to(root).parts
-        if any(part in _TREE_EXCLUDE_DIRS for part in rel_parts[:-1]):
+        if any(_excluded_dir(part) for part in rel_parts[:-1]):
             continue
         if path.suffix in _TREE_EXCLUDE_SUFFIX:
             continue
