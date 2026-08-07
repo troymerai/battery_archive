@@ -12,6 +12,19 @@ config.env
 experiments/results/*.ckpt
 experiments/results/*.pt
 
+# analysis/out/ 은 analysis/*.py 8개가 만드는 산출물입니다. 전량 재생성이
+# 검증되어 있으므로(2026-08-07, docs/reports/2026-08-07_repo_cleanup.md §2)
+# 커밋하지 않습니다. 재생성 명령은 analysis/README.md 표에 있습니다.
+analysis/out/
+
+# analysis/ 최상위 CSV 는 생성 스크립트가 저장소에 없어 재생성되지 않습니다.
+# 그래서 저장소가 유일한 사본이고, 원칙적으로 **커밋합니다.**
+# 예외는 이 한 파일뿐입니다 — 185 MB 라 GitHub 파일당 100 MiB 한계에 걸려
+# 넣으면 push 자체가 실패합니다. 보관 방식은 아직 정하지 않았습니다.
+# 크기가 유일한 제외 사유이므로 패턴이 아니라 파일명으로 못박습니다 —
+# analysis/*_cycle_scan.csv 로 쓰면 na_ion(2.5 MB) 까지 같이 빠집니다.
+analysis/li_ion_cycle_scan.csv
+
 # 부수물
 *.pyc
 .ipynb_checkpoints/

@@ -1,0 +1,5 @@
+file,n_cycles,drop_cycle,soh_before,soh_at,drop,cycles_after,max_soh_after,label,in_split
+NA-ion_4000-30_20250115110206_DefaultGroup_45_1.pkl,119,119,0.8886,0.5166,0.3719,0,,119.0,-
+NA-ion_4500-30_20250114232539_DefaultGroup_45_8.pkl,164,164,0.8828,0.6263,0.2565,0,,164.0,-
+NA-ion_5000-25_20250115110326_DefaultGroup_38_1.pkl,135,135,0.976,0.5709,0.4051,0,,135.0,-
+NA-ion_5000-25_20250115110326_DefaultGroup_38_2.pkl,137,137,0.9594,0.8459,0.1135,0,,,-
