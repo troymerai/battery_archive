@@ -34,7 +34,7 @@ python run.py lock-init   현재 상태로 (미정) 을 채움
 | upstream/BatteryML tree | digest | 7368a9cdc0c375bb7a9ec9a548a7118279a997e1a35e0c245283fa7003c8bca4 | sha256, 정규화 후 |
 | upstream/BatteryLife tree | digest | 79795d1fb9c2bc03c618c1990c95479a6d658b1e2a44d876a14df837755e0456 | sha256, 정규화 후 |
 | upstream/BatteryMFormer commit | digest | febe174032ad4861fa057b9af23f5bcee8a8fb77 | submodule HEAD |
-| verify/ tree | digest | 7909f0381cc103705198335ad6ec1c9e16c51c75e3ca4547e400b1a8ac995baa | 하니스 자신도 잠근다 |
+| verify/ tree | digest | 2374f542b9326aa9b334e950a94febbf9499b2aaf22cfcb412b2385c458e8f83 | 하니스 자신도 잠근다. 2026-08-07 갱신 — 옛값 7909f038… |
 | CALB.zip | digest | 2b1006e96e0ca42765a732060f964687 | md5 · v11(19688272) |
 | CALCE.zip | digest | f0f5f1436bc7182d7d5cda05423de8c7 | md5 · v11(19688272) |
 | HNEI.zip | digest | 27d009bbb908f04e90ecd9a145d81b62 | md5 · v11(19688272) |
@@ -69,7 +69,7 @@ python run.py lock-init   현재 상태로 (미정) 을 채움
 | nb04 셀별 추가 측정 | digest | 58460a02b8577c81af70c52ce12eeda62b7bda3e056e094835b360916b44f284 | `experiments/results/nb04_extras.json` — 셀마다 잰 값 전부 |
 | nb05 v2 대조표 원자료 | digest | 6105211369e4066f120a0d65d9e9b3c3945dcd1dad6baed816331c8981d10a87 | `experiments/results/nb05_v2_compare.json` |
 | findings/na_ion_crate.json | digest | 06afdc6197fb096ac7d62228abfa9d3ef201083fadac7b4473e23c8d773c2de4 | NA-ion 파일명 ↔ C-rate 매핑 |
-| findings/registry.yaml | digest | 48bc03c2ee7d8c8410eaa8fd9df312ef6a94655bfc324c03ea24e78775c7e502 | sha256 |
+| findings/registry.yaml | digest | 0189fcf0ace96bca79c6c9b68576aa32ed5fb4b574ceb7493d85195a4f0223e8 | sha256. 2026-08-07 갱신 — 옛값 48bc03c2… 는 2026-08-04 `48d086c` 부터 낡아 있었다 |
 | findings/anchors.yaml | digest | d73aa1a3769189fb66ab83e97b32a96fb9f52b8baead0ec7c9011aca9c5b294d | sha256 |
 | CPTransformer Li-ion MAPE | interval | 0.197 ± 0.019 | 3 seed(2021·42·2024) 평균±표준편차. 하드웨어 의존 — `manifests/hardware.txt` 참조 |
 | CPTransformer Li-ion 15%-Acc | interval | 55.7 ± 4.5 | 백분율. 3 seed 평균±표준편차. 하드웨어 의존 — `manifests/hardware.txt` 참조 |
