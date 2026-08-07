@@ -5,7 +5,7 @@
 
 # PAPER ↔ CODE MAP
 
-레코드 50개. `findings/registry.yaml` 에서 생성했습니다.
+레코드 51개. `findings/registry.yaml` 에서 생성했습니다.
 
 판정은 슬롯에서 유도한 것입니다. 판정을 바꾸려면 슬롯을 고치십시오.
 유도 규칙은 `findings/SCHEMA.md` 에 있습니다.
@@ -18,7 +18,7 @@
 | 불일치 | 5 | 논문과 코드가 다르다 — 발견 |
 | 코드전용 | 1 | 논문에서 찾아봤고 없었다 |
 | 근거불명 | 1 | 값은 있으나 출처를 못 댔다 |
-| 미정 | 39 | 아직 판정할 수 없다 (대개 논문 미조사) |
+| 미정 | 40 | 아직 판정할 수 없다 (대개 논문 미조사) |
 
 ## 레코드
 
@@ -27,6 +27,7 @@
 | `DAT-001` | Zn-ion 공칭용량 = 10번째 사이클 방전용량 | 확인 · `부록 A.2 (쪽 확정 필요)` | 미조사 | 확인 · `BatteryLife/process_scripts/preprocess_ZNion.py:52` | **일치** |
 | `DAT-002` | 논문 식(1) Qi = ∫\|I\|dt 를 코드가 적분하는가 | 확인 · `식 (1) (절·쪽 확정 필요)` | 미조사 | 확인 · `BatteryLife/process_scripts/preprocess_Farasis.py:362` | **불일치** |
 | `DAT-003` | 논문 990셀 / 59화학계 / 421프로토콜 대 배포 데이터 재집계 | 미조사 | 미조사 | 미조사 | **미정** |
+| `DAT-004` | NA-ion batch1 셀의 방전 용량 열이 충전 용량 열과 같은 원본 열의 복사본인가 | 미조사 | 확인 · `BatteryLife/assets/Further_details_of_processed_charge_and_discharge_capacity_data.md - 표 16행(NA-ion) 및 Format 2 절` | 확인 · `BatteryLife/process_scripts/preprocess_NA.py:42-43` | **미정** |
 | `LAB-001` | 폐기 임계 0.825 의 근거 | 미조사 | 미조사 | 확인 · `BatteryLife/process_scripts/Extract_life_labels.py:124` | **미정** |
 | `LAB-002` | 외삽 창 20 사이클의 근거 | 미조사 | 미조사 | 확인 · `BatteryLife/process_scripts/Extract_life_labels.py:132` | **미정** |
 | `LAB-003` | 외삽이 SOH→cycle 역회귀인 이유 | 미조사 | 미조사 | 확인 · `BatteryLife/process_scripts/Extract_life_labels.py:143` | **미정** |
@@ -117,6 +118,21 @@
 - **upstream_doc** — 미조사
 - **code** — 미조사
 - **note** — META- 계열 전체의 상위 항목입니다. 01 노트북의 재집계(findings/recount.json)가 나온 뒤 논문 Table 1 과 대조합니다. 순서를 뒤집지 마십시오.
+
+### `DAT-004` — NA-ion batch1 셀의 방전 용량 열이 충전 용량 열과 같은 원본 열의 복사본인가
+
+**판정: 미정** — 논문을 아직 안 봤습니다. '코드 전용' 이라 말할 수 없습니다
+
+- **paper** — 미조사
+- **upstream_doc** — 확인
+    - locus: BatteryLife/assets/Further_details_of_processed_charge_and_discharge_capacity_data.md - 표 16행(NA-ion) 및 Format 2 절
+    - value: NA-ion 은 Format 2 이며 원시 충전 용량 열과 방전 용량 열이 서로 다른 열에 기록된다고 적습니다. 충전 중에는 방전 용량이 0 으로 유지되고 방전 중에는 충전 용량이 0 으로 설정되며, 전처리는 그 두 열을 그대로 복사해 charge_capacity_in_Ah 와 discharge_capacity_in_Ah 에 담는다고 적습니다
+    - checked_by: CC
+- **code** — 확인
+    - locus: BatteryLife/process_scripts/preprocess_NA.py:42-43
+    - value: batch1(.xlsx) 셀은 단일 Capacity/Ah 열을 Discharge_capacity/Ah 와 Charge_capacity/Ah 두 열에 각각 대입합니다. 서로 다른 두 열을 읽는 것이 아니라 한 열을 두 번 씁니다. batch2(.csv) 셀만 clean_data(preprocess_NA.py:124-125) 가 放电容量(Ah) 과 充电容量(Ah) 를 각각 읽어 두 열을 분리합니다
+    - checked_by: CC
+- **note** — 2026-08-07 등록. 근거는 docs/reports/2026-08-06_na_ion_soh_drop.md 의 유형 H 이고, 코드 두 곳과 셀 범위 모두 이 레코드를 쓰면서 다시 재어 확인했습니다. 재측정 결과는 NA-ion pkl 64개 중 두 열이 전 사이클 100% 동일한 셀 5개 · 0% 동일한 셀 59개 · 부분 동일 0개로 보고서와 같았습니다. 5셀은 NA-ion_2850-30_20250117105706_DefaultGroup_45_2(170사이클) · NA-ion_4000-30_20250115110206_DefaultGroup_45_1(119) · NA-ion_4500-30_20250114232539_DefaultGroup_45_8(164) · NA-ion_5000-25_20250115110326_DefaultGroup_38_1(135) · NA-ion_5000-25_20250115110326_DefaultGroup_38_2(137) 입니다. 파급은 라벨입니다 - Extract_life_labels.py:120 이 max(last_cycle['discharge_capacity_in_Ah']) 로 SOH 를 재므로 이 5셀에서는 방전 용량이 아니라 그 사이클의 용량 카운터 최댓값(실질 충전 용량)이 분모 계산에 들어갑니다. **판정은 미정입니다.** upstream_doc 이 확인이고 코드와 어긋나지만 verify/render.py:84-122 의 derive_verdict 는 paper 와 code 로만 유도하고 upstream_doc 은 보조 근거라 판정에 넣지 않습니다(SCHEMA.md 41-43행). 이것을 불일치로 올리려면 논문이 용량 열의 의미를 어디서 규정하는지 paper 슬롯을 채워야 합니다. 보고서 512행이 논문 대조를 이번 조사 범위 밖으로 명시했으므로 미조사로 두었고, 찾아보지 않은 것을 부재확인이나 조사했으나불명으로 적지 않았습니다. 앵커는 아직 만들지 않았습니다 - findings/anchors.yaml 은 LOCK 잠금 대상이고 현재 d73aa1a3… 로 일치하고 있어 이번 정리 범위에서 건드리지 않았습니다. 유형 A~G 어디에도 해당하지 않으며 특히 C(두 열이 뒤바뀜)와 다릅니다 - 뒤바뀐 것이 아니라 한 열이 두 번 쓰였습니다.
 
 ### `LAB-001` — 폐기 임계 0.825 의 근거
 
