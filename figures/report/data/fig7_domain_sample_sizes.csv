@@ -1,0 +1,5 @@
+domain,train_cells,val_cells,test_cells,total_cells,note
+Li-ion,510,165,162,837,MIX_large_841 (라벨 미배포 6셀 제외)
+Zn-ion,60,20,20,100,ZNcoin — 논문 Table 2 는 95 (모집단 상이)
+Na-ion,20,6,5,31,NAion_2021
+CALB,17,5,5,27,CALB

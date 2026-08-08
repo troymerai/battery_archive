@@ -1,0 +1,5 @@
+domain,group,guard,hits,den_labelled,pct_labelled,den_reproduced,pct_reproduced,den_testable,pct_testable,source
+Li-ion,XJTU,yes,0,23,0.0,23,0.0,0,,analysis/li_ion_temporary_crossing.csv (m=0.02)
+Li-ion,other-12-subsets,no,107,816,13.1127,708,15.113,547,19.5612,analysis/li_ion_temporary_crossing.csv (m=0.02)
+Na-ion,batch2_csv,yes,0,59,0.0,,,,,docs/reports/2026-08-06_na_ion_soh_drop.md:192 (type I)
+Na-ion,batch1_xlsx,no,5,5,100.0,,,,,docs/reports/2026-08-06_na_ion_soh_drop.md:192 (type I)

@@ -1,0 +1,20 @@
+kind,item,metric,value,sd
+paper_table3,CPMLP,,0.179,0.003
+paper_table3,CPTransformer,,0.184,0.003
+paper_table3,CPGRU,,0.189,0.008
+paper_table3,CPBiGRU,,0.19,0.001
+paper_table3,CPBiLSTM,,0.191,0.007
+paper_table3,CPLSTM,,0.196,0.006
+paper_adjacent_gap_pct,CPMLP→CPTransformer,,2.7932960893854775,
+paper_adjacent_gap_pct,CPTransformer→CPGRU,,2.7173913043478284,
+paper_adjacent_gap_pct,CPGRU→CPBiGRU,,0.5291005291005295,
+paper_adjacent_gap_pct,CPBiGRU→CPBiLSTM,,0.5263157894736846,
+paper_adjacent_gap_pct,CPBiLSTM→CPLSTM,,2.617801047120421,
+measured_effect_overall_pct,CPMLP AA→AB,test MAPE,4.0703353956366035,
+measured_effect_overall_pct,CPMLP BA→BB,test MAPE,3.4234627126035804,
+measured_effect_overall_pct,CPTransformer AA→AB,test MAPE,4.979253112033203,
+measured_effect_overall_pct,CPTransformer BA→BB,test MAPE,4.242358316110084,
+measured_effect_unseen_pct,CPMLP AA→AB,test unseen MAPE,8.183538315988653,
+measured_effect_unseen_pct,CPMLP BA→BB,test unseen MAPE,7.189934092270804,
+measured_effect_unseen_pct,CPTransformer AA→AB,test unseen MAPE,9.901599015990174,
+measured_effect_unseen_pct,CPTransformer BA→BB,test unseen MAPE,8.608570052960992,
