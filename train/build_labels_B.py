@@ -85,7 +85,8 @@ def prepare_work() -> list[str]:
     return SRC.read_text(encoding="utf-8").splitlines(keepends=True)
 
 
-def render(original: list[str], dataset_name: str) -> tuple[str, list[str]]:
+def render(original: list[str], dataset_name: str, out_dir: Path,
+           calb_xlsx: Path) -> tuple[str, list[str]]:
     """네 줄만 다시 쓴 본문과, 바꾼 줄의 사람 읽을 기록을 돌려준다."""
     lines = list(original)
     changes = []
@@ -96,12 +97,12 @@ def render(original: list[str], dataset_name: str) -> tuple[str, list[str]]:
         changes.append(f"{idx1}: {old.strip()}  ->  {new.strip()}")
 
     swap(LINE_DATASET, f"    dataset_name = ('{dataset_name}')")
-    swap(LINE_OUTPUT, f"    output_path = r'{OUT.as_posix()}'")
+    swap(LINE_OUTPUT, f"    output_path = r'{out_dir.as_posix()}'")
     swap(LINE_ROOT, f"    dataset_root_path = r'{EXTRACTED.as_posix()}'")
     if dataset_name == "CALB":
-        # 배포되지 않은 파일이다. 경로만 이 기계 기준으로 바꿔 **없다는 것을 확인**한다.
-        swap(LINE_CALB_XLSX,
-             f"        CALB_summary_file = r'{(EXTRACTED / 'CALB_capacity/汇总表-L148N58-循环.xlsx').as_posix()}'")
+        # 기본값은 배포되지 않은 파일이다 — 경로만 이 기계 기준으로 바꿔
+        # **없다는 것을 확인**한다. `--calb-xlsx` 로 다른 파일을 줄 수 있다.
+        swap(LINE_CALB_XLSX, f"        CALB_summary_file = r'{calb_xlsx.as_posix()}'")
     return "".join(lines), changes
 
 
@@ -119,23 +120,24 @@ def assert_only_expected(original: list[str], rendered: str, dataset_name: str) 
                          f"{sorted(diff - allowed)} — 멈춥니다.")
 
 
-def run_one(dataset_name: str, original: list[str], python: str) -> dict:
-    rendered, changes = render(original, dataset_name)
+def run_one(dataset_name: str, original: list[str], python: str,
+            out_dir: Path, calb_xlsx: Path) -> dict:
+    rendered, changes = render(original, dataset_name, out_dir, calb_xlsx)
     assert_only_expected(original, rendered, dataset_name)
     target = WORK / "Extract_life_labels.py"
     target.write_text(rendered, encoding="utf-8")
 
-    before = {p.name: p.stat().st_mtime_ns for p in OUT.glob("*.json")}
+    before = {p.name: p.stat().st_mtime_ns for p in out_dir.glob("*.json")}
     t0 = time.perf_counter()
     proc = subprocess.run([python, "Extract_life_labels.py"], cwd=WORK,
                           capture_output=True, text=True, encoding="utf-8",
                           errors="replace")
     elapsed = time.perf_counter() - t0
 
-    after = {p.name: p.stat().st_mtime_ns for p in OUT.glob("*.json")}
+    after = {p.name: p.stat().st_mtime_ns for p in out_dir.glob("*.json")}
     produced = sorted(n for n in after if before.get(n) != after[n])
 
-    log = LOGS / f"{dataset_name}.log"
+    log = (out_dir / "_logs") / f"{dataset_name}.log"
     log.write_text(
         f"# 서브셋: {dataset_name}\n"
         f"# 실행: {python} Extract_life_labels.py   (cwd={WORK})\n"
@@ -150,7 +152,7 @@ def run_one(dataset_name: str, original: list[str], python: str) -> dict:
     n_labels = None
     if len(produced) == 1:
         try:
-            n_labels = len(json.loads((OUT / produced[0]).read_text(encoding="utf-8")))
+            n_labels = len(json.loads((out_dir / produced[0]).read_text(encoding="utf-8")))
         except Exception:
             pass
 
@@ -167,10 +169,17 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--only", nargs="*", help="이 서브셋만")
     ap.add_argument("--python", default=sys.executable)
+    ap.add_argument("--out", default=str(OUT),
+                    help="산출물 디렉터리. 기본은 data/labels_B")
+    ap.add_argument("--calb-xlsx",
+                    default=str(EXTRACTED / "CALB_capacity/汇总表-L148N58-循环.xlsx"),
+                    help="CALB 용량 엑셀 경로 (배포본에는 없다)")
     a = ap.parse_args()
 
-    OUT.mkdir(parents=True, exist_ok=True)
-    LOGS.mkdir(parents=True, exist_ok=True)
+    out_dir = Path(a.out)
+    calb_xlsx = Path(a.calb_xlsx)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "_logs").mkdir(parents=True, exist_ok=True)
     original = prepare_work()
 
     todo = a.only if a.only else SUBSETS
@@ -183,7 +192,7 @@ def main() -> int:
                             "produced": [], "n_labels": None,
                             "note": "데이터 디렉터리 없음"})
             continue
-        r = run_one(name, original, a.python)
+        r = run_one(name, original, a.python, out_dir, calb_xlsx)
         results.append(r)
         mark = "OK " if r["returncode"] == 0 and r["produced"] else "실패"
         print(f"  [{mark}] {name:<12} rc={r['returncode']} "
@@ -191,12 +200,12 @@ def main() -> int:
         for line in r["stderr_tail"][-2:]:
             print(f"          {line[:120]}")
 
-    (OUT / "_generation_summary.json").write_text(
+    (out_dir / "_generation_summary.json").write_text(
         json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     ok = [r for r in results if r.get("produced")]
     print(f"\n생성 성공 {len(ok)} / 시도 {len(results)}")
-    print(f"기록: {(OUT / '_generation_summary.json').relative_to(REPO)}")
-    print(f"      {LOGS.relative_to(REPO)}/*.log")
+    print(f"기록: {(out_dir / '_generation_summary.json').relative_to(REPO)}")
+    print(f"      {(out_dir / '_logs').relative_to(REPO)}/*.log")
     return 0
 
 

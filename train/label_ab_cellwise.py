@@ -229,6 +229,10 @@ def main() -> int:
                         {"cond": cond, "model": model_name, "seed": seed,
                          "recorded": want, "recomputed": got, "delta": got - want,
                          "ok": abs(got - want) <= 5e-5})
+                # **시드별 셀 원자료를 남긴다.** 예전 판은 시드 평균만 남겨서
+                # 집중도의 시드별 산포를 되짚을 수 없었다
+                # (`docs/reports/2026-08-08_closing_checks.md` §1).
+                report["runs"][key]["cells"] = rows
                 for r in rows:
                     per_cell_acc.setdefault((train_lab, model_name, r["file"]), []).append(r)
                 print(f"  {key:<34} dev={device:<4} 셀 {len(rows)} 샘플 {N}  "

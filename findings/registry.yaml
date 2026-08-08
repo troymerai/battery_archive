@@ -909,6 +909,25 @@ records:
     anchors: []
     note: "2026-08-05 실측. 분할 목록을 그대로 세었습니다 - MIX_large 843 · ZNcoin 100 · NAion_2021 31 · CALB 27. seed 변형(ZN_42 ZN_2024 CALB_42 CALB_2024 NAion_42 NAion_2024)도 셀 풀 크기는 같습니다. **Na-ion 과 CALB 는 논문과 정확히 같고, Li-ion 과 Zn-ion 두 도메인만 갈립니다.** Li-ion 은 843 대 837 로 6 만큼, Zn-ion 은 100 대 95 로 5 만큼 코드가 많습니다. Li-ion 의 6 은 TRN-010 의 라벨 미배포 6셀과 수가 같습니다 - 그 6셀을 빼면 837 이 되어 논문과 맞습니다. 다만 그것이 저자의 의도였는지는 확인하지 않았습니다. Zn-ion 의 5 는 LAB-018 의 경계 문제(100 이하 제외인가 100 미만 제외인가)로는 1 밖에 설명되지 않아 나머지 4 는 미설명입니다. MIX_all 계열(1001셀)이 이 합과 같은 것은 우연이 아니라 정의입니다 - MIX_all 은 네 도메인 분할을 그대로 이어붙인 것입니다(data_split_recorder.py:96-98)."
 
+  - id: META-011
+    question: "BatteryLife 와 BatteryMFormer 의 Li-ion 셀 수가 126 만큼 다르다 - 같은 13개 하위 데이터셋을 쓴다면서"
+    paper:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: "BatteryMFormer 논문 Table 1 을 직접 읽지 못했습니다. papers/*.pdf 는 .gitignore 대상이고 이 환경에 PDF 텍스트 추출 도구(pypdf·pymupdf)가 없습니다. 설치하면 LOCK.md 의 env repro/blife 해시가 깨져 넣지 않았습니다. BatteryLife 쪽 837 은 META-010 이 이미 확인으로 기록했습니다"
+      checked_by: ""
+    upstream_doc:
+      status: 미조사
+    code:
+      status: 미조사
+      locus: ""
+      value: ""
+      searched: ""
+      checked_by: ""
+    anchors: []
+    note: "2026-08-08 개설. **논문 수치(지시서 인용): BatteryLife Table 2 Li-ion 837 · BatteryMFormer Table 1 Li-ion 963 - 차 126.** 두 논문은 각각 같은 13개 하위 데이터셋을 쓴다고 명시합니다. BatteryLife 쪽 837 은 META-010 에서 확인된 값이고, MFormer 쪽 963 은 이 환경에서 확인하지 못했습니다(paper.searched 참조). **코드 분할을 직접 세면 843 대 979 로 차가 136 입니다** [확인] - BatteryLife data_split_recorder.py 의 MIX_large 3분할 합이 843, BatteryMFormer data_provider/split_json/pure_ood/Liion_split_seed{2021,42,2024}.json 의 train+val+test 합이 세 시드 모두 979 이고 셀 집합도 세 시드가 동일합니다. 서브셋별로 갈라 보면 **차이가 Stanford 한 곳에 몰립니다** - Stanford 41 대 184 로 +143, MICH(+EXP) 58 대 52 로 -6, ISU-ILCC 240 대 239 로 -1, 나머지 9개 서브셋은 완전히 같습니다. **+143 의 정체가 유력합니다**: 배포 트리에 Stanford(41셀)와 Stanford_2(181셀)가 따로 있고 둘이 38셀을 공유하므로 합집합이 41+181-38=184 로 MFormer 값과 정확히 같습니다. 즉 BatteryLife 의 MIX_large 는 Stanford 41셀만 쓰고 MFormer 는 Stanford+Stanford_2 합집합 184셀을 씁니다. **다만 이것은 분할 목록 수준의 관찰이고, code 슬롯을 미조사로 둡니다** - MFormer 의 SOH 파이프라인이 추가로 셀을 거르는지(process_scripts/generate_soh.py:135 MIN_SLOPE_THRESHOLD=1e-4 는 열화가 느린 셀을 통째로 버리고, :115 filter_threshold 는 건강한 셀을 버립니다) 조사하지 않았습니다. 979 와 논문 963 의 차 16, 843 과 논문 837 의 차 6 이 그 필터들로 설명되는지가 남은 질문입니다."
+
   - id: LAB-018
     question: "수명 라벨 100 셀을 제외하는가 남기는가 - 부등호 경계"
     paper:
