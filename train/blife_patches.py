@@ -90,6 +90,28 @@ def apply_mix841(split_recorder, die=None):
     return restore
 
 
+def apply_exclude_prefixes(split_recorder, prefixes, base="MIX_large"):
+    """셀 이름 접두사로 분할에서 빼낸다. A/B 가 같은 표본을 쓰게 하려는 것.
+
+    라벨 B 는 Tongji 키 표기가 상위 조회 규칙과 달라 조회가 실패한다
+    (`docs/reports/2026-08-07_label_ab_manifest.md` §3-4). 그래서 A/B 를
+    나란히 놓으려면 **양쪽에서 똑같이** Tongji 를 빼야 한다. 라벨 B 를
+    고치는 것이 아니라 **표본을 좁히는** 쪽이다.
+
+    돌려주는 값: {flag: 남은 셀 수}
+    """
+    prefixes = tuple(prefixes)
+    counts = {}
+    for flag in ("train", "val", "test"):
+        name = f"{base}_{flag}_files"
+        kept = [f for f in getattr(split_recorder, name)
+                if not f.split("_")[0].startswith(prefixes)]
+        setattr(split_recorder, name, kept)
+        setattr(split_recorder, f"{base}_841_{flag}_files", kept)
+        counts[flag] = len(kept)
+    return counts
+
+
 # ------------------------------------------------------------ 텐서 캐시
 
 def install_tensor_cache(data_loader_module, cache_dir: Path, tag: str, die=None,
@@ -153,7 +175,8 @@ def install_tensor_cache(data_loader_module, cache_dir: Path, tag: str, die=None
         stats["hit"] += 1
         m = meta[file_name]
         # 라벨은 캐시가 아니라 지정된 원본에서 받는다 (A/B 실험).
-        eol = m["eol"] if eol_lookup is None else eol_lookup(file_name)
+        eol = (m["eol"] if eol_lookup is None
+               else eol_lookup(file_name, getattr(self, "flag", "train")))
         if eol is None:
             stats["no_label"] = stats.get("no_label", 0) + 1
             raise LabelMissing(file_name, getattr(eol_lookup, "labels_dir", "(라벨 원본)"))
@@ -207,22 +230,42 @@ def install_cell_recorder(data_loader_module):
 
 # ------------------------------------------------------------ 라벨 A/B
 
-def make_eol_lookup(labels_dir: Path, stats: dict | None = None):
-    """수명 라벨을 디렉터리에서 찾아 주는 함수를 만든다.
+def resolve_label_sources(labels_dir) -> dict:
+    """경로 하나 또는 `{flag: 경로}` 를 flag 별 사전으로 편다."""
+    if isinstance(labels_dir, dict):
+        out = {k: Path(v) for k, v in labels_dir.items()}
+        missing = {"train", "val", "test"} - set(out)
+        if missing:
+            raise ValueError(f"라벨 원본에 {sorted(missing)} 가 없습니다: {labels_dir}")
+        return out
+    p = Path(labels_dir)
+    return {"train": p, "val": p, "test": p}
+
+
+def make_eol_lookup(labels_dir, stats: dict | None = None):
+    """수명 라벨을 찾아 주는 함수를 만든다.
+
+    ``labels_dir`` 는 경로 하나이거나 **`{flag: 경로}`** 다. 후자는 A/B
+    실험의 **AB · BA 조건**에 필요하다 — 학습에는 A 라벨, 시험에는 B 라벨처럼
+    분할마다 다른 정답을 줘야 한다. 분할은 `self.flag` 로 가른다
+    (`data_loader.py:100` 에서 `read_data()` 보다 먼저 정해진다).
 
     조회 규칙은 상위와 **같게** 둔다 (`data_loader.py:417-431`) — 접두사로
     파일을 고르고, Tongji 는 `--` 를 `-#` 로 바꾼다. 라벨 B 가 그 규칙을
     따르지 않으면 조회가 실패하고 그 셀은 버려진다. **조용히 고치지 않는다** —
     실패는 실패로 드러나야 한다.
-    """
-    labels_dir = Path(labels_dir)
-    st = stats if stats is not None else {}
-    st.setdefault("found", 0)
-    st.setdefault("missing", 0)
-    st.setdefault("no_file", 0)
-    cache: dict[str, dict | None] = {}
 
-    def lookup(file_name: str):
+    돌려주는 함수는 ``lookup(file_name, flag)`` 다.
+    """
+    sources = resolve_label_sources(labels_dir)
+    st = stats if stats is not None else {}
+    for k in ("found", "missing", "no_file"):
+        st.setdefault(k, 0)
+    st.setdefault("by_flag", {})
+    cache: dict = {}
+
+    def lookup(file_name: str, flag: str = "train"):
+        base = sources.get(flag, sources["train"])
         prefix = file_name.split("_")[0]
         if prefix == "MICH":
             fname, key = "total_MICH_labels.json", file_name
@@ -230,10 +273,12 @@ def make_eol_lookup(labels_dir: Path, stats: dict | None = None):
             fname, key = "Tongji_labels.json", file_name.replace("--", "-#")
         else:
             fname, key = f"{prefix}_labels.json", file_name
-        if fname not in cache:
-            p = labels_dir / fname
-            cache[fname] = json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
-        table = cache[fname]
+        ck = (str(base), fname)
+        if ck not in cache:
+            p = base / fname
+            cache[ck] = json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
+        table = cache[ck]
+        st["by_flag"][flag] = str(base)
         if table is None:
             st["no_file"] += 1
             return None
@@ -243,49 +288,30 @@ def make_eol_lookup(labels_dir: Path, stats: dict | None = None):
         st["missing"] += 1
         return None
 
-    lookup.labels_dir = labels_dir
+    lookup.sources = sources
+    lookup.labels_dir = sources["train"]
     return lookup, st
 
 
-def install_label_source(data_loader_module, labels_dir: Path):
+def install_label_source(data_loader_module, labels_dir):
     """수명 라벨을 다른 디렉터리에서 읽게 한다 (A/B 실험용).
 
     상위는 `read_cell_data_according_to_prefix` 안에서
     `{root_path}/Life labels/{prefix}_labels.json` 을 직접 엽니다
     (`data_loader.py:417-431`). 그 조회부만 감싼다 — pkl 적재는 그대로 둔다.
 
-    **키 규칙도 상위와 같게 유지한다** (Tongji 는 `--` -> `-#`). B 라벨이 그
-    규칙을 따르지 않으면 조회가 실패하고, 그 셀은 라벨없음으로 버려진다.
-    그것을 조용히 고치지 않는다 — 실패는 실패로 드러나야 한다.
+    ``labels_dir`` 는 경로 하나이거나 **`{flag: 경로}`** 다 (AB · BA 조건).
+    조회 규칙은 `make_eol_lookup` 과 **같은 코드**를 쓴다 — 두 자리가 어긋나면
+    캐시 적중 여부에 따라 다른 라벨이 나온다.
 
     돌려주는 값: (되돌리는 함수, 통계 dict)
     """
-    labels_dir = Path(labels_dir)
+    lookup, stats = make_eol_lookup(labels_dir)
     original = data_loader_module.Dataset_original.read_cell_data_according_to_prefix
-    stats = {"found": 0, "missing": 0, "no_file": 0}
-    cache: dict[str, dict] = {}
 
     def patched(self, file_name):
         data, _eol = original(self, file_name)
-        prefix = file_name.split("_")[0]
-        if prefix == "MICH":
-            fname, key = "total_MICH_labels.json", file_name
-        elif prefix.startswith("Tongji"):
-            fname, key = "Tongji_labels.json", file_name.replace("--", "-#")
-        else:
-            fname, key = f"{prefix}_labels.json", file_name
-        if fname not in cache:
-            p = labels_dir / fname
-            cache[fname] = json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
-        table = cache[fname]
-        if table is None:
-            stats["no_file"] += 1
-            return data, None
-        if key in table:
-            stats["found"] += 1
-            return data, table[key]
-        stats["missing"] += 1
-        return data, None
+        return data, lookup(file_name, getattr(self, "flag", "train"))
 
     data_loader_module.Dataset_original.read_cell_data_according_to_prefix = patched
 

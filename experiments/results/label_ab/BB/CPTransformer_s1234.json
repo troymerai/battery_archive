@@ -1,0 +1,151 @@
+{
+  "condition": "BB",
+  "train_labels": "B",
+  "test_labels": "B",
+  "model": "CPTransformer",
+  "domain": "Li-ion",
+  "seed": 1234,
+  "exclude_prefix": "Tongji",
+  "tensor_cache": "liion",
+  "elapsed_s": 1458.1,
+  "checkpoints": "data\\checkpoints_label_ab\\BB",
+  "log": "runs\\label_ab\\BB_CPTransformer_s1234.log",
+  "args": {
+    "task_name": "classification",
+    "is_training": 1,
+    "model_id": "CPTransformer",
+    "model_comment": "CPTransformer",
+    "model": "CPTransformer",
+    "seed": 2021,
+    "charge_discharge_length": 300,
+    "dataset": "MIX_large_841",
+    "data": "Dataset_original",
+    "root_path": "D:/battery_archive/data/extracted",
+    "data_path": "ETTh1.csv",
+    "features": "MS",
+    "target": "OT",
+    "loader": "modal",
+    "freq": "h",
+    "checkpoints": "D:/battery_archive/data/checkpoints",
+    "early_cycle_threshold": 100,
+    "seq_len": 1,
+    "pred_len": 5,
+    "label_len": 50,
+    "seasonal_patterns": "Monthly",
+    "enc_in": 3,
+    "dec_in": 1,
+    "c_out": 1,
+    "d_model": 256,
+    "n_heads": 4,
+    "lstm_layers": 6,
+    "e_layers": 1,
+    "d_layers": 12,
+    "d_ff": 64,
+    "moving_avg": 25,
+    "factor": 3,
+    "dropout": 0.0,
+    "embed": "timeF",
+    "activation": "relu",
+    "output_attention": false,
+    "patch_len": 10,
+    "stride": 10,
+    "patch_len2": 10,
+    "stride2": 10,
+    "prompt_domain": 0,
+    "output_num": 1,
+    "class_num": 8,
+    "weighted_loss": false,
+    "weighted_sampling": false,
+    "num_workers": 0,
+    "itr": 1,
+    "train_epochs": 100,
+    "least_epochs": 5,
+    "batch_size": 256,
+    "patience": 5,
+    "learning_rate": 5e-05,
+    "wd": 0.0,
+    "des": "Exp",
+    "loss": "MSE",
+    "lradj": "constant",
+    "pct_start": 0.2,
+    "use_amp": false,
+    "percent": 100,
+    "accumulation_steps": 1,
+    "mlp": 0,
+    "alpha1": 0.15,
+    "alpha2": 0.1
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 0.42242
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.13758
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.09216
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.07484
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.07421
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.05369
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.04671
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.04153
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.0422
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.04033
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.03268
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.02916
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.03009
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.02765
+    }
+  ],
+  "final": {
+    "test_mae": 168.6357,
+    "test_rmse": 278.2869,
+    "test_mape": 0.1891,
+    "test_acc15": 57.75,
+    "test_acc10": 41.7643,
+    "vali_mae": 194.7085,
+    "vali_rmse": 445.113,
+    "vali_mape": 0.2739,
+    "vali_acc15": 61.979,
+    "vali_acc10": 44.5524,
+    "test_seen_mape": 0.16,
+    "test_unseen_mape": 0.2267
+  },
+  "n_epochs": 14
+}

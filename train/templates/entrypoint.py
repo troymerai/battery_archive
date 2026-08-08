@@ -217,34 +217,99 @@ REPO_ROOT = SOURCE.parent.parent.parent
 CACHE_DIR = REPO_ROOT / "data" / "tensor_cache"
 
 
-def _apply_tensor_cache(tag):
-    """캐시 패치 본문은 `train/blife_patches.py` 에 있습니다 — **추론 하네스와
-    같은 코드**입니다. 예전에는 이 파일과 `train/infer_cell_preds.py` 에
-    복제돼 있었고, A/B 80회를 앞두고 둘이 어긋나면 조용히 다른 조건으로 도는
-    사고가 납니다 (`docs/reports/2026-08-07_cell_predictions.md` §10-1).
-    """
-    from data_provider import data_loader as dl
+LABEL_SOURCES = {
+    "A": REPO_ROOT / "data" / "extracted" / "Life labels",
+    "B": REPO_ROOT / "data" / "labels_B",
+}
 
+
+def _load_patches():
     sys.path.insert(0, str(REPO_ROOT))
     try:
-        from train.blife_patches import install_tensor_cache
+        import train.blife_patches as bp
     except ImportError as exc:
         _die(f"train/blife_patches.py 를 불러오지 못했습니다: {exc}\n"
              f"  찾은 곳: {REPO_ROOT}")
+    return bp
 
-    _restore, stats, desc = install_tensor_cache(dl, CACHE_DIR, tag, die=_die)
-    dl._tensor_cache_stats = stats
 
-    APPLIED.append(
-        f"3. 입력 텐서 캐시 — {desc}. "
-        "pkl 적재+리샘플링만 건너뜁니다. batch_aug 는 난수열 보존을 위해 "
-        "캐시된 텐서에 그대로 다시 겁니다. 캐시에 없는 셀은 원래 경로. "
-        "(본문: train/blife_patches.py — 추론 하네스와 공용)")
+def _apply_labels_and_cache(label_tag, cache_tag, exclude_prefixes):
+    """라벨 교체 · 접두사 제외 · 텐서 캐시를 **정해진 순서로** 겁니다.
+
+    본문은 `train/blife_patches.py` 에 있습니다 — **추론 하네스와 같은
+    코드**입니다 (`docs/reports/2026-08-07_cell_predictions.md` §10-1).
+
+    > **순서가 중요합니다.** 텐서 캐시 색인은 만들 때의 `eol` 을 함께 담고
+    > 있어서, 캐시를 먼저 걸면 `read_cell_df` 가 통째로 대체되며 **라벨 교체가
+    > 조용히 무시됩니다.** 추론 하네스에서 실제로 그랬습니다
+    > (`docs/reports/2026-08-07_label_ab_manifest.md` §5-2). 그래서 라벨
+    > 조회기를 먼저 만들어 캐시에 **넘겨 줍니다.**
+    """
+    from data_provider import data_loader as dl
+    from data_provider.data_split_recorder import split_recorder
+
+    bp = _load_patches()
+
+    # (a) 접두사 제외 — 841 패치 뒤에 겁니다.
+    if exclude_prefixes:
+        counts = bp.apply_exclude_prefixes(split_recorder, exclude_prefixes)
+        APPLIED.append(
+            f"4. 접두사 제외 — {exclude_prefixes} 를 MIX_large 분할에서 뺐습니다. "
+            f"train/val/test = {counts}. A/B 가 같은 표본을 쓰게 하려는 것입니다.")
+
+    # (b) 라벨 조회기를 **먼저** 만듭니다.
+    eol_lookup = None
+    if label_tag:
+        # `A` · `B` · 경로 하나면 전 분할 공통.
+        # `train=A,test=B` 처럼 주면 **분할마다 다른 라벨** (AB · BA 조건).
+        if "=" in label_tag:
+            parts = dict(kv.split("=", 1) for kv in label_tag.split(",") if kv.strip())
+            unknown = set(parts) - {"train", "val", "test"}
+            if unknown:
+                _die(f"BLIFE_LABELS 에 모르는 분할이 있습니다: {sorted(unknown)}")
+            if "train" not in parts or "test" not in parts:
+                _die(f"BLIFE_LABELS 에 train 과 test 를 둘 다 줘야 합니다: {label_tag}")
+            # **val 은 train 을 따릅니다.** 검증 집합은 조기종료와 최적 모델
+            # 선택에 쓰이므로 학습 절차의 일부입니다. 시험 라벨을 val 에 주면
+            # 시험 정답이 모델 선택에 새어 듭니다.
+            parts.setdefault("val", parts["train"])
+            src = {k: LABEL_SOURCES.get(v, Path(v)) for k, v in parts.items()}
+        else:
+            one = LABEL_SOURCES.get(label_tag, Path(label_tag))
+            src = {"train": one, "val": one, "test": one}
+        for flag, p in src.items():
+            if not Path(p).is_dir():
+                _die(f"BLIFE_LABELS 의 {flag} 경로가 없습니다: {p}")
+        eol_lookup, label_stats = bp.make_eol_lookup(src)
+        # 캐시에 없는 셀은 원래 경로로 가므로 조회부도 함께 갈아 끼웁니다.
+        bp.install_label_source(dl, src)
+        dl._label_stats = label_stats
+        shown = " · ".join(f"{k}={Path(v).name}" for k, v in src.items())
+        APPLIED.append(
+            f"5. 라벨 교체 — {shown}. val 은 train 을 따릅니다 (검증은 학습 "
+            "절차의 일부라 시험 정답이 새면 안 됩니다). 조회 키 규칙은 상위와 "
+            "같게 둡니다 (Tongji 는 `--`->`-#`). 라벨이 없는 셀을 만나면 조용히 "
+            "건너뛰지 않고 LabelMissing 으로 멈춥니다 — 건너뛰면 표본이 바뀝니다.")
+
+    # (c) 텐서 캐시. 라벨 조회기를 넘겨 줍니다.
+    if cache_tag:
+        _restore, stats, desc = bp.install_tensor_cache(
+            dl, CACHE_DIR, cache_tag, die=_die, eol_lookup=eol_lookup)
+        dl._tensor_cache_stats = stats
+        APPLIED.append(
+            f"3. 입력 텐서 캐시 — {desc}. "
+            "pkl 적재+리샘플링만 건너뜁니다. batch_aug 는 난수열 보존을 위해 "
+            "캐시된 텐서에 그대로 다시 겁니다. 캐시에 없는 셀은 원래 경로. "
+            + ("**수명 라벨은 캐시가 아니라 위 5번 원본에서 받습니다.**"
+               if eol_lookup is not None else "")
+            + " (본문: train/blife_patches.py — 추론 하네스와 공용)")
 
 
 _cache_tag = os.environ.get("BLIFE_TENSOR_CACHE", "").strip()
-if _cache_tag:
-    _apply_tensor_cache(_cache_tag)
+_label_tag = os.environ.get("BLIFE_LABELS", "").strip()
+_exclude = [p for p in os.environ.get("BLIFE_EXCLUDE_PREFIX", "").split(",") if p.strip()]
+if _cache_tag or _label_tag or _exclude:
+    _apply_labels_and_cache(_label_tag, _cache_tag, [p.strip() for p in _exclude])
 
 
 # --------------------------------------------------------------------------
@@ -261,6 +326,11 @@ if requested != MIX_841:
 if not _cache_tag:
     print("  (입력 텐서 캐시는 BLIFE_TENSOR_CACHE 를 줬을 때만 켜집니다. "
           "지금은 꺼져 있고 기존 36회와 같은 읽기 경로입니다.)", flush=True)
+if not _label_tag:
+    print("  (라벨 교체는 BLIFE_LABELS 를 줬을 때만 켜집니다. "
+          "지금은 배포 라벨 A 이고 기존 36회와 같습니다.)", flush=True)
+if not _exclude:
+    print("  (접두사 제외는 BLIFE_EXCLUDE_PREFIX 를 줬을 때만 켜집니다.)", flush=True)
 print("이 목록을 결과와 함께 남기십시오. 논문과 같은 조건이 아닙니다.", flush=True)
 print("=" * 72, flush=True)
 

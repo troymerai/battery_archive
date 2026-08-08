@@ -171,9 +171,10 @@ def run_one(combo: dict, use_cache: bool, device: str, label_set: str = "A") -> 
             dl, CACHE_DIR, CACHE_TAG[combo["domain"]], eol_lookup=eol_lookup)
         if r is not None:
             undo.append(r)
-    if label_set != "A" and not use_cache:
-        # 캐시를 끈 경우에는 조회부 자체를 갈아 끼운다.
-        r, label_stats = install_label_source(dl, LABEL_SOURCES[label_set])
+    if label_set != "A":
+        # 캐시에 없는 셀은 원래 경로로 가므로 조회부도 함께 갈아 끼운다.
+        # (캐시가 켜져 있어도 필요하다 — 적중하지 않은 셀이 A 라벨을 쓰면 안 된다.)
+        r, _ = install_label_source(dl, LABEL_SOURCES[label_set])
         undo.append(r)
     # 셀 경계는 미리 계산한 표에서 읽지 않고 **그 자리에서 관측한다.**
     # 라벨이 바뀌면 경계도 바뀌므로 A 기준 표를 믿으면 틀린다.

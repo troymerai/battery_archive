@@ -1,0 +1,832 @@
+{
+  "n_results": 40,
+  "missing": [],
+  "curve_identity": [
+    {
+      "pair": "AA/AB",
+      "model": "CPMLP",
+      "seed": 42,
+      "comparable": true,
+      "n_epochs": [
+        17,
+        17
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.012301300000000015
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPMLP",
+      "seed": 2021,
+      "comparable": true,
+      "n_epochs": [
+        20,
+        20
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.013827800000000001
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPMLP",
+      "seed": 2024,
+      "comparable": true,
+      "n_epochs": [
+        10,
+        10
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.01107720000000001
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPMLP",
+      "seed": 7,
+      "comparable": true,
+      "n_epochs": [
+        23,
+        23
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.012716900000000031
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPMLP",
+      "seed": 1234,
+      "comparable": true,
+      "n_epochs": [
+        14,
+        14
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.012838899999999986
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPTransformer",
+      "seed": 42,
+      "comparable": true,
+      "n_epochs": [
+        10,
+        10
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.010266599999999987
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPTransformer",
+      "seed": 2021,
+      "comparable": true,
+      "n_epochs": [
+        21,
+        21
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.010857600000000023
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPTransformer",
+      "seed": 2024,
+      "comparable": true,
+      "n_epochs": [
+        10,
+        10
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.012374099999999999
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPTransformer",
+      "seed": 7,
+      "comparable": true,
+      "n_epochs": [
+        10,
+        10
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.010695800000000005
+    },
+    {
+      "pair": "AA/AB",
+      "model": "CPTransformer",
+      "seed": 1234,
+      "comparable": true,
+      "n_epochs": [
+        19,
+        19
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.01495550000000001
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPMLP",
+      "seed": 42,
+      "comparable": true,
+      "n_epochs": [
+        23,
+        23
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.012274600000000024
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPMLP",
+      "seed": 2021,
+      "comparable": true,
+      "n_epochs": [
+        21,
+        21
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.011291600000000013
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPMLP",
+      "seed": 2024,
+      "comparable": true,
+      "n_epochs": [
+        10,
+        10
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.010518600000000017
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPMLP",
+      "seed": 7,
+      "comparable": true,
+      "n_epochs": [
+        10,
+        10
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.011693700000000001
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPMLP",
+      "seed": 1234,
+      "comparable": true,
+      "n_epochs": [
+        16,
+        16
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.012736400000000009
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPTransformer",
+      "seed": 42,
+      "comparable": true,
+      "n_epochs": [
+        10,
+        10
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.0099302
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPTransformer",
+      "seed": 2021,
+      "comparable": true,
+      "n_epochs": [
+        19,
+        19
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.008982199999999996
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPTransformer",
+      "seed": 2024,
+      "comparable": true,
+      "n_epochs": [
+        16,
+        16
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.01125029999999999
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPTransformer",
+      "seed": 7,
+      "comparable": true,
+      "n_epochs": [
+        16,
+        16
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.011381499999999989
+    },
+    {
+      "pair": "BA/BB",
+      "model": "CPTransformer",
+      "seed": 1234,
+      "comparable": true,
+      "n_epochs": [
+        14,
+        14
+      ],
+      "same_length": true,
+      "train_val_maxdiff": {
+        "train_loss": 0.0,
+        "train_rmse": 0.0,
+        "train_mape": 0.0,
+        "vali_rmse": 0.0,
+        "vali_mae": 0.0,
+        "vali_mape": 0.0
+      },
+      "train_val_identical": true,
+      "test_mape_maxdiff": 0.013824699999999968
+    }
+  ],
+  "summary": {
+    "CPMLP_AA": {
+      "mape_mean": 0.18426,
+      "mape_sd": 0.010561865365549785,
+      "acc15_mean": 59.92716,
+      "acc15_sd": 1.8758117864007577,
+      "n": 5,
+      "mapes": [
+        0.1859,
+        0.1795,
+        0.1852,
+        0.1709,
+        0.1998
+      ],
+      "accs": [
+        58.4143,
+        61.0643,
+        59.1929,
+        62.6429,
+        58.3214
+      ],
+      "test_labels": "A",
+      "train_labels": "A"
+    },
+    "CPMLP_AB": {
+      "mape_mean": 0.19176,
+      "mape_sd": 0.011771278605147357,
+      "acc15_mean": 60.148559999999996,
+      "acc15_sd": 1.7624328648206722,
+      "n": 5,
+      "mapes": [
+        0.1933,
+        0.1862,
+        0.1926,
+        0.1773,
+        0.2094
+      ],
+      "accs": [
+        59.6643,
+        61.0214,
+        58.7286,
+        62.7714,
+        58.5571
+      ],
+      "test_labels": "B",
+      "train_labels": "A"
+    },
+    "CPMLP_BA": {
+      "mape_mean": 0.18344,
+      "mape_sd": 0.01205956052267246,
+      "acc15_mean": 59.21142,
+      "acc15_sd": 4.144801057590097,
+      "n": 5,
+      "mapes": [
+        0.1688,
+        0.1937,
+        0.1767,
+        0.1978,
+        0.1802
+      ],
+      "accs": [
+        64.8714,
+        56.5786,
+        59.8571,
+        54.0143,
+        60.7357
+      ],
+      "test_labels": "A",
+      "train_labels": "B"
+    },
+    "CPMLP_BB": {
+      "mape_mean": 0.18972,
+      "mape_sd": 0.013126004723448787,
+      "acc15_mean": 58.851440000000004,
+      "acc15_sd": 4.311953575005186,
+      "n": 5,
+      "mapes": [
+        0.1741,
+        0.2008,
+        0.1831,
+        0.2057,
+        0.1849
+      ],
+      "accs": [
+        64.1143,
+        56.4286,
+        59.8857,
+        52.9,
+        60.9286
+      ],
+      "test_labels": "B",
+      "train_labels": "B"
+    },
+    "CPTransformer_AA": {
+      "mape_mean": 0.19762,
+      "mape_sd": 0.00823571490521618,
+      "acc15_mean": 56.50858,
+      "acc15_sd": 2.735893918265105,
+      "n": 5,
+      "mapes": [
+        0.1983,
+        0.2085,
+        0.1924,
+        0.2017,
+        0.1872
+      ],
+      "accs": [
+        55.4429,
+        52.3143,
+        57.8857,
+        57.5071,
+        59.3929
+      ],
+      "test_labels": "A",
+      "train_labels": "A"
+    },
+    "CPTransformer_AB": {
+      "mape_mean": 0.20746,
+      "mape_sd": 0.008694998562392057,
+      "acc15_mean": 56.44856,
+      "acc15_sd": 3.000727345661381,
+      "n": 5,
+      "mapes": [
+        0.2079,
+        0.2185,
+        0.2025,
+        0.2124,
+        0.196
+      ],
+      "accs": [
+        54.5429,
+        52.4714,
+        57.7357,
+        57.2714,
+        60.2214
+      ],
+      "test_labels": "B",
+      "train_labels": "A"
+    },
+    "CPTransformer_BA": {
+      "mape_mean": 0.18386,
+      "mape_sd": 0.009095493389585855,
+      "acc15_mean": 58.152879999999996,
+      "acc15_sd": 1.2943785408449864,
+      "n": 5,
+      "mapes": [
+        0.1991,
+        0.1794,
+        0.1842,
+        0.1754,
+        0.1812
+      ],
+      "accs": [
+        56.3286,
+        58.2429,
+        59.5286,
+        59.1714,
+        57.4929
+      ],
+      "test_labels": "A",
+      "train_labels": "B"
+    },
+    "CPTransformer_BB": {
+      "mape_mean": 0.19166,
+      "mape_sd": 0.009819012170274559,
+      "acc15_mean": 58.46428,
+      "acc15_sd": 1.7221846001517949,
+      "n": 5,
+      "mapes": [
+        0.208,
+        0.1855,
+        0.1926,
+        0.1831,
+        0.1891
+      ],
+      "accs": [
+        55.9714,
+        58.6571,
+        60.5,
+        59.4429,
+        57.75
+      ],
+      "test_labels": "B",
+      "train_labels": "B"
+    }
+  },
+  "core_comparisons": [
+    {
+      "pair": "AA vs BA",
+      "test_labels": "A",
+      "model": "CPMLP",
+      "per_seed": [
+        {
+          "seed": 42,
+          "AA": 0.1859,
+          "BA": 0.1688,
+          "delta": -0.017100000000000004,
+          "rel": -0.0919849381387843
+        },
+        {
+          "seed": 2021,
+          "AA": 0.1795,
+          "BA": 0.1937,
+          "delta": 0.014200000000000018,
+          "rel": 0.07910863509749314
+        },
+        {
+          "seed": 2024,
+          "AA": 0.1852,
+          "BA": 0.1767,
+          "delta": -0.008500000000000008,
+          "rel": -0.04589632829373654
+        },
+        {
+          "seed": 7,
+          "AA": 0.1709,
+          "BA": 0.1978,
+          "delta": 0.026900000000000007,
+          "rel": 0.15740198946752493
+        },
+        {
+          "seed": 1234,
+          "AA": 0.1998,
+          "BA": 0.1802,
+          "delta": -0.019600000000000006,
+          "rel": -0.09809809809809812
+        }
+      ],
+      "mean_delta": -0.0008199999999999985,
+      "sd_delta": 0.02043714755047779,
+      "mean_a": 0.18426,
+      "mean_b": 0.18344,
+      "n_seeds_b_worse": 2,
+      "n": 5
+    },
+    {
+      "pair": "AA vs BA",
+      "test_labels": "A",
+      "model": "CPTransformer",
+      "per_seed": [
+        {
+          "seed": 42,
+          "AA": 0.1983,
+          "BA": 0.1991,
+          "delta": 0.0007999999999999952,
+          "rel": 0.004034291477559229
+        },
+        {
+          "seed": 2021,
+          "AA": 0.2085,
+          "BA": 0.1794,
+          "delta": -0.029099999999999987,
+          "rel": -0.13956834532374096
+        },
+        {
+          "seed": 2024,
+          "AA": 0.1924,
+          "BA": 0.1842,
+          "delta": -0.008199999999999985,
+          "rel": -0.042619542619542546
+        },
+        {
+          "seed": 7,
+          "AA": 0.2017,
+          "BA": 0.1754,
+          "delta": -0.02629999999999999,
+          "rel": -0.13039167079821512
+        },
+        {
+          "seed": 1234,
+          "AA": 0.1872,
+          "BA": 0.1812,
+          "delta": -0.006000000000000005,
+          "rel": -0.032051282051282076
+        }
+      ],
+      "mean_delta": -0.013759999999999994,
+      "sd_delta": 0.013187986957834005,
+      "mean_a": 0.19762,
+      "mean_b": 0.18386,
+      "n_seeds_b_worse": 1,
+      "n": 5
+    },
+    {
+      "pair": "AB vs BB",
+      "test_labels": "B",
+      "model": "CPMLP",
+      "per_seed": [
+        {
+          "seed": 42,
+          "AB": 0.1933,
+          "BB": 0.1741,
+          "delta": -0.019199999999999995,
+          "rel": -0.09932747025349195
+        },
+        {
+          "seed": 2021,
+          "AB": 0.1862,
+          "BB": 0.2008,
+          "delta": 0.014600000000000002,
+          "rel": 0.07841031149301826
+        },
+        {
+          "seed": 2024,
+          "AB": 0.1926,
+          "BB": 0.1831,
+          "delta": -0.00949999999999998,
+          "rel": -0.04932502596053988
+        },
+        {
+          "seed": 7,
+          "AB": 0.1773,
+          "BB": 0.2057,
+          "delta": 0.02839999999999998,
+          "rel": 0.16018048505358137
+        },
+        {
+          "seed": 1234,
+          "AB": 0.2094,
+          "BB": 0.1849,
+          "delta": -0.024499999999999994,
+          "rel": -0.1170009551098376
+        }
+      ],
+      "mean_delta": -0.0020399999999999975,
+      "sd_delta": 0.022682879005981572,
+      "mean_a": 0.19176,
+      "mean_b": 0.18972,
+      "n_seeds_b_worse": 2,
+      "n": 5
+    },
+    {
+      "pair": "AB vs BB",
+      "test_labels": "B",
+      "model": "CPTransformer",
+      "per_seed": [
+        {
+          "seed": 42,
+          "AB": 0.2079,
+          "BB": 0.208,
+          "delta": 9.999999999998899e-05,
+          "rel": 0.000481000481000428
+        },
+        {
+          "seed": 2021,
+          "AB": 0.2185,
+          "BB": 0.1855,
+          "delta": -0.033,
+          "rel": -0.15102974828375287
+        },
+        {
+          "seed": 2024,
+          "AB": 0.2025,
+          "BB": 0.1926,
+          "delta": -0.00990000000000002,
+          "rel": -0.04888888888888898
+        },
+        {
+          "seed": 7,
+          "AB": 0.2124,
+          "BB": 0.1831,
+          "delta": -0.029299999999999993,
+          "rel": -0.13794726930320148
+        },
+        {
+          "seed": 1234,
+          "AB": 0.196,
+          "BB": 0.1891,
+          "delta": -0.006900000000000017,
+          "rel": -0.03520408163265315
+        }
+      ],
+      "mean_delta": -0.01580000000000001,
+      "sd_delta": 0.01453375381654718,
+      "mean_a": 0.20746,
+      "mean_b": 0.19166,
+      "n_seeds_b_worse": 1,
+      "n": 5
+    }
+  ],
+  "incomparable": [
+    {
+      "model": "CPMLP",
+      "AA_mape": 0.18426,
+      "BB_mape": 0.18972,
+      "note": "분모가 다른 정답이라 이 두 수는 같은 양이 아니다"
+    },
+    {
+      "model": "CPTransformer",
+      "AA_mape": 0.19762,
+      "BB_mape": 0.19166,
+      "note": "분모가 다른 정답이라 이 두 수는 같은 양이 아니다"
+    }
+  ],
+  "elapsed": {
+    "CPMLP": {
+      "mean_s": 634.5699999999999,
+      "total_h": 3.5253888888888887,
+      "n": 20
+    },
+    "CPTransformer": {
+      "mean_s": 1504.305,
+      "total_h": 8.357249999999999,
+      "n": 20
+    }
+  }
+}
